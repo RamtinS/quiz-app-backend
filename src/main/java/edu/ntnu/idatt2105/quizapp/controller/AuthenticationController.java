@@ -1,12 +1,15 @@
 package edu.ntnu.idatt2105.quizapp.controller;
 
 
+import edu.ntnu.idatt2105.quizapp.dto.AuthenticationDto;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.services.AuthenticationService;
-import edu.ntnu.idatt2105.quizapp.user.LoginDto;
-import edu.ntnu.idatt2105.quizapp.user.RegistrationDto;
+import edu.ntnu.idatt2105.quizapp.dto.LoginDto;
+import edu.ntnu.idatt2105.quizapp.dto.RegistrationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,10 +40,12 @@ public class AuthenticationController {
    * @return //TODO should return a status OK
    */
   @PostMapping("/register")
-  public User registerUser(@RequestBody RegistrationDto body) {
+  public ResponseEntity<String> registerUser(@RequestBody RegistrationDto body) {
     log.info("Registering user: {}", body.getUsername());
 
-    return authenticationService.registerUser(body.getUsername(), body.getPassword());
+    authenticationService.registerUser(body);
+
+    return new ResponseEntity<>("User successfully registered account.", HttpStatus.OK);
   }
 
   /**
@@ -50,10 +55,10 @@ public class AuthenticationController {
    * @return //TODO should return an approriate DTO to client, WITH a JWT token and a status OK.
    */
   @PostMapping("/login")
-  public User loginUser(@RequestBody LoginDto body) {
+  public ResponseEntity<AuthenticationDto> loginUser(@RequestBody LoginDto body) {
     log.info("Logging in user: {}", body.getUsername());
 
-    return authenticationService.loginUser(body.getUsername(), body.getPassword());
+    return new ResponseEntity<>(authenticationService.loginUser(body), HttpStatus.OK);
   }
 
 }
