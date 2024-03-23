@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2105.quizapp.user;
+package edu.ntnu.idatt2105.quizapp.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,4 +22,11 @@ public class RegistrationDto {
 
   @NonNull
   private String password;
+
+  private String email;
+
+  private String name;
+
+  private String surname;
+  
 }
