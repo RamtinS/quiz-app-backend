@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.repositories;
 
-import edu.ntnu.warehouseapp.model.Role;
+import edu.ntnu.idatt2105.quizapp.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

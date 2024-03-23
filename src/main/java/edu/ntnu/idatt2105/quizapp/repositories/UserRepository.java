@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.repositories;
 
-import edu.ntnu.warehouseapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

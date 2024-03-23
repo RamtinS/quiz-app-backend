@@ -1,9 +1,9 @@
 package edu.ntnu.idatt2105.quizapp.services;
 
-import edu.ntnu.warehouseapp.model.Role;
-import edu.ntnu.warehouseapp.model.User;
-import edu.ntnu.warehouseapp.repositories.RoleRepository;
-import edu.ntnu.warehouseapp.repositories.UserRepository;
+import edu.ntnu.idatt2105.quizapp.model.Role;
+import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.repositories.RoleRepository;
+import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

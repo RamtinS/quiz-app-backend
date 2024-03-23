@@ -1,9 +1,10 @@
 package edu.ntnu.idatt2105.quizapp.controller;
 
-import edu.ntnu.warehouseapp.dto.user.LoginDto;
-import edu.ntnu.warehouseapp.dto.user.RegistrationDto;
-import edu.ntnu.warehouseapp.model.User;
-import edu.ntnu.warehouseapp.services.AuthenticationService;
+
+import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.services.AuthenticationService;
+import edu.ntnu.idatt2105.quizapp.user.LoginDto;
+import edu.ntnu.idatt2105.quizapp.user.RegistrationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
