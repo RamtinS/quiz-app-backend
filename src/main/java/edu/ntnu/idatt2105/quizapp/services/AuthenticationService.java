@@ -1,19 +1,20 @@
 package edu.ntnu.idatt2105.quizapp.services;
 
+import edu.ntnu.idatt2105.quizapp.dto.AuthenticationDto;
+import edu.ntnu.idatt2105.quizapp.dto.LoginDto;
+import edu.ntnu.idatt2105.quizapp.dto.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.model.Role;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.repositories.RoleRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
-
 
 /**
  * AuthenticationService encapsulates the logic for registering new users
@@ -36,6 +37,8 @@ public class AuthenticationService {
   //CRUD operations on role models.
   private final RoleRepository roleRepository;
 
+  private final JwtService jwtService;
+
   //Authenticates login requests.
   private final AuthenticationManager authenticationManager;
 
@@ -45,12 +48,12 @@ public class AuthenticationService {
   /**
    * Register method which contains logic to create a user from the given request.
    *
-   * @param username is to be the username of the user object.
-   * @param password is to be the password of the user object.
-   * @return if authentication is successful, it creates the user and returns it.
+   * @param registrationDto is a data transfer object which encapsulates information regarding
+   *                        registering a user.
    */
-  public User registerUser(String username, String password) {
-    String encodedPassword = passwordEncoder.encode(password);
+  public void registerUser(RegistrationDto registrationDto) {
+
+    String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
     Role userRole = roleRepository.findByAuthority("USER").get();
 
     Set<Role> authorities = new HashSet<>();
@@ -58,28 +61,30 @@ public class AuthenticationService {
     authorities.add(userRole);
 
     User user = User.builder()
-            .username(username)
+            .username(registrationDto.getUsername())
             .password(encodedPassword)
+            .email(registrationDto.getEmail())
+            .name(registrationDto.getName())
+            .surName(registrationDto.getSurname())
             .authorities(authorities)
             .build();
 
-    //TODO should return a acceptable request of some kind.
-    return userRepository.save(user);
+    userRepository.save(user);
   }
-
 
   /**
    * Login method which contains logic to authenticate a login request.
    *
-   * @param username is the username to be checked and authenticated
-   * @param password is the password to be checked and authenticated
+   * @param loginDto is a data transfer object which encapsulates login credentials.
    * @return if authentication is successful. It retrieves and returns the user from the database.
    */
-  public User loginUser(String username, String password) {
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+  public AuthenticationDto loginUser(LoginDto loginDto) {
+    authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
+    );
 
-    //TODO should return a LoginRequestDTO with a JWT token.
-    return userRepository.findUserByUsername(username).get();
+    User user = userRepository.findUserByUsername(loginDto.getUsername()).get();
+
+    return new AuthenticationDto(jwtService.generateToken(user));
   }
-
 }
