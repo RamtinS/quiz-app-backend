@@ -17,7 +17,7 @@ import java.util.function.Function;
 @Service
 @Slf4j
 public class JwtService {
-  private final String SECRET_KEY = "SSSSSSSSSSSSSEEEECRETKEY";
+  private final String SECRET_KEY = "SSSSSSSSSSSSSEEassssssssssssssssssssssssssssssssssssssssssdddddddddEECRETKEY";
 
   /**
    * Extracts a claim/information from a JWT token.
