@@ -10,15 +10,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.Collection;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.Set;
-
 
 /**
  * Represents a user entity in the application. A user class represents a user entity in
@@ -39,9 +37,7 @@ public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(
-          name = "user_id"
-  )
+  @Column(name = "user_id")
   private Long userId;
 
   @Column(
@@ -57,6 +53,15 @@ public class User implements UserDetails {
   )
   private String password;
 
+  @Column(name = "email")
+  private String email;
+
+  @Column(name = "first_name")
+  private String name;
+
+  @Column(name = "last_name")
+  private String surName;
+
   /**
    * A many-to-many relational table which tracks the roles/authorities associated with the user.
    */
@@ -65,7 +70,6 @@ public class User implements UserDetails {
           name = "user_role_junction",
           joinColumns = {@JoinColumn(name = "user_id")},
           inverseJoinColumns = {@JoinColumn(name = "role_id")}
-
   )
   private Set<Role> authorities;
 
@@ -108,5 +112,4 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
-
 }
