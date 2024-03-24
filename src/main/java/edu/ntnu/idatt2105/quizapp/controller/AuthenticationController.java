@@ -1,8 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.controller;
 
-
 import edu.ntnu.idatt2105.quizapp.dto.AuthenticationDto;
-import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.services.AuthenticationService;
 import edu.ntnu.idatt2105.quizapp.dto.LoginDto;
 import edu.ntnu.idatt2105.quizapp.dto.RegistrationDto;
@@ -10,22 +8,25 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- *  Controller class responsible for handling user authentication operations
- *  such as registration and login.
- *  Exposes REST endpoints for user registration and login.
+ * Controller class responsible for handling user authentication operations
+ * such as registration and login.
  *
+ * @author Ramtin Samavat, Jeffrey Tabiri
  * @version 1.0
  * @since 2024-03-22
- * @author Jytabiri
  */
 @Slf4j
 @RestController
-@RequestMapping("/auth")
-@CrossOrigin("*")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthenticationController {
 
   private final AuthenticationService authenticationService;
@@ -33,30 +34,38 @@ public class AuthenticationController {
   /**
    * REST-endpoint to register a user.
    *
-   * @param body is a data transfer object which encapsulates
-   *             information regarding a register request
-   * @return //TODO should return a status OK
+   * @param registrationDto DTO containing user registration information.
+   * @return ResponseEntity indicating successful registration with status OK, or ...
    */
   @PostMapping("/register")
-  public ResponseEntity<String> registerUser(@RequestBody RegistrationDto body) {
-    log.info("Registering user: {}", body.getUsername());
-
-    authenticationService.registerUser(body);
-
-    return new ResponseEntity<>("User successfully registered account.", HttpStatus.OK);
+  public ResponseEntity<AuthenticationDto> registerUser(@RequestBody RegistrationDto registrationDto) {
+    log.info("Attempting to register user: {}", registrationDto.getUsername());
+    try {
+      AuthenticationDto authenticationDto = authenticationService.registerUser(registrationDto);
+      log.info("User {} registered successfully.", registrationDto.getUsername());
+      return new ResponseEntity<>(authenticationDto, HttpStatus.OK);
+    } catch (Exception e) {
+      log.error("Failed to register user {}: {}", registrationDto.getUsername(), e.getMessage());
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
   }
 
   /**
-   * REST-endpoint to log in a user.
+   * REST-endpoint to authenticate a user login request.
    *
-   * @param body is a data transfer object which encapsulates information regarding a login request
-   * @return //TODO should return an approriate DTO to client, WITH a JWT token and a status OK.
+   * @param loginDto DTO containing user login credentials.
+   * @return ResponseEntity containing a DTO with a token on success, or UNAUTHORIZED on failure.
    */
   @PostMapping("/login")
-  public ResponseEntity<AuthenticationDto> loginUser(@RequestBody LoginDto body) {
-    log.info("Logging in user: {}", body.getUsername());
-
-    return new ResponseEntity<>(authenticationService.loginUser(body), HttpStatus.OK);
+  public ResponseEntity<AuthenticationDto> loginUser(@RequestBody LoginDto loginDto) {
+    log.info("User {} has attempted to log in.", loginDto.getUsername());
+    try {
+      AuthenticationDto authenticationDto = authenticationService.authenticateUser(loginDto);
+      log.info("User {} successfully logged in.", loginDto.getUsername());
+      return new ResponseEntity<>(authenticationDto, HttpStatus.OK);
+    } catch (Exception e) {
+      log.error("User {} failed to log in: {}", loginDto.getUsername(), e.getMessage());
+      return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
   }
-
 }
