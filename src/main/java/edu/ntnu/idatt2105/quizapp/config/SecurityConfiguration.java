@@ -66,7 +66,7 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable)
             .cors(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests((requests) -> {
-              requests.requestMatchers("/auth/**").permitAll();
+              requests.requestMatchers("/api/v1/auth/**").permitAll();
               requests.anyRequest().authenticated();
             })
             .userDetailsService(userDetailsService)
