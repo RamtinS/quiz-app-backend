@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -52,8 +53,10 @@ public class AuthenticationService {
    *
    * @param registrationDto DTO containing user registration information.
    * @return An AuthenticationDto containing a token if registration is successful.
+   * @throws IllegalArgumentException if the username already exists.
    */
-  public AuthenticationDto registerUser(RegistrationDto registrationDto) {
+  public AuthenticationDto registerUser(@NonNull RegistrationDto registrationDto)
+          throws IllegalArgumentException {
 
     String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
 
@@ -72,6 +75,10 @@ public class AuthenticationService {
             .authorities(authorities)
             .build();
 
+    if (userRepository.findUserByUsername(registrationDto.getUsername()).isPresent()) {
+      throw new IllegalArgumentException("Username already exists.");
+    }
+
     userRepository.save(user);
 
     String token = jwtService.generateToken(user);
@@ -84,11 +91,17 @@ public class AuthenticationService {
    *
    * @param loginDto DTO containing user login credentials.
    * @return An AuthenticationDto containing a token if authentication is successful.
+   * @throws UsernameNotFoundException if the username of the user is not found in the database.
    */
-  public AuthenticationDto authenticateUser(@NonNull LoginDto loginDto) {
-    authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+  public AuthenticationDto authenticateUser(@NonNull LoginDto loginDto)
+          throws UsernameNotFoundException {
+    
+    authManager.authenticate(new UsernamePasswordAuthenticationToken(
+            loginDto.getUsername(), loginDto.getPassword()));
 
-    User user = userRepository.findUserByUsername(loginDto.getUsername()).get();
+    User user = userRepository.findUserByUsername(loginDto.getUsername())
+            .orElseThrow(() -> new UsernameNotFoundException("User "
+                    + loginDto.getUsername() + " not found."));
 
     String token = jwtService.generateToken(user);
 
