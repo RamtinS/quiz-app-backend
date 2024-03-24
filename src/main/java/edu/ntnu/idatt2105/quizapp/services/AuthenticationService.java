@@ -9,6 +9,7 @@ import edu.ntnu.idatt2105.quizapp.repositories.RoleRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,14 +18,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * AuthenticationService encapsulates the logic for registering new users
- * and authenticating existing users within
- * backend. It uses repositories to perform user-related operations in database,
- * and utilizes spring boot security for user authentication.
+ * Service class that encapsulates the logic for registering new users
+ * and authenticating existing users within the database.
+ * It uses repositories to perform user-related operations in the database,
+ * and uses spring boot security for user authentication.
  *
- * @author Jytabiri
+ * @author Jeffrey Tabiri, Ramtin Samavat
  * @version 1.0
- * @since 2024-03-22
+ * @since 2024-03-25
  */
 @Slf4j
 @Service
@@ -37,23 +38,25 @@ public class AuthenticationService {
   //CRUD operations on role models.
   private final RoleRepository roleRepository;
 
+  //Provides services related to JWT.
   private final JwtService jwtService;
 
   //Authenticates login requests.
-  private final AuthenticationManager authenticationManager;
+  private final AuthenticationManager authManager;
 
-  //Password encoder to hash passwords in database
+  //Password encoder to hash passwords in a database.
   private final BCryptPasswordEncoder passwordEncoder;
 
   /**
-   * Register method which contains logic to create a user from the given request.
+   * Registers a new user based on the provided registration information from the DTO.
    *
-   * @param registrationDto is a data transfer object which encapsulates information regarding
-   *                        registering a user.
+   * @param registrationDto DTO containing user registration information.
+   * @return An AuthenticationDto containing a token if registration is successful.
    */
-  public void registerUser(RegistrationDto registrationDto) {
+  public AuthenticationDto registerUser(RegistrationDto registrationDto) {
 
     String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
+
     Role userRole = roleRepository.findByAuthority("USER").get();
 
     Set<Role> authorities = new HashSet<>();
@@ -70,21 +73,25 @@ public class AuthenticationService {
             .build();
 
     userRepository.save(user);
+
+    String token = jwtService.generateToken(user);
+
+    return new AuthenticationDto(token);
   }
 
   /**
    * Login method which contains logic to authenticate a login request.
    *
-   * @param loginDto is a data transfer object which encapsulates login credentials.
-   * @return if authentication is successful. It retrieves and returns the user from the database.
+   * @param loginDto DTO containing user login credentials.
+   * @return An AuthenticationDto containing a token if authentication is successful.
    */
-  public AuthenticationDto loginUser(LoginDto loginDto) {
-    authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
-    );
+  public AuthenticationDto authenticateUser(@NonNull LoginDto loginDto) {
+    authManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
 
     User user = userRepository.findUserByUsername(loginDto.getUsername()).get();
 
-    return new AuthenticationDto(jwtService.generateToken(user));
+    String token = jwtService.generateToken(user);
+
+    return new AuthenticationDto(token);
   }
 }
