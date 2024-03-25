@@ -52,8 +52,7 @@ public class User implements UserDetails {
   private String surName;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "role", nullable = false)
-  @NonNull
+  @Column(name = "role")
   private Role role;
 
   /**
