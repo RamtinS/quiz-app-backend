@@ -5,6 +5,7 @@ import edu.ntnu.idatt2105.quizapp.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  * @since 2024-03-25
  */
 @SpringBootTest
+@ActiveProfiles("test")
 class UserRepositoryTest {
 
   @Autowired
