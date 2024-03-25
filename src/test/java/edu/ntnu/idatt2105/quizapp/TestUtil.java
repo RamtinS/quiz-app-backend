@@ -18,14 +18,19 @@ public class TestUtil {
             .password("PasswordPassword")
             .email("test@mail.com")
             .name("testName")
+            .role(Role.USER)
             .surName("Ply")
             .build();
   }
 
   public static User createUserB() {
     return User.builder()
-            .username("Buffalo")
-            .password("Password")
+            .username("Alice")
+            .password("Alice123")
+            .email("alice@example.com")
+            .name("Alice")
+            .role(Role.ADMIN)
+            .surName("Johnson")
             .build();
   }
 
@@ -43,28 +48,4 @@ public class TestUtil {
             .build();
   }
 
-
-  public static Role createRoleA() {
-    return Role.builder()
-            .authority("USER")
-            .build();
-  }
-
-  public static Role createRoleB() {
-    return Role.builder()
-            .authority("DIAMOND")
-            .build();
-  }
-
-  public static Role createRoleC() {
-    return Role.builder()
-            .authority("ADMIN")
-            .build();
-  }
-
-  public static Role createRoleD() {
-    return Role.builder()
-            .authority("GOLD")
-            .build();
-  }
 }
