@@ -2,6 +2,7 @@ package edu.ntnu.idatt2105.quizapp.repositories;
 
 import edu.ntnu.idatt2105.quizapp.TestUtil;
 import edu.ntnu.idatt2105.quizapp.model.Role;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -10,6 +11,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for the role repository.
+ *
+ * @version 1.0
+ * @since 2024-03-25
+ * @author Jytabiri
  */
 @DataJpaTest
 class RoleRepositoryTest {
@@ -17,63 +22,65 @@ class RoleRepositoryTest {
   @Autowired
   private  RoleRepository roleRepository;
 
+  private Role testRole;
+
+  private boolean isSetupDone = false;
+
+  /**
+   * Arranging method to create and save a test role in database.
+   * isSetupDone is boolean value used to restrict the setup to run once.
+   */
+  @BeforeEach
+  public void setUp() {
+    if (!isSetupDone) {
+      testRole = roleRepository.save(TestUtil.createRoleA());
+      isSetupDone = true;
+    }
+  }
+
   @Test
   void RoleRepository_FindByAuthority_ReturnRole() {
 
-    //Arrange
-    Role actualRole = TestUtil.createRoleA();
-    roleRepository.save(actualRole);
-
     //Act
-    Role expectedRole = roleRepository.findByAuthority("USER").get();
+    Role expectedRole = roleRepository.findByAuthority(testRole.getAuthority()).get();
 
     //Assert
-    assertEquals(expectedRole.getAuthority(), actualRole.getAuthority());
+    assertEquals(expectedRole, testRole);
   }
 
   @Test
   void RoleRepository_SaveRole_ReturnRole() {
 
     //Arrange
-    Role actualRole = TestUtil.createRoleA();
+    Role actual = roleRepository.save(TestUtil.createRoleB());
 
     //Act
-    roleRepository.save(actualRole);
-
-    Role expectedRole = roleRepository.findByAuthority(actualRole.getAuthority()).get();
+    Role expected  = roleRepository.findById(actual.getRoleId()).get();
 
     //Assert
-    assertNotNull(expectedRole);
-    assertEquals(expectedRole.getAuthority(), actualRole.getAuthority());
+    assertEquals(expected,actual);
   }
 
   @Test
   void RoleRepository_FindById_ReturnRole() {
-
-    //Arrange
-    Role actualRole = TestUtil.createRoleA();
-    Long actualRoleId = roleRepository.save(actualRole).getRoleId();
-
     //Act
-    Role expectedRole = roleRepository.findById(actualRole.getRoleId()).get();
+    Role expectedRole = roleRepository.findById(testRole.getRoleId()).get();
 
     //Assert
-    assertEquals(expectedRole, actualRole);
+    assertEquals(expectedRole, testRole);
   }
 
   @Test
   void RoleRepository_DeleteRole_ReturnNull() {
 
     //Arrange
-    Role testRole = TestUtil.createRoleA();
-    Role actualRole = roleRepository.save(testRole);
+    Role expected = roleRepository.save(TestUtil.createRoleC());
 
     //Act
-    roleRepository.delete(actualRole);
-    boolean isRolePresent = roleRepository.findById(actualRole.getRoleId()).isPresent();
+    roleRepository.delete(expected);
+    boolean isRolePresent = roleRepository.findById(expected.getRoleId()).isPresent();
 
     //Assert
     assertFalse(isRolePresent);
   }
-
 }

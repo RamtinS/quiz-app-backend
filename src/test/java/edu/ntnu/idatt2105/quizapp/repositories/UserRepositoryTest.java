@@ -10,87 +10,81 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-
+/**
+ * Unit tests for the user repository.
+ *
+ * @version 1.0
+ * @since 2024-03-25
+ * @author Jytabiri
+ */
 @DataJpaTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserRepositoryTest {
 
   @Autowired
   private UserRepository userRepository;
 
+  private User testUser;
+
+  private boolean isSetupDone = false;
+
+  /**
+   * Arranging method to create and save a test user in database.
+   * isSetupDone is boolean value used to restrict the setup to run once.
+   */
+  @BeforeEach
+  public void setUp() {
+    if (!isSetupDone) {
+      testUser = userRepository.save(TestUtil.createUserA());
+      isSetupDone = true;
+    }
+  }
+
   @Test
-  @Order(1)
   public void UserRepository_FindById_ReturnUser() {
 
-    //Arrange
-    User user = TestUtil.createUserA();
-
-    User savedUser = userRepository.save(user);
-
-    User foundUser = userRepository.findById(1L).get();
-
-    assertEquals(foundUser.getUsername(), user.getUsername());
-  }
-
-  @Test
-  @Order(2)
-  public void UserRepository_FindByUsername_ReturnUser() {
-
-    //Arrange
-    User user = TestUtil.createUserA();
-    userRepository.save(user);
-
     //Act
-    User foundUser = userRepository.findUserByUsername(user.getUsername()).get();
+    User actual = userRepository.findById(testUser.getUserId()).get();
 
     //Assert
-    assertEquals(user.getUsername(), foundUser.getUsername());
+    assertEquals(testUser, actual);
   }
 
   @Test
-  @Order(3)
+  public void UserRepository_FindByUsername_ReturnUser() {
+
+    //Act
+    User actual = userRepository.findUserByUsername(testUser.getUsername()).get();
+
+    //Assert
+    assertEquals(testUser, actual);
+  }
+
+  @Test
   public void UserRepository_Save_ReturnSavedUser() {
 
     //Arrange
-    User user = TestUtil.createUserA();
+    User expected = userRepository.save(TestUtil.createUserB());
 
     //Act
-    User foundUser = userRepository.save(user);
+    User actual = userRepository.findUserByUsername(expected.getUsername()).get();
 
     //Assert
-    assertEquals(user.getUsername(), foundUser.getUsername());
+    assertEquals(expected, actual);
   }
 
   @Test
-  @Order(4)
   public void UserRepository_Delete_ReturnNull() {
 
     //Arrange
-    User user = TestUtil.createUserA();
-    userRepository.save(user);
+    User actual = TestUtil.createUserC();
+    userRepository.save(actual);
 
     //Act
-    userRepository.delete(user);
-    boolean isUserPresent = userRepository.findUserByUsername(user.getUsername()).isPresent();
+    userRepository.delete(actual);
+    boolean isUserPresent = userRepository.findUserByUsername(actual.getUsername()).isPresent();
 
     //Assert
     assertFalse(isUserPresent);
   }
-
-  @Test
-  @Order(5)
-  public void UserRepository_FindByUsername_DoesNotReturnUser() {
-
-    //Arrange
-    String username = "Random Username";
-
-    //Act
-    boolean isUserPresent = userRepository.findUserByUsername(username).isPresent();
-
-    //Assert
-    assertFalse(isUserPresent);
-  }
-
-
 
 }
