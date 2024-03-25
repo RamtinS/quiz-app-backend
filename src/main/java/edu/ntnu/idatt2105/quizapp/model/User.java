@@ -19,13 +19,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * Represents a user entity in the application. A user class represents a user entity in
- * an application and encapsulates essential information.
+ * The user class represents a user entity in the application.
  * This class implements the Spring Security UserDetails interface.
  *
- * @author Jytabiri
+ * @author Jeffrey Tabiri
+ * @author Ramtin Samavat
  * @version 1.0
- * @since 2024-03-22
+ * @since 2024-03-25
  * @see UserDetails
  */
 @Entity
@@ -40,17 +40,10 @@ public class User implements UserDetails {
   @Column(name = "user_id")
   private Long userId;
 
-  @Column(
-          name = "username",
-          nullable = false,
-          unique = true
-  )
+  @Column(name = "username", nullable = false, unique = true)
   private String username;
 
-  @Column(
-          name = "hash",
-          nullable = false
-  )
+  @Column(name = "password", nullable = false)
   private String password;
 
   @Column(name = "email")
