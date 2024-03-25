@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
  * Controller class responsible for handling user authentication operations
  * such as registration and login.
  *
- * @author Ramtin Samavat, Jeffrey Tabiri
+ * @author Ramtin Samavat
+ * @author Jeffrey Tabiri
  * @version 1.0
  * @since 2024-03-22
  */
@@ -44,8 +45,12 @@ public class AuthenticationController {
       AuthenticationDto authenticationDto = authenticationService.registerUser(registrationDto);
       log.info("User {} registered successfully.", registrationDto.getUsername());
       return new ResponseEntity<>(authenticationDto, HttpStatus.OK);
+    } catch (IllegalArgumentException e) {
+      log.info("Failed to register user {}: {}", registrationDto.getUsername(), e.getMessage());
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
     } catch (Exception e) {
       log.error("Failed to register user {}: {}", registrationDto.getUsername(), e.getMessage());
+      log.error("Error: ", e);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
   }
