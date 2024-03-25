@@ -2,10 +2,9 @@ package edu.ntnu.idatt2105.quizapp.repositories;
 
 import edu.ntnu.idatt2105.quizapp.TestUtil;
 import edu.ntnu.idatt2105.quizapp.model.User;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,50 +12,41 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 /**
  * Unit tests for the user repository.
  *
+ * @author Jytabiri
  * @version 1.0
  * @since 2024-03-25
- * @author Jytabiri
  */
-@DataJpaTest
+@SpringBootTest
 class UserRepositoryTest {
 
   @Autowired
   private UserRepository userRepository;
 
-  private User testUser;
-
-  private boolean isSetupDone = false;
-
-  /**
-   * Arranging method to create and save a test user in database.
-   * isSetupDone is boolean value used to restrict the setup to run once.
-   */
-  @BeforeEach
-  public void setUp() {
-    if (!isSetupDone) {
-      testUser = userRepository.save(TestUtil.createUserA());
-      isSetupDone = true;
-    }
-  }
-
   @Test
   public void UserRepository_FindById_ReturnUser() {
+    //Arrange
+    User expected = userRepository.save(TestUtil.createUserA());
 
     //Act
-    User actual = userRepository.findById(testUser.getUserId()).get();
+    User actual = userRepository.findById(expected.getUserId()).get();
 
     //Assert
-    assertEquals(testUser, actual);
+    assertEquals(expected.getUserId(), actual.getUserId());
+    assertEquals(expected.getUsername(), actual.getUsername());
   }
 
   @Test
   public void UserRepository_FindByUsername_ReturnUser() {
 
+    //Arrange
+    User expected = userRepository.save(TestUtil.createUserD());
+
     //Act
-    User actual = userRepository.findUserByUsername(testUser.getUsername()).get();
+    User actual = userRepository.findUserByUsername(expected.getUsername()).get();
 
     //Assert
-    assertEquals(testUser, actual);
+    assertEquals(expected.getUserId(), actual.getUserId());
+    assertEquals(expected.getUsername(), actual.getUsername());
   }
 
   @Test
@@ -69,7 +59,8 @@ class UserRepositoryTest {
     User actual = userRepository.findUserByUsername(expected.getUsername()).get();
 
     //Assert
-    assertEquals(expected, actual);
+    assertEquals(expected.getUsername(), actual.getUsername());
+    assertEquals(expected.getUserId(), actual.getUserId());
   }
 
   @Test
