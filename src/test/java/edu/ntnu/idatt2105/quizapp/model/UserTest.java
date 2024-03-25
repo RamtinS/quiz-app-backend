@@ -4,7 +4,8 @@ import edu.ntnu.idatt2105.quizapp.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for the user model.
@@ -22,6 +23,36 @@ class UserTest {
   @BeforeEach
   void setUp() {
     testUser = TestUtil.createUserA();
+  }
+
+  void User_UserConstructor_ReturnUser() {
+    //Arrange
+    String expectedUsername = "Alice";
+    String expectedPassword = "Alice123";
+    String expectedEmail = "alice@example.com";
+    String expectedName = "Alice";
+    String expectedSurName = "Johnson";
+    Role expectedRole = Role.ADMIN;
+
+    //Act
+    User actual = TestUtil.createUserB();
+
+    // Assert
+    assertEquals(expectedUsername, actual.getUsername());
+    assertEquals(expectedPassword, actual.getPassword());
+    assertEquals(expectedEmail, actual.getEmail());
+    assertEquals(expectedName, actual.getName());
+    assertEquals(expectedSurName, actual.getSurName());
+    assertEquals(expectedRole, actual.getRole());
+  }
+
+  @Test
+  public void User_UserConstructWithNull_ThrowsException() {
+    assertThrows(NullPointerException.class, () ->
+            User.builder()
+                    .username(null)
+                    .password(null)
+    );
   }
 
   @Test
@@ -80,6 +111,18 @@ class UserTest {
 
     //Act
     String actual = testUser.getSurName();
+
+    //Assert
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void User_GetRole_ReturnRole() {
+    //Arrange
+    Role expected = Role.USER;
+
+    //Act
+    Role actual = testUser.getRole();
 
     //Assert
     assertEquals(expected, actual);
@@ -180,4 +223,18 @@ class UserTest {
     //Assert
     assertEquals(expected, actual);
   }
+
+  @Test
+  void User_SetRole_ReturnSavedRole() {
+    //Arrange
+    Role expected = Role.ADMIN;
+
+    //Act
+    testUser.setRole(expected);
+    Role actual = testUser.getRole();
+
+    //Assert
+    assertEquals(expected, actual);
+  }
+
 }
