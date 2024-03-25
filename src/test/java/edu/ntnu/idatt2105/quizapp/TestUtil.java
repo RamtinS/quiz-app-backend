@@ -33,6 +33,14 @@ public class TestUtil {
             .build();
   }
 
+  public static User createUserD() {
+    return User.builder()
+            .username("Geoffrey")
+            .password("Password")
+            .build();
+  }
+
+
   public static Role createRoleA() {
     return Role.builder()
             .authority("USER")
@@ -51,4 +59,9 @@ public class TestUtil {
             .build();
   }
 
+  public static Role createRoleD() {
+    return Role.builder()
+            .authority("GOLD")
+            .build();
+  }
 }
