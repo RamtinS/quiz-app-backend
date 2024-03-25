@@ -15,7 +15,10 @@ public class TestUtil {
   public static User createUserA() {
     return User.builder()
             .username("Mark")
-            .password("Password")
+            .password("PasswordPassword")
+            .email("test@mail.com")
+            .name("testName")
+            .surName("Ply")
             .build();
   }
 
