@@ -5,10 +5,7 @@ import edu.ntnu.idatt2105.quizapp.dto.LoginDto;
 import edu.ntnu.idatt2105.quizapp.dto.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.model.Role;
 import edu.ntnu.idatt2105.quizapp.model.User;
-import edu.ntnu.idatt2105.quizapp.repositories.RoleRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +33,6 @@ public class AuthenticationService {
   //CRUD operations on user models.
   private final UserRepository userRepository;
 
-  //CRUD operations on role models.
-  private final RoleRepository roleRepository;
-
   //Provides services related to JWT.
   private final JwtService jwtService;
 
@@ -60,19 +54,13 @@ public class AuthenticationService {
 
     String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
 
-    Role userRole = roleRepository.findByAuthority("USER").get();
-
-    Set<Role> authorities = new HashSet<>();
-
-    authorities.add(userRole);
-
     User user = User.builder()
             .username(registrationDto.getUsername())
             .password(encodedPassword)
             .email(registrationDto.getEmail())
             .name(registrationDto.getName())
             .surName(registrationDto.getSurname())
-            .authorities(authorities)
+            .role(Role.USER)
             .build();
 
     if (userRepository.findUserByUsername(registrationDto.getUsername()).isPresent()) {

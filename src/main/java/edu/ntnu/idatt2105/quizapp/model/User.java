@@ -1,22 +1,13 @@
 package edu.ntnu.idatt2105.quizapp.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.Collection;
-import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
+
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -40,12 +31,15 @@ public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
+  @Setter(AccessLevel.NONE)
   private Long userId;
 
   @Column(name = "username", nullable = false, unique = true)
+  @NonNull
   private String username;
 
   @Column(name = "password", nullable = false)
+  @NonNull
   private String password;
 
   @Column(name = "email")
@@ -57,16 +51,9 @@ public class User implements UserDetails {
   @Column(name = "last_name")
   private String surName;
 
-  /**
-   * A many-to-many relational table which tracks the roles/authorities associated with the user.
-   */
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(
-          name = "user_role_junction",
-          joinColumns = {@JoinColumn(name = "user_id")},
-          inverseJoinColumns = {@JoinColumn(name = "role_id")}
-  )
-  private Set<Role> authorities;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "role")
+  private Role role;
 
   /**
    * Retrieves the roles/authorities associated with this user.
@@ -75,16 +62,16 @@ public class User implements UserDetails {
    */
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return this.authorities;
+    return List.of(new SimpleGrantedAuthority(role.name()));
   }
 
   @Override
-  public String getPassword() {
+  public @NonNull String getPassword() {
     return this.password;
   }
 
   @Override
-  public String getUsername() {
+  public @NonNull String getUsername() {
     return this.username;
   }
 
