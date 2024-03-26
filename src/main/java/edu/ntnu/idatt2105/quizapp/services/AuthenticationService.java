@@ -52,6 +52,10 @@ public class AuthenticationService {
   public AuthenticationDto registerUser(@NonNull RegistrationDto registrationDto)
           throws IllegalArgumentException {
 
+    if (userRepository.findUserByUsername(registrationDto.getUsername()).isPresent()) {
+      throw new IllegalArgumentException("Username already exists.");
+    }
+
     String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
 
     User user = User.builder()
@@ -62,10 +66,6 @@ public class AuthenticationService {
             .surName(registrationDto.getSurname())
             .role(Role.USER)
             .build();
-
-    if (userRepository.findUserByUsername(registrationDto.getUsername()).isPresent()) {
-      throw new IllegalArgumentException("Username already exists.");
-    }
 
     userRepository.save(user);
 
