@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.model;
 
-import edu.ntnu.idatt2105.quizapp.TestUtil;
+import edu.ntnu.idatt2105.quizapp.util.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
