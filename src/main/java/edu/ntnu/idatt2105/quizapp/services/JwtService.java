@@ -1,52 +1,68 @@
 package edu.ntnu.idatt2105.quizapp.services;
 
-
 import edu.ntnu.idatt2105.quizapp.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.function.Function;
 
-@Service
+/**
+ * Service class for handling JSON Web Token (JWT) operations.
+ *
+ * @author Jeffrey Tabiri
+ * @author Ramtin Samavat
+ * @version 1.0
+ * @since 2024-03-25
+ */
 @Slf4j
+@Service
 public class JwtService {
-  private final String SECRET_KEY = "SSSSSSSSSSSSSEEassssssssssssssssssssssssssssssssssssssssssdddddddddEECRETKEY";
+
+  // 512 bits encryption key.
+  private static final String SECRET_KEY = "7c69211f63161611be78b3d7a986d873608953a07eece162e80b90adaf7a02f75f34b54e7ef158bbff58a0de78d2ce415d24b85da67d210b9fcb1a48c2fe4352";
 
   /**
-   * Extracts a claim/information from a JWT token.
+   * Extract username from JWT token.
    *
-   * @param token    is the JWT token to extract information from.
-   * @param resolver A function that takes a Claims object and returns a T object representing the desired claim.
-   * @param <T>      The type of the desired claim
-   * @return The claim represented by a T object
+   * @param token The JWT token to extract the username from.
+   * @return The username associated with the token.
    */
-  public <T> T extractClaim(String token, Function<Claims, T> resolver) {
-    Claims claims = extractAllClaims(token);
-    return resolver.apply(claims);
+  public String extractUsername(String token) {
+    return extractClaim(token, Claims::getSubject);
   }
 
   /**
-   * Method to generate token.
+   * Extracts a claim from the JWT token.
    *
-   * @param user generate token specified for the user.
-   * @return a string represetning the JWT token.
+   * @param token The JWT token to extract the claim from.
+   * @param claimsResolver The function to resolve the claim from the extracted JWT claims.
+   * @param <T> The type of the claim to extract.
+   * @return The extracted claim.
    */
-  public String generateToken(User user) {
+  public <T> T extractClaim(String token, @NonNull Function<Claims, T> claimsResolver) {
+    final Claims claims = extractAllClaims(token);
+    return claimsResolver.apply(claims);
+  }
 
-    log.info("Generating token to user {}", user.getUsername());
-
-    return Jwts
-            .builder()
+  /**
+   * Generates a JSON Web Token (JWT) for the specified user.
+   *
+   * @param user The user for whom to generate the JWT token.
+   * @return A string representing the JWT.
+   * @throws NullPointerException if the user parameter is null.
+   */
+  public String generateToken(@NonNull User user) throws NullPointerException {
+    return Jwts.builder()
             .subject(user.getUsername())
             .issuedAt(new Date(System.currentTimeMillis()))
-            .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
+            .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // The expiration date is 30 min from the current time.
             .signWith(getSignKey())
             .compact();
   }
@@ -54,18 +70,14 @@ public class JwtService {
   /**
    * Check to see if the token is valid.
    *
-   * @param token       a JWT token to be checked
-   * @param userDetails containing a relationship to a user entity object.
-   * @return true if valid, false if not.
+   * @param token Token to be checked
+   * @param userDetails Containing a relationship to a user entity object.
+   * @return True if valid, false otherwise.
    */
   public boolean isTokenValid(String token, UserDetails userDetails) {
-
-    log.info("Checking validity of token to user {}", userDetails.getUsername());
-
-    String username = extractUsername(token);
+    final String username = extractUsername(token);
     return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
   }
-
 
   /**
    * Checks if given token is expired.
@@ -77,51 +89,37 @@ public class JwtService {
     return extractExpiration(token).before(new Date());
   }
 
-
-  /**
-   * A method to extract all claims/information regarding a specific token.
-   *
-   * @param token is the token in which the claims are to be extracted out off.
-   * @return A set of claims regarding a token.
-   */
-  private Claims extractAllClaims(String token) {
-    return Jwts
-            .parser()
-            .verifyWith(getSignKey())
-            .build()
-            .parseSignedClaims(token)
-            .getPayload();
-  }
-
-
   /**
    * Extract the expiration date from a JWT token.
    *
-   * @param token is the JWT token to extract its expiration date from.
-   * @return a date object representing the expiration of a token.
+   * @param token The token to extract its expiration date from.
+   * @return Date object representing the expiration of a token.
    */
   private Date extractExpiration(String token) {
     return extractClaim(token, Claims::getExpiration);
   }
 
   /**
-   * Extract the username from a JWT token.
+   * A method to extract all claims regarding a specific token.
    *
-   * @param token the JWT token to extract the username from.
-   * @return a username associated with the specific token.
+   * @param token The token in which the claims are to be extracted out off.
+   * @return A set of claims regarding a token.
    */
-  public String extractUsername(String token) {
-    return extractClaim(token, Claims::getSubject);
+  private Claims extractAllClaims(String token) {
+    return Jwts.parser()
+            .verifyWith(getSignKey())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
   }
 
   /**
-   * Get the signing key used to sign JWT Tokens.
+   * Retrieves the signing key used to sign JWT tokens.
    *
-   * @return A secret key object, which contains byte information of the secret security constant.
+   * @return A {@link SecretKey} object representing the signing key.
    */
   private SecretKey getSignKey() {
     byte[] keyBytes = Decoders.BASE64URL.decode(SECRET_KEY);
     return Keys.hmacShaKeyFor(keyBytes);
   }
-
 }

@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AuthenticationController {
 
   private final AuthenticationService authenticationService;
@@ -36,7 +34,7 @@ public class AuthenticationController {
    * REST-endpoint to register a user.
    *
    * @param registrationDto DTO containing user registration information.
-   * @return ResponseEntity indicating successful registration with status OK, or ...
+   * @return ResponseEntity containing a DTO with a token on success, or error on failure.
    */
   @PostMapping("/register")
   public ResponseEntity<AuthenticationDto> registerUser(@RequestBody RegistrationDto registrationDto) {
@@ -44,14 +42,13 @@ public class AuthenticationController {
     try {
       AuthenticationDto authenticationDto = authenticationService.registerUser(registrationDto);
       log.info("User {} registered successfully.", registrationDto.getUsername());
-      return new ResponseEntity<>(authenticationDto, HttpStatus.OK);
+      return new ResponseEntity<>(authenticationDto, HttpStatus.CREATED);
     } catch (IllegalArgumentException e) {
       log.info("Failed to register user {}: {}", registrationDto.getUsername(), e.getMessage());
       return new ResponseEntity<>(HttpStatus.CONFLICT);
     } catch (Exception e) {
-      log.error("Failed to register user {}: {}", registrationDto.getUsername(), e.getMessage());
-      log.error("Error: ", e);
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+      log.error("Failed to register user {}: {}", registrationDto.getUsername(), e.getMessage(), e);
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
