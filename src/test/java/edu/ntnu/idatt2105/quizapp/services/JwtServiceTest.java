@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.services;
 
-import edu.ntnu.idatt2105.quizapp.TestUtil;
+import edu.ntnu.idatt2105.quizapp.util.TestUtil;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,24 +11,23 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit test for JwtService and key generation.
+ */
 class JwtServiceTest {
   static JwtService jwtService;
   static User testUser;
-  String testToken;
+  static String testToken;
 
   @BeforeAll
   static void beforeAll() {
     testUser = TestUtil.createUserA();
     jwtService = new JwtService();
-  }
-
-  @BeforeEach
-  void setUp() {
     testToken = jwtService.generateToken(testUser);
   }
 
   @Test
-  void extractClaim() {
+  void JwtService_ExtractClaim_ReturnClaim() {
     //Arrange
     String expected = testUser.getUsername();
     String token = jwtService.generateToken(testUser);
@@ -42,7 +41,7 @@ class JwtServiceTest {
   }
 
   @Test
-  void jwtService_GenerateToken_ReturnToken() {
+  void JwtService_GenerateToken_ReturnToken() {
     //Act
     String token = jwtService.generateToken(testUser);
 
@@ -53,7 +52,7 @@ class JwtServiceTest {
   }
 
   @Test
-  void jwtService_isTokenValid_ReturnTrue() {
+  void JwtService_isTokenValid_ReturnTrue() {
     //Arrange
     String generatedToken = jwtService.generateToken(testUser);
 
@@ -65,18 +64,20 @@ class JwtServiceTest {
   }
 
   @Test
-  void jwtService_isTokenValid_ReturnFalse() {
+  void JwtService_isTokenValid_ReturnFalse() {
     //Arrange
     String generatedToken = jwtService.generateToken(testUser);
     User differentUser = TestUtil.createUserB();
 
+    //Act
     boolean isTokenValid = jwtService.isTokenValid(generatedToken, differentUser);
 
+    //Assert
     assertFalse(isTokenValid);
   }
 
   @Test
-  void extractUsername() {
+  void JwtService_ExtractUsername_ReturnUsername() {
     //Arrange
     String expected = testUser.getUsername();
     String token = jwtService.generateToken(testUser);
@@ -88,4 +89,5 @@ class JwtServiceTest {
     //Assert
     assertEquals(expected, actual);
   }
+
 }
