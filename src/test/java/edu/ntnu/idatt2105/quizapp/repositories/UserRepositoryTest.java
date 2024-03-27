@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.repositories;
 
-import edu.ntnu.idatt2105.quizapp.TestUtil;
+import edu.ntnu.idatt2105.quizapp.util.TestUtil;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
