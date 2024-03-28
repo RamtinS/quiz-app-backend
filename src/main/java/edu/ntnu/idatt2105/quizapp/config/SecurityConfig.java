@@ -21,22 +21,19 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * rules and filters for the application.
  *
  * @author Ramtin Samavat
- * @author Jeffrey Tabirir
  * @version 1.0
- * @since 2024-03-22
  */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private static final String[] WHITELIST_URL = {"/api/v1/auth/**",
+  private static final String[] WHITELIST_URL = {"/api/v1/auth/**", "/api/v1/feedback/**",
       "/api/v1/quiz-management/users/**",
       "/api/v1/quiz-management/browser/**",
       "api/v1/quiz-management/quizzes/{quizId}",
       "/api/v1/quiz-management/users/{username}/previews",
-      "/api/v1/docs/**",
-  };
+      "/api/v1/docs/**"};
 
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final AuthenticationProvider authenticationProvider;
