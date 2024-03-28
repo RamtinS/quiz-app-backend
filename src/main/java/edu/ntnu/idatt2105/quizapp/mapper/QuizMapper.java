@@ -38,6 +38,7 @@ public class QuizMapper {
         .questions(quiz.getQuestions().stream()
             .map(questionMapper::mapToQuizQuestionDTO)
             .toList())
+        .isOpen(quiz.getIsOpen())
         .build();
   }
 
