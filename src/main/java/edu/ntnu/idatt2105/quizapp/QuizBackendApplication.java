@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class QuizBackendApplication {
@@ -17,15 +18,14 @@ public class QuizBackendApplication {
   }
 
   @Bean
-  CommandLineRunner run(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+  CommandLineRunner run(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 
     return args -> {
 
-
       User user = User.builder()
-              .username("Administrator")
+              .username("Admin")
               .password(passwordEncoder.encode("password"))
-              .role(Role.USER)
+              .role(Role.ADMIN)
               .build();
 
       userRepository.save(user);
