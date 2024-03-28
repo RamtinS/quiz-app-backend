@@ -13,10 +13,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
@@ -37,9 +39,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = "users")
 @Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class User implements UserDetails {
 
   @Id
@@ -110,5 +113,27 @@ public class User implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    User user = (User) object;
+    return Objects.equals(userId, user.userId) &&
+        Objects.equals(username, user.username) &&
+        Objects.equals(password, user.password) &&
+        Objects.equals(email, user.email) && Objects.equals(name, user.name) &&
+        Objects.equals(surName, user.surName) && role == user.role &&
+        Objects.equals(quizzes, user.quizzes);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(userId, username, password, email, name, surName, role);
   }
 }
