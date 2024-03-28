@@ -1,6 +1,8 @@
 package edu.ntnu.idatt2105.quizapp.dto.quiz.creation;
 
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizQuestionDTO;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +18,11 @@ import lombok.Data;
 @Builder
 @Data
 public class QuizCreationRequestDTO {
+  @NotNull
+  @NotBlank
   private String title;
   private String description;
+  @NotNull
   private List<QuizQuestionDTO> questions;
   private boolean open;
 }

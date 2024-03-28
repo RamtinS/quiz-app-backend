@@ -6,6 +6,12 @@ import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDTO;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDTO;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDTO;
 import edu.ntnu.idatt2105.quizapp.services.quiz.QuizService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.constraints.NotNull;
 import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -48,9 +54,18 @@ public class QuizController {
    * @param authenticatedPrincipal the authenticated principal
    * @return ResponseEntity containing the created quiz, or an error message
    */
+
+  @Operation(summary = "Submit a quiz for a user and save it to the database")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "The quiz was created and saved successfully",
+          content = {@Content(mediaType = "application/json",
+              schema = @Schema(implementation = QuizCreationResponseDTO.class))}),
+      @ApiResponse(responseCode = "500", description = "Unknown internal server error",
+          content = @Content),
+  })
   @PostMapping("/quizzes")
   public ResponseEntity<QuizCreationResponseDTO> submitQuiz(
-      @RequestBody QuizCreationRequestDTO quizCreationRequestDTO,
+      @RequestBody @NotNull QuizCreationRequestDTO quizCreationRequestDTO,
       Principal authenticatedPrincipal) {
 
     try {
@@ -74,7 +89,7 @@ public class QuizController {
               .errorMessage("There was a problem creating the quiz")
               .build();
 
-      return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -89,6 +104,16 @@ public class QuizController {
    * @return ResponseEntity containing a list of quiz previews, or a null response with a status
    * code if something goes wrong
    */
+  @Operation(summary = "Get all quizzes for a specified user paginated",
+      description = "If the user is not the same as the authenticated user, only " +
+          "public quizzes are returned")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "The quizzes were found and returned",
+          content = {@Content(mediaType = "application/json",
+              schema = @Schema(implementation = QuizPreviewDTO.class))}),
+      @ApiResponse(responseCode = "500", description = "Unknown internal server error",
+          content = @Content),
+  })
   @GetMapping("/users/{username}/previews")
   public ResponseEntity<List<QuizPreviewDTO>> getPreviewsForUserPaginated(Principal principal,
                                                                           @RequestParam int page,
@@ -112,7 +137,7 @@ public class QuizController {
 
     } catch (Exception e) {
       log.error("Error: of type " + e.getClass().getName(), e);
-      return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
   }
@@ -125,6 +150,14 @@ public class QuizController {
    * @return ResponseEntity containing a list of quiz previews, or a null response with
    * a {@link HttpStatus#BAD_REQUEST}.
    */
+  @Operation(summary = "Get all public quizzes paginated")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "The public quizzes were found and returned",
+          content = {@Content(mediaType = "application/json",
+              schema = @Schema(implementation = QuizPreviewDTO.class))}),
+      @ApiResponse(responseCode = "500", description = "The public quizzes could not be found" +
+          " due to an internal server error",
+          content = @Content)})
   @GetMapping("browser/previews")
   public ResponseEntity<List<QuizPreviewDTO>> getAllPublicQuizPreviewsPaginated(
       @RequestParam int pageSize,
@@ -142,7 +175,7 @@ public class QuizController {
 
     } catch (Exception e) {
       log.error("Error: of type " + e.getClass().getName(), e);
-      return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -156,6 +189,18 @@ public class QuizController {
    * If the user is not authorized to view the quiz, a {@link HttpStatus#FORBIDDEN} status is.
    * If something else goes wrong, a {@link HttpStatus#INTERNAL_SERVER_ERROR} status is returned.
    */
+    @Operation(summary = "Get a quiz by its id")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "The quiz was found and returned",
+            content = {@Content(mediaType = "application/json",
+                schema = @Schema(implementation = QuizDTO.class))}),
+        @ApiResponse(responseCode = "400", description = "The quiz could not be found",
+            content = @Content),
+        @ApiResponse(responseCode = "403", description = "The user is not authorized to view the quiz",
+            content = @Content),
+        @ApiResponse(responseCode = "500", description = "Unknown internal server error",
+            content = @Content),
+    })
   @GetMapping("quizzes/{quizId}")
   public ResponseEntity<QuizDTO> getQuizById(Principal principal,
                                              @PathVariable long quizId) {

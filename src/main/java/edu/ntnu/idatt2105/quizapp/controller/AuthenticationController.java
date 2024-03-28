@@ -1,9 +1,14 @@
 package edu.ntnu.idatt2105.quizapp.controller;
 
 import edu.ntnu.idatt2105.quizapp.dto.AuthenticationDto;
-import edu.ntnu.idatt2105.quizapp.services.AuthenticationService;
 import edu.ntnu.idatt2105.quizapp.dto.LoginDto;
 import edu.ntnu.idatt2105.quizapp.dto.RegistrationDto;
+import edu.ntnu.idatt2105.quizapp.services.AuthenticationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,8 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author Ramtin Samavat
  * @author Jeffrey Tabiri
+ * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-22
  */
 @Slf4j
 @RestController
@@ -36,8 +41,18 @@ public class AuthenticationController {
    * @param registrationDto DTO containing user registration information.
    * @return ResponseEntity containing a DTO with a token on success, or error on failure.
    */
+  @Operation(summary = "Register a new user")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "User registered successfully",
+          content = {@Content(mediaType = "application/json",
+              schema = @Schema(implementation = AuthenticationDto.class))}
+      ),
+      @ApiResponse(responseCode = "409", description = "User already exists"),
+      @ApiResponse(responseCode = "500", description = "Unknown internal server error")
+  })
   @PostMapping("/register")
-  public ResponseEntity<AuthenticationDto> registerUser(@RequestBody RegistrationDto registrationDto) {
+  public ResponseEntity<AuthenticationDto> registerUser(
+      @RequestBody RegistrationDto registrationDto) {
     log.info("Attempting to register user: {}", registrationDto.getUsername());
     try {
       AuthenticationDto authenticationDto = authenticationService.registerUser(registrationDto);
@@ -58,6 +73,15 @@ public class AuthenticationController {
    * @param loginDto DTO containing user login credentials.
    * @return ResponseEntity containing a DTO with a token on success, or UNAUTHORIZED on failure.
    */
+
+  @Operation(summary = "Login for user")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "User logged in successfully",
+          content = {@Content(mediaType = "application/json",
+              schema = @Schema(implementation = AuthenticationDto.class))}
+      ),
+      @ApiResponse(responseCode = "401", description = "User is unauthorized to log in"),
+  })
   @PostMapping("/login")
   public ResponseEntity<AuthenticationDto> loginUser(@RequestBody LoginDto loginDto) {
     log.info("User {} has attempted to log in.", loginDto.getUsername());
