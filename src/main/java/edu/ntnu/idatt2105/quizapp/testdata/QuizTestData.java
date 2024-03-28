@@ -54,7 +54,7 @@ public class QuizTestData {
           .name("Example quiz")
           .description("random desc: " + (randomIntBetween20And30 + i))
           .author(user)
-          .open((i % 2) == 0)
+          .isOpen((i % 2) == 0)
           .build();
 
       QuizQuestion quizQuestion = QuizQuestion.builder()

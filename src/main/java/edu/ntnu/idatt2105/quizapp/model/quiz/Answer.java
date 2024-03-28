@@ -8,12 +8,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.proxy.HibernateProxy;
 
 /**
  * Model class for Answer.
@@ -29,18 +30,43 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
 public class Answer {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
   private String answerText;
-  private boolean isCorrect;
+  private Boolean isCorrect;
 
   @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
   private QuizQuestion quizQuestion;
 
+  @Override
+  public final boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null) {
+      return false;
+    }
+    Class<?> oEffectiveClass = object instanceof HibernateProxy ?
+        ((HibernateProxy) object).getHibernateLazyInitializer()
+            .getPersistentClass() : object.getClass();
+    Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
+        ((HibernateProxy) this).getHibernateLazyInitializer()
+            .getPersistentClass() : this.getClass();
+    if (thisEffectiveClass != oEffectiveClass) {
+      return false;
+    }
+    Answer answer = (Answer) object;
+    return getId() != null && Objects.equals(getId(), answer.getId());
+  }
 
+  @Override
+  public final int hashCode() {
+    return this instanceof HibernateProxy ?
+        ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() :
+        getClass().hashCode();
+  }
 }
 
 

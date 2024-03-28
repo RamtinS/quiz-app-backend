@@ -19,5 +19,5 @@ public class QuizDTO {
   private String description;
   private List<QuizQuestionDTO> questions;
   private PublicUserInformationDTO author;
-  private boolean open;
+  private boolean isOpen;
 }

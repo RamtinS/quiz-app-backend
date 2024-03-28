@@ -18,9 +18,9 @@ import org.springframework.stereotype.Repository;
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
   List<Quiz> findAllByAuthorUsername(String username, Pageable pageable);
 
-  List<Quiz> findAllByAuthorUsernameAndOpen(String username, Pageable pageable, boolean open);
+  List<Quiz> findAllByAuthorUsernameAndIsOpen(String username, Pageable pageable, boolean open);
 
-  List<Quiz> findAllByOpen(boolean open, Pageable pageable);
+  List<Quiz> findAllByIsOpen(boolean open, Pageable pageable);
 
   Optional<Quiz> findQuizById(Long id);
 

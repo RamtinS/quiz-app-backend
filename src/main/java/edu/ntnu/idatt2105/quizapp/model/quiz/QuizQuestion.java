@@ -38,12 +38,12 @@ public class QuizQuestion {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private long id;
+  private Long id;
 
   @Column(name = "question_text")
   private String questionText;
 
-  @OneToMany(mappedBy = "quizQuestion", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "quizQuestion", cascade = CascadeType.ALL)
   private List<Answer> answers;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -67,7 +67,7 @@ public class QuizQuestion {
       return false;
     }
     QuizQuestion that = (QuizQuestion) object;
-    return Objects.equals(getId(), that.getId());
+    return getId() != null && Objects.equals(getId(), that.getId());
   }
 
   @Override
