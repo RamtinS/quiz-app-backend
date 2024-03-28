@@ -10,11 +10,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 /**
@@ -25,26 +28,42 @@ import lombok.Setter;
  * @since 2024-03-27
  */
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "categories")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@EqualsAndHashCode
 public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
+  @Column(name = "id", nullable = false, unique = true)
+  @NonNull
   private Long id;
 
-  @Column(name = "description")
+  @Column(name = "description", nullable = false)
   private String description;
 
   @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
   private List<Quiz> quizzes;
 
 
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    Category category = (Category) object;
+    return Objects.equals(id, category.id) &&
+        Objects.equals(description, category.description) &&
+        Objects.equals(quizzes, category.quizzes);
+  }
 
-
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, description);
+  }
 }
