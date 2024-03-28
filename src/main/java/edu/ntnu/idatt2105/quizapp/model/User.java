@@ -1,11 +1,27 @@
 package edu.ntnu.idatt2105.quizapp.model;
 
-import jakarta.persistence.*;
-
+import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
-
-import lombok.*;
+import java.util.Objects;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,15 +33,16 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author Jeffrey Tabiri
  * @author Ramtin Samavat
  * @version 1.0
- * @since 2024-03-25
  * @see UserDetails
+ * @since 2024-03-25
  */
 @Entity
 @Table(name = "users")
 @Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class User implements UserDetails {
 
   @Id
@@ -54,6 +71,9 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   @Column(name = "role")
   private Role role;
+
+  @OneToMany(mappedBy = "author", cascade = CascadeType.PERSIST)
+  private List<Quiz> quizzes;
 
   /**
    * Retrieves the roles/authorities associated with this user.
@@ -93,5 +113,27 @@ public class User implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    User user = (User) object;
+    return Objects.equals(userId, user.userId) &&
+        Objects.equals(username, user.username) &&
+        Objects.equals(password, user.password) &&
+        Objects.equals(email, user.email) && Objects.equals(name, user.name) &&
+        Objects.equals(surName, user.surName) && role == user.role &&
+        Objects.equals(quizzes, user.quizzes);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(userId, username, password, email, name, surName, role);
   }
 }

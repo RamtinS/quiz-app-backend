@@ -17,7 +17,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.proxy.HibernateProxy;
 
 /**
  * Model class for QuizQuestion.
@@ -38,42 +37,33 @@ public class QuizQuestion {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private long id;
+  private Long id;
 
   @Column(name = "question_text")
   private String questionText;
 
-  @OneToMany(mappedBy = "quizQuestion", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "quizQuestion", cascade = CascadeType.ALL)
   private List<Answer> answers;
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Quiz quiz;
 
   @Override
-  public final boolean equals(Object object) {
+  public boolean equals(Object object) {
     if (this == object) {
       return true;
     }
-    if (object == null) {
-      return false;
-    }
-    Class<?> oEffectiveClass = object instanceof HibernateProxy ?
-        ((HibernateProxy) object).getHibernateLazyInitializer()
-            .getPersistentClass() : object.getClass();
-    Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
-        ((HibernateProxy) this).getHibernateLazyInitializer()
-            .getPersistentClass() : this.getClass();
-    if (thisEffectiveClass != oEffectiveClass) {
+    if (object == null || getClass() != object.getClass()) {
       return false;
     }
     QuizQuestion that = (QuizQuestion) object;
-    return Objects.equals(getId(), that.getId());
+    return Objects.equals(id, that.id) &&
+        Objects.equals(questionText, that.questionText) &&
+        Objects.equals(answers, that.answers) && Objects.equals(quiz, that.quiz);
   }
 
   @Override
-  public final int hashCode() {
-    return this instanceof HibernateProxy ?
-        ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() :
-        getClass().hashCode();
+  public int hashCode() {
+    return Objects.hash(id, questionText, quiz);
   }
 }

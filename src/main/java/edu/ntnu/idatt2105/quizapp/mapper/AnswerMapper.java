@@ -23,7 +23,7 @@ public class AnswerMapper {
   public AnswerDTO mapToAnswerDTO(Answer answer) {
     return AnswerDTO.builder()
         .answerText(answer.getAnswerText())
-        .isCorrect(answer.isCorrect())
+        .isCorrect(answer.getIsCorrect())
         .build();
   }
 

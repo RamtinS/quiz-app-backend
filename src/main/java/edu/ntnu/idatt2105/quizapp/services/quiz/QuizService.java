@@ -99,7 +99,7 @@ public class QuizService {
    */
   public List<QuizPreviewDTO> getAllPublicQuizPreviewsForUserPaginated(String username,
                                                                        Pageable pageable) {
-    return quizRepository.findAllByAuthorUsernameAndOpen(username, pageable, true)
+    return quizRepository.findAllByAuthorUsernameAndIsOpen(username, pageable, true)
         .stream()
         .map(quizMapper::mapToQuizPreviewDTO)
         .toList();
@@ -112,7 +112,7 @@ public class QuizService {
    * @return A list of quiz previews based on the pageable.
    */
   public List<QuizPreviewDTO> browsePublicQuizzesPaginated(Pageable pageable) {
-    return quizRepository.findAllByOpen(true, pageable)
+    return quizRepository.findAllByIsOpen(true, pageable)
         .stream()
         .map(quizMapper::mapToQuizPreviewDTO)
         .toList();
@@ -132,7 +132,7 @@ public class QuizService {
 
     Quiz quiz = quizRepository.findQuizById(id).orElseThrow();
 
-    if (quiz.isOpen() || quiz.getAuthor().getUsername().equals(principal.getName())) {
+    if (quiz.getIsOpen() || quiz.getAuthor().getUsername().equals(principal.getName())) {
       return quizMapper.mapToQuizDTO(quiz);
     } else {
       throw new IllegalArgumentException("Principal has no acces to this quiz.");

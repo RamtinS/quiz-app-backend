@@ -38,6 +38,7 @@ public class QuizMapper {
         .questions(quiz.getQuestions().stream()
             .map(questionMapper::mapToQuizQuestionDTO)
             .toList())
+        .isOpen(quiz.getIsOpen())
         .build();
   }
 
@@ -52,7 +53,7 @@ public class QuizMapper {
         .id(quiz.getId())
         .title(quiz.getName())
         .description(quiz.getDescription())
-        .open(quiz.isOpen())
+        .open(quiz.getIsOpen())
         .build();
   }
 
@@ -71,6 +72,7 @@ public class QuizMapper {
             .map(questionMapper::mapToQuizQuestion)
             .toList())
         .author(user)
+        .isOpen(quizCreationRequestDTO.isOpen())
         .build();
 
     createdQuiz.getQuestions().forEach(question -> {

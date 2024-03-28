@@ -34,11 +34,12 @@ import org.hibernate.proxy.HibernateProxy;
 @Getter
 @Setter
 @Builder
+
 public class Quiz {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "quiz_id")
-  private long id;
+  private Long id;
 
   @Column(name = "name")
   private String name;
@@ -52,34 +53,31 @@ public class Quiz {
   @ManyToOne(fetch = FetchType.LAZY)
   private User author;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Category category;
+
   @Column(name = "open")
-  private boolean open;
+  private Boolean isOpen;
 
   @Override
-  public final boolean equals(Object object) {
+  public boolean equals(Object object) {
     if (this == object) {
       return true;
     }
-    if (object == null) {
-      return false;
-    }
-    Class<?> oEffectiveClass = object instanceof HibernateProxy ?
-        ((HibernateProxy) object).getHibernateLazyInitializer()
-            .getPersistentClass() : object.getClass();
-    Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
-        ((HibernateProxy) this).getHibernateLazyInitializer()
-            .getPersistentClass() : this.getClass();
-    if (thisEffectiveClass != oEffectiveClass) {
+    if (object == null || getClass() != object.getClass()) {
       return false;
     }
     Quiz quiz = (Quiz) object;
-    return Objects.equals(getId(), quiz.getId());
+    return Objects.equals(id, quiz.id) && Objects.equals(name, quiz.name) &&
+        Objects.equals(description, quiz.description) &&
+        Objects.equals(questions, quiz.questions) &&
+        Objects.equals(author, quiz.author) &&
+        Objects.equals(category, quiz.category) &&
+        Objects.equals(isOpen, quiz.isOpen);
   }
 
   @Override
-  public final int hashCode() {
-    return this instanceof HibernateProxy ?
-        ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() :
-        getClass().hashCode();
+  public int hashCode() {
+    return Objects.hash(id, name, description, category, isOpen);
   }
 }

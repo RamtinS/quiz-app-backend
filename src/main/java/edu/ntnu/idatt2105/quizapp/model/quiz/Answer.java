@@ -8,12 +8,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.proxy.HibernateProxy;
 
 /**
  * Model class for Answer.
@@ -29,18 +30,35 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
 public class Answer {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
   private String answerText;
-  private boolean isCorrect;
+  private Boolean isCorrect;
 
   @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
   private QuizQuestion quizQuestion;
 
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
+    }
+    if (object == null || getClass() != object.getClass()) {
+      return false;
+    }
+    Answer answer = (Answer) object;
+    return Objects.equals(id, answer.id) &&
+        Objects.equals(answerText, answer.answerText) &&
+        Objects.equals(isCorrect, answer.isCorrect) &&
+        Objects.equals(quizQuestion, answer.quizQuestion);
+  }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, answerText, isCorrect);
+  }
 }
 
 
