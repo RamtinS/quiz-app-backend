@@ -98,15 +98,17 @@
             <version>5.11.0</version>
         </dependency>
 
-
     </dependencies>
 
+    <!-- Build configuration -->
     <build>
         <plugins>
+            <!-- Spring Boot Maven Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <!-- Exclude Lombok from the final jar -->
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
