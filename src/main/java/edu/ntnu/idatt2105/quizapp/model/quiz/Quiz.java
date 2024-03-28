@@ -34,11 +34,12 @@ import org.hibernate.proxy.HibernateProxy;
 @Getter
 @Setter
 @Builder
+
 public class Quiz {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "quiz_id")
-  private long id;
+  private Long id;
 
   @Column(name = "name")
   private String name;
@@ -52,8 +53,13 @@ public class Quiz {
   @ManyToOne(fetch = FetchType.LAZY)
   private User author;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Category category;
+
   @Column(name = "open")
-  private boolean open;
+  private Boolean isOpen;
+
+
 
   @Override
   public final boolean equals(Object object) {
@@ -73,7 +79,7 @@ public class Quiz {
       return false;
     }
     Quiz quiz = (Quiz) object;
-    return Objects.equals(getId(), quiz.getId());
+    return getId() != null && Objects.equals(getId(), quiz.getId());
   }
 
   @Override
