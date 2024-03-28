@@ -38,6 +38,9 @@ public class FeedbackController {
       feedbackService.saveFeedBackMessage(feedbackDto);
       log.info("Feedback from {} submitted successfully.", feedbackDto.getEmail());
       return new ResponseEntity<>(HttpStatus.OK);
+    } catch (NullPointerException e) {
+      log.error("Failed to summit feedback from {}. {}", feedbackDto.getEmail(), e.getMessage());
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } catch (Exception e) {
       log.error("Failed to summit feedback from {}.", feedbackDto.getEmail(), e);
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
