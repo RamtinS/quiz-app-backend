@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2105.quizapp.services;
 
-import edu.ntnu.idatt2105.quizapp.dto.AuthenticationDto;
-import edu.ntnu.idatt2105.quizapp.dto.LoginDto;
-import edu.ntnu.idatt2105.quizapp.dto.RegistrationDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.AuthenticationDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.LoginDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.model.Role;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
@@ -21,9 +21,9 @@ import org.springframework.stereotype.Service;
  * It uses repositories to perform user-related operations in the database,
  * and uses spring boot security for user authentication.
  *
- * @author Jeffrey Tabiri, Ramtin Samavat
+ * @author Jeffrey Tabiri
+ * @author Ramtin Samavat
  * @version 1.0
- * @since 2024-03-25
  */
 @Slf4j
 @Service
