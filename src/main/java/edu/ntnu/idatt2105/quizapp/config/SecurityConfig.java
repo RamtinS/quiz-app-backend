@@ -33,7 +33,9 @@ public class SecurityConfig {
       "/api/v1/quiz-management/browser/**",
       "api/v1/quiz-management/quizzes/{quizId}",
       "/api/v1/quiz-management/users/{username}/previews",
-      "/api/v1/docs/**"};
+      "/api/v1/docs/**",
+      "/api/v1/users/**"
+  };
 
   private final JwtAuthenticationFilter jwtAuthFilter;
   private final AuthenticationProvider authenticationProvider;

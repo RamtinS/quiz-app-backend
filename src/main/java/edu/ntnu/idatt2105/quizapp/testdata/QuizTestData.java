@@ -34,8 +34,8 @@ public class QuizTestData {
         .build();
 
     User emptyUser = User.builder()
-        .username("Geir2")
-        .password(passwordEncoder.encode("password"))
+        .username("a")
+        .password(passwordEncoder.encode("a"))
         .role(Role.USER)
         .build();
 
