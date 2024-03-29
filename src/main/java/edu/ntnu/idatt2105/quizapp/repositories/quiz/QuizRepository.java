@@ -3,6 +3,7 @@ package edu.ntnu.idatt2105.quizapp.repositories.quiz;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Repository;
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
@@ -24,7 +24,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
   Optional<Quiz> findQuizById(Long id);
 
-  List<Quiz> findAllByNameContaining(String title, Pageable pageable);
+  List<Quiz> findAllByNameContainingIgnoreCaseOrderByName(String title, Pageable pageable);
 
 
 }
