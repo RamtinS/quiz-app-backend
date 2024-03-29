@@ -17,7 +17,6 @@ import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -34,7 +33,6 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author Ramtin Samavat
  * @version 1.0
  * @see UserDetails
- * @since 2024-03-25
  */
 @Entity
 @Table(name = "users")
@@ -53,6 +51,7 @@ public class User implements UserDetails {
 
   @Column(name = "username", nullable = false, unique = true)
   @NonNull
+  @Setter(AccessLevel.NONE)
   private String username;
 
   @Column(name = "password", nullable = false)
