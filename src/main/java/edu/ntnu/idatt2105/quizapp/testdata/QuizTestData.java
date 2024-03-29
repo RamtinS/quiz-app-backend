@@ -8,7 +8,7 @@ import edu.ntnu.idatt2105.quizapp.model.quiz.QuizQuestion;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizRepository;
 import java.util.List;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Class for adding test data to the database. This class should only be used for testing purposes.
@@ -16,25 +16,26 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class QuizTestData {
 
 
-  public static void addTestData(BCryptPasswordEncoder passwordEncoder,
-                                 UserRepository userRepository, QuizRepository quizRepository) {
+  public static void addTestData(PasswordEncoder passwordEncoder,
+                                 UserRepository userRepository,
+                                 QuizRepository quizRepository) {
 
     User admin = User.builder()
-        .username("Administrator")
+        .username("Admin")
         .password(passwordEncoder.encode("password"))
-        .role(Role.USER)
+        .role(Role.ADMIN)
         .build();
 
 
     User user2 = User.builder()
-        .username("a")
-        .password(passwordEncoder.encode("a"))
+        .username("Geir1")
+        .password(passwordEncoder.encode("password"))
         .role(Role.USER)
         .build();
 
     User emptyUser = User.builder()
-        .username("e")
-        .password(passwordEncoder.encode("e"))
+        .username("Geir2")
+        .password(passwordEncoder.encode("password"))
         .role(Role.USER)
         .build();
 
