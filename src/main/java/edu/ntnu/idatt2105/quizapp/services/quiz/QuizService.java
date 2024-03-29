@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Service
 @Slf4j
@@ -138,6 +137,14 @@ public class QuizService {
       throw new IllegalArgumentException("Principal has no acces to this quiz.");
     }
 
+  }
+
+
+  public List<QuizPreviewDTO> getQuizzesBySearchName(String search, Pageable pageable){
+    return quizRepository.findAllByNameContainingIgnoreCaseOrderByName(search, pageable)
+        .stream()
+        .map(quizMapper::mapToQuizPreviewDTO)
+        .toList();
   }
 
 
