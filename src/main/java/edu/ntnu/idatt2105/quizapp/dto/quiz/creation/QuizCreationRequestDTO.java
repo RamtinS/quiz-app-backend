@@ -1,6 +1,8 @@
 package edu.ntnu.idatt2105.quizapp.dto.quiz.creation;
 
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizQuestionDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.TagDto;
+import edu.ntnu.idatt2105.quizapp.model.quiz.Tag;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -24,6 +26,7 @@ public class QuizCreationRequestDTO {
   private String description;
   @NotNull
   private List<QuizQuestionDTO> questions;
+  private List<TagDto> tags;
   private boolean open;
 }
 
