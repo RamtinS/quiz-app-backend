@@ -4,7 +4,10 @@ import edu.ntnu.idatt2105.quizapp.dto.quiz.AnswerDTO;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.TagDto;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Answer;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TagMapper {
   /**
    * Maps a Tag object to an TagDto object.
