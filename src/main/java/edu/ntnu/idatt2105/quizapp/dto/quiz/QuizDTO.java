@@ -9,6 +9,7 @@ import lombok.Data;
  * Dto to represent a quiz.
  *
  * @author Tobias Oftedal
+ * @author Jeffrey Yaw Annor Tabiri
  * @version 1.0
  * @since 2024-03-27
  */
@@ -18,6 +19,7 @@ public class QuizDTO {
   private String name;
   private String description;
   private List<QuizQuestionDTO> questions;
+  private List<TagDto> tags;
   private PublicUserInformationDTO author;
   private boolean isOpen;
 }
