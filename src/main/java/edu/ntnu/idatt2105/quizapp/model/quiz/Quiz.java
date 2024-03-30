@@ -59,8 +59,8 @@ public class Quiz {
   @ManyToOne(fetch = FetchType.LAZY)
   private Category category;
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  private Set<Tag> tags;
+  @OneToMany(fetch = FetchType.LAZY)
+  private List<Tag> tags;
 
   @Column(name = "open")
   private Boolean isOpen;
