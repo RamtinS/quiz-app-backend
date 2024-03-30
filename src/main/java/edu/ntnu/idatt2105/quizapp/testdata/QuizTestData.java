@@ -5,6 +5,7 @@ import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Answer;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import edu.ntnu.idatt2105.quizapp.model.quiz.QuizQuestion;
+import edu.ntnu.idatt2105.quizapp.model.quiz.Tag;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizRepository;
 import java.util.List;
@@ -88,10 +89,18 @@ public class QuizTestData {
               .build()
       );
 
+      List<Tag> exampleTag = List.of(
+              Tag.builder().description("Mathematical").build(),
+              Tag.builder().description("Physics").build()
+      );
+
+
+
       QuizQuestion quizQuestion2 = QuizQuestion.builder()
           .quiz(quiz)
           .questionText("5 == 5?")
           .build();
+
 
       List<Answer> exampleAnswers2 = List.of(
           Answer.builder()
@@ -109,7 +118,7 @@ public class QuizTestData {
       quizQuestion.setAnswers(exampleAnswers);
       quizQuestion2.setAnswers(exampleAnswers2);
       quiz.setQuestions(List.of(quizQuestion, quizQuestion2));
-
+      quiz.setTags(exampleTag);
 
       System.out.println("Adding quiz: size" + quiz.getQuestions().size());
       quizRepository.save(quiz);
