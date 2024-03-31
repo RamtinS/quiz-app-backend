@@ -40,7 +40,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserController {
-  private UserService searchService;
+
+  private final UserService searchService;
 
   private final UserService userService;
 
@@ -113,28 +114,6 @@ public class UserController {
   }
 
   /**
-   * Logs a failed update operation with the provided username and exception information.
-   *
-   * @param username The username of the user for whom the update operation failed.
-   * @param exception The exception that occurred during the update operation
-   */
-  private void logFailedUpdate(String username, Exception exception) {
-    log.error("Failed to update user information for {}. {}", username,
-            exception.getMessage(), exception);
-  }
-
-  /**
-   * Logs failed user details retrieval with username and exception.
-   *
-   * @param username The username of the user for whom the update operation failed.
-   * @param exception The exception that occurred during the update operation
-   */
-  private void logFailedRetrieve(String username, Exception exception) {
-    log.error("Failed to retrieve user information for {}. {}", username,
-            exception.getMessage(), exception);
-  }
-
-  /**
    * Finds a list of users based on the search parameter.
    *
    * @param search the search parameter.
@@ -163,7 +142,7 @@ public class UserController {
           @RequestParam int page,
           @RequestParam int size
   ) {
-    log.info("Searching for users with username: " + search);
+    log.info("Searching for users with username: {}", search);
 
     try {
       List<PublicUserInformationDTO> result = searchService.findPublicProfilesFromUsername(search,
@@ -172,12 +151,33 @@ public class UserController {
       ObjectMapper objectMapper = new ObjectMapper();
       String json = objectMapper.writeValueAsString(result);
 
-      log.info("Found users: " + json);
+      log.info("Found users: {}", json);
 
       return new ResponseEntity<>(result, HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
 
+  /**
+   * Logs a failed update operation with the provided username and exception information.
+   *
+   * @param username The username of the user for whom the update operation failed.
+   * @param exception The exception that occurred during the update operation
+   */
+  private void logFailedUpdate(String username, Exception exception) {
+    log.error("Failed to update user information for {}. {}", username,
+            exception.getMessage(), exception);
+  }
+
+  /**
+   * Logs failed user details retrieval with username and exception.
+   *
+   * @param username The username of the user for whom the update operation failed.
+   * @param exception The exception that occurred during the update operation
+   */
+  private void logFailedRetrieve(String username, Exception exception) {
+    log.error("Failed to retrieve user information for {}. {}", username,
+            exception.getMessage(), exception);
   }
 }
