@@ -1,19 +1,17 @@
 package edu.ntnu.idatt2105.quizapp.services;
 
-import edu.ntnu.idatt2105.quizapp.dto.RegistrationDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
-import edu.ntnu.idatt2105.quizapp.dto.AuthenticationDto;
-import edu.ntnu.idatt2105.quizapp.dto.LoginDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.AuthenticationDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.LoginDto;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;

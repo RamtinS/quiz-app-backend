@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2105.quizapp.dto;
+package edu.ntnu.idatt2105.quizapp.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

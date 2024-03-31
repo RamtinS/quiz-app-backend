@@ -1,7 +1,7 @@
 package edu.ntnu.idatt2105.quizapp.util;
 
-import edu.ntnu.idatt2105.quizapp.dto.LoginDto;
-import edu.ntnu.idatt2105.quizapp.dto.RegistrationDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.LoginDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.model.Role;
 import edu.ntnu.idatt2105.quizapp.model.User;
 
