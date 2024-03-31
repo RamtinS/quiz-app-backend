@@ -38,13 +38,12 @@ public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false, unique = true)
-  @NonNull
   private Long id;
 
   @Column(name = "description", nullable = false)
   private String description;
 
-  @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "category")
   private List<Quiz> quizzes;
 
 
@@ -57,9 +56,9 @@ public class Category {
       return false;
     }
     Category category = (Category) object;
-    return Objects.equals(id, category.id) &&
-        Objects.equals(description, category.description) &&
-        Objects.equals(quizzes, category.quizzes);
+    return Objects.equals(id, category.id)
+            && Objects.equals(description, category.description)
+            && Objects.equals(quizzes, category.quizzes);
   }
 
   @Override

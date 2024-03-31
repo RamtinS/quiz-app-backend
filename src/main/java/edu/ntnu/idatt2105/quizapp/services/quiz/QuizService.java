@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2105.quizapp.services.quiz;
 
-import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDTO;
 import edu.ntnu.idatt2105.quizapp.mapper.QuestionMapper;
 import edu.ntnu.idatt2105.quizapp.mapper.QuizMapper;
@@ -50,7 +50,7 @@ public class QuizService {
    * @return The response DTO containing the ID of the created quiz.
    * @throws UsernameNotFoundException If the user is not found.
    */
-  public QuizCreationResponseDTO createQuiz(QuizCreationRequestDTO quizCreationDTO,
+  public QuizCreationResponseDTO createQuiz(QuizCreationRequestDto quizCreationDTO,
                                             Principal principal)
       throws UsernameNotFoundException {
 
@@ -126,7 +126,7 @@ public class QuizService {
    * @throws NoSuchElementException   If the quiz is not found.
    * @throws IllegalArgumentException If the principal has no access to the quiz.
    */
-  public QuizDTO getQuizById(Principal principal, long id)
+  public QuizDto getQuizById(Principal principal, long id)
       throws NoSuchElementException, IllegalArgumentException {
 
     Quiz quiz = quizRepository.findQuizById(id).orElseThrow();
