@@ -15,9 +15,10 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class QuizDTO {
+public class QuizDto {
   private String name;
   private String description;
+  private String categoryDescription;
   private List<QuizQuestionDTO> questions;
   private List<TagDto> tags;
   private PublicUserInformationDTO author;

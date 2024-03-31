@@ -1,12 +1,16 @@
 package edu.ntnu.idatt2105.quizapp.mapper;
 
-import edu.ntnu.idatt2105.quizapp.dto.quiz.AnswerDTO;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.TagDto;
-import edu.ntnu.idatt2105.quizapp.model.quiz.Answer;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+/**
+  * Mapper class for mapping Tag objects to TagDTO objects and vice versa.
+  *
+  * @author Jeffrey Yaw Annor Tabiri
+  * @version 1.0
+  * @since 2024-03-31
+ */
 @Component
 public class TagMapper {
   /**

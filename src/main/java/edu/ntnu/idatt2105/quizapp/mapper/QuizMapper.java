@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2105.quizapp.mapper;
 
-import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDto;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import lombok.NonNull;
@@ -36,8 +36,8 @@ public class QuizMapper {
    * @param quiz The Quiz object to map.
    * @return The mapped QuizDTO object.
    */
-  public QuizDTO mapToQuizDTO(Quiz quiz) {
-    return QuizDTO.builder()
+  public QuizDto mapToQuizDTO(Quiz quiz) {
+    return QuizDto.builder()
         .name(quiz.getName())
         .description(quiz.getDescription())
         .author(userMapper.mapToPublicUserInformation(quiz.getAuthor()))
@@ -74,7 +74,7 @@ public class QuizMapper {
    * @param user                   The user that created the quiz.
    * @return The mapped Quiz object.
    */
-  public Quiz mapToQuiz(QuizCreationRequestDTO quizCreationRequestDTO, User user) {
+  public Quiz mapToQuiz(QuizCreationRequestDto quizCreationRequestDTO, User user) {
 
     Quiz createdQuiz = Quiz.builder()
         .name(quizCreationRequestDTO.getTitle())

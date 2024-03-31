@@ -1,9 +1,9 @@
 package edu.ntnu.idatt2105.quizapp.controller.quiz;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDTO;
 import edu.ntnu.idatt2105.quizapp.services.quiz.QuizService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -65,7 +65,7 @@ public class QuizController {
   })
   @PostMapping("/quizzes")
   public ResponseEntity<QuizCreationResponseDTO> submitQuiz(
-      @RequestBody @NotNull QuizCreationRequestDTO quizCreationRequestDTO,
+      @RequestBody @NotNull QuizCreationRequestDto quizCreationRequestDTO,
       Principal authenticatedPrincipal) {
 
     try {
@@ -193,7 +193,7 @@ public class QuizController {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "The quiz was found and returned",
             content = {@Content(mediaType = "application/json",
-                schema = @Schema(implementation = QuizDTO.class))}),
+                schema = @Schema(implementation = QuizDto.class))}),
         @ApiResponse(responseCode = "400", description = "The quiz could not be found",
             content = @Content),
         @ApiResponse(responseCode = "403", description = "The user is not authorized to view the quiz",
@@ -202,13 +202,13 @@ public class QuizController {
             content = @Content),
     })
   @GetMapping("quizzes/{quizId}")
-  public ResponseEntity<QuizDTO> getQuizById(Principal principal,
+  public ResponseEntity<QuizDto> getQuizById(Principal principal,
                                              @PathVariable long quizId) {
 
     log.info("Returning quiz: " + quizId);
     try {
       log.info("Get quiz by id: " + quizId);
-      QuizDTO quiz = quizService.getQuizById(principal, quizId);
+      QuizDto quiz = quizService.getQuizById(principal, quizId);
       return new ResponseEntity<>(quiz, HttpStatus.OK);
 
     } catch (IllegalArgumentException | NullPointerException e) {
