@@ -3,6 +3,8 @@ package edu.ntnu.idatt2105.quizapp.services;
 import edu.ntnu.idatt2105.quizapp.dto.user.AuthenticationDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.LoginRequestDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
+import edu.ntnu.idatt2105.quizapp.exception.user.EmailAlreadyExistsException;
+import edu.ntnu.idatt2105.quizapp.exception.user.UsernameAlreadyExistsException;
 import edu.ntnu.idatt2105.quizapp.model.Role;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
@@ -10,6 +12,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,13 +50,18 @@ public class AuthenticationService {
    *
    * @param registrationDto DTO containing user registration information.
    * @return An AuthenticationDto containing a token if registration is successful.
-   * @throws IllegalArgumentException if the username already exists.
+   * @throws UsernameAlreadyExistsException If the username already exists.
+   * @throws EmailAlreadyExistsException If the email already exists.
    */
   public AuthenticationDto registerUser(@NonNull RegistrationDto registrationDto)
-          throws IllegalArgumentException {
+          throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
 
     if (userRepository.findUserByUsername(registrationDto.getUsername()).isPresent()) {
-      throw new IllegalArgumentException("Username already exists.");
+      throw new UsernameAlreadyExistsException();
+    }
+
+    if (userRepository.findUserByEmail(registrationDto.getEmail()).isPresent()) {
+      throw new EmailAlreadyExistsException();
     }
 
     String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
@@ -79,11 +87,12 @@ public class AuthenticationService {
    *
    * @param loginRequestDto DTO containing user login credentials.
    * @return An AuthenticationDto containing a token if authentication is successful.
+   * @throws BadCredentialsException if authentication fails due to invalid credentials.
    * @throws UsernameNotFoundException if the username of the user is not found in the database.
    */
   public AuthenticationDto authenticateUser(@NonNull LoginRequestDto loginRequestDto)
-          throws UsernameNotFoundException {
-    
+          throws BadCredentialsException, UsernameNotFoundException {
+
     authManager.authenticate(new UsernamePasswordAuthenticationToken(
             loginRequestDto.getUsername(), loginRequestDto.getPassword()));
 
