@@ -1,7 +1,7 @@
 package edu.ntnu.idatt2105.quizapp.services;
 
 import edu.ntnu.idatt2105.quizapp.dto.user.AuthenticationDto;
-import edu.ntnu.idatt2105.quizapp.dto.user.LoginDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.LoginRequestDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.model.Role;
 import edu.ntnu.idatt2105.quizapp.model.User;
@@ -77,19 +77,19 @@ public class AuthenticationService {
   /**
    * Login method which contains logic to authenticate a login request.
    *
-   * @param loginDto DTO containing user login credentials.
+   * @param loginRequestDto DTO containing user login credentials.
    * @return An AuthenticationDto containing a token if authentication is successful.
    * @throws UsernameNotFoundException if the username of the user is not found in the database.
    */
-  public AuthenticationDto authenticateUser(@NonNull LoginDto loginDto)
+  public AuthenticationDto authenticateUser(@NonNull LoginRequestDto loginRequestDto)
           throws UsernameNotFoundException {
     
     authManager.authenticate(new UsernamePasswordAuthenticationToken(
-            loginDto.getUsername(), loginDto.getPassword()));
+            loginRequestDto.getUsername(), loginRequestDto.getPassword()));
 
-    User user = userRepository.findUserByUsername(loginDto.getUsername())
+    User user = userRepository.findUserByUsername(loginRequestDto.getUsername())
             .orElseThrow(() -> new UsernameNotFoundException("User "
-                    + loginDto.getUsername() + " not found."));
+                    + loginRequestDto.getUsername() + " not found."));
 
     String token = jwtService.generateToken(user);
 

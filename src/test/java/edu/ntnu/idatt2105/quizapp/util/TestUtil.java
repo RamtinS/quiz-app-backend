@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.util;
 
-import edu.ntnu.idatt2105.quizapp.dto.user.LoginDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.LoginRequestDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.model.Role;
 import edu.ntnu.idatt2105.quizapp.model.User;
@@ -50,8 +50,8 @@ public class TestUtil {
             .build();
   }
 
-  public static LoginDto createLoginDtoA() {
-    return new LoginDto("Mark", "PasswordPassword");
+  public static LoginRequestDto createLoginDtoA() {
+    return new LoginRequestDto("Mark", "PasswordPassword");
   }
 
   public static RegistrationDto createRegistrationDtoA()  {

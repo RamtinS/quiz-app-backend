@@ -3,7 +3,7 @@ package edu.ntnu.idatt2105.quizapp.services;
 import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
 import edu.ntnu.idatt2105.quizapp.dto.user.AuthenticationDto;
-import edu.ntnu.idatt2105.quizapp.dto.user.LoginDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.LoginRequestDto;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -56,7 +56,7 @@ class AuthenticationServiceTest {
   @Test
   void AuthenticationService_AuthenticateUser_ReturnLoginDto() {
     //Arrange
-    LoginDto mockLogin = TestUtil.createLoginDtoA();
+    LoginRequestDto mockLogin = TestUtil.createLoginDtoA();
     User mockUser = TestUtil.createUserA();
     when(userRepository.findUserByUsername("Mark")).thenReturn(Optional.ofNullable(mockUser));
     when(jwtService.generateToken(any(User.class))).thenReturn("MockToken");

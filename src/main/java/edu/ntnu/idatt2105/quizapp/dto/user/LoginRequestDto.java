@@ -6,16 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 /**
- * A data transfer object containing user login information.
+ * Data Transfer Object (DTO) containing user login information.
  *
+ * @author Jeff Tabiri
+ * @author Ramtin Samavat
  * @version 1.0
- * @since 2024-03-22
- * @author Jytabiri
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDto {
+public class LoginRequestDto {
 
   @NonNull
   private String username;

@@ -1,7 +1,7 @@
 package edu.ntnu.idatt2105.quizapp.controller;
 
 import edu.ntnu.idatt2105.quizapp.dto.user.AuthenticationDto;
-import edu.ntnu.idatt2105.quizapp.dto.user.LoginDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.LoginRequestDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.services.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -70,7 +70,7 @@ public class AuthenticationController {
   /**
    * REST-endpoint to authenticate a user login request.
    *
-   * @param loginDto DTO containing user login credentials.
+   * @param loginRequestDto DTO containing user login credentials.
    * @return ResponseEntity containing a DTO with a token on success, or UNAUTHORIZED on failure.
    */
 
@@ -83,14 +83,14 @@ public class AuthenticationController {
       @ApiResponse(responseCode = "401", description = "User is unauthorized to log in"),
   })
   @PostMapping("/login")
-  public ResponseEntity<AuthenticationDto> loginUser(@RequestBody LoginDto loginDto) {
-    log.info("User {} has attempted to log in.", loginDto.getUsername());
+  public ResponseEntity<AuthenticationDto> loginUser(@RequestBody LoginRequestDto loginRequestDto) {
+    log.info("User {} has attempted to log in.", loginRequestDto.getUsername());
     try {
-      AuthenticationDto authenticationDto = authenticationService.authenticateUser(loginDto);
-      log.info("User {} successfully logged in.", loginDto.getUsername());
+      AuthenticationDto authenticationDto = authenticationService.authenticateUser(loginRequestDto);
+      log.info("User {} successfully logged in.", loginRequestDto.getUsername());
       return new ResponseEntity<>(authenticationDto, HttpStatus.OK);
     } catch (Exception e) {
-      log.error("User {} failed to log in: {}", loginDto.getUsername(), e.getMessage());
+      log.error("User {} failed to log in: {}", loginRequestDto.getUsername(), e.getMessage());
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
   }
