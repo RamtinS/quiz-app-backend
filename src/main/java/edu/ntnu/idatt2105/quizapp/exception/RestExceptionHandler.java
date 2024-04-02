@@ -36,12 +36,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * The method handles situations where an object, which is not supposed to be null, is null.
+   * The method handles situations where the input value is not accepted.
    *
    * @param ex The exception to handle.
    * @return ResponseEntity containing the ErrorResponse with HTTP status code 400 (BAD_REQUEST).
    */
-  @ExceptionHandler(NullPointerException.class)
+  @ExceptionHandler({NullPointerException.class, IllegalArgumentException.class})
   public ResponseEntity<ErrorResponse> handelNullPointerException(Exception ex) {
     return buildResponseEntityWithErrorResponse(ex, HttpStatus.BAD_REQUEST);
   }
