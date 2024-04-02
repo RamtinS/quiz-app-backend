@@ -11,8 +11,6 @@ import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.CategoryRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizRepository;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -27,23 +25,32 @@ public class QuizTestData {
 
 
     User admin = User.builder()
-        .username("Admin")
-        .password(passwordEncoder.encode("password"))
-        .role(Role.ADMIN)
-        .build();
+            .username("Admin")
+            .password(passwordEncoder.encode("password"))
+            .email("admin@ntnu.edu")
+            .name("Test")
+            .surName("Test")
+            .role(Role.ADMIN)
+            .build();
 
 
     User user2 = User.builder()
-        .username("Geir1")
-        .password(passwordEncoder.encode("password"))
-        .role(Role.USER)
-        .build();
+            .username("Geir1")
+            .password(passwordEncoder.encode("password"))
+            .email("geir1@ntnu.edu")
+            .name("Test")
+            .surName("Test")
+            .role(Role.USER)
+            .build();
 
     User emptyUser = User.builder()
-        .username("a")
-        .password(passwordEncoder.encode("a"))
-        .role(Role.USER)
-        .build();
+            .username("aaaa")
+            .password(passwordEncoder.encode("a"))
+            .email("a@ntnu.edu")
+            .name("Test")
+            .surName("Test")
+            .role(Role.USER)
+            .build();
 
     userRepository.save(admin);
     userRepository.save(user2);
