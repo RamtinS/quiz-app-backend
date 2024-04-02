@@ -1,8 +1,10 @@
 package edu.ntnu.idatt2105.quizapp.dto.quiz;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * DTO class used for creating a quiz question.
@@ -12,8 +14,9 @@ import lombok.Data;
  * @since 2024-03-27
  */
 @Data
-@Builder
-public class QuizQuestionDTO {
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public abstract class QuestionDTO {
     private String questionText;
-    private List<AnswerDTO> answers;
 }
