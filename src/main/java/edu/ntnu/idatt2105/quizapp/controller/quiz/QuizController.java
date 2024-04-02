@@ -209,12 +209,15 @@ public class QuizController {
     try {
       log.info("Get quiz by id: " + quizId);
       QuizDto quiz = quizService.getQuizById(principal, quizId);
+      log.info("Returning quiz: " + quiz.getName());
       return new ResponseEntity<>(quiz, HttpStatus.OK);
 
     } catch (IllegalArgumentException | NullPointerException e) {
+      log.error("Error: of type " + e.getClass().getName(), e);
       return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 
     } catch (NoSuchElementException e) {
+      log.error("Error: of type " + e.getClass().getName(), e);
       return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
     } catch (Exception e) {

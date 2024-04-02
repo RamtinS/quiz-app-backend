@@ -19,7 +19,7 @@ public class QuizDto {
   private String name;
   private String description;
   private String categoryDescription;
-  private List<QuizQuestionDTO> questions;
+  private List<QuestionDTO> questions;
   private List<TagDto> tags;
   private PublicUserInformationDTO author;
   private boolean isOpen;

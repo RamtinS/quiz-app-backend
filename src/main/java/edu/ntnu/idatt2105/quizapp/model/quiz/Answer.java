@@ -14,7 +14,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.proxy.HibernateProxy;
 
 /**
  * Model class for Answer.
@@ -38,7 +37,7 @@ public class Answer {
   private Boolean isCorrect;
 
   @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-  private QuizQuestion quizQuestion;
+  private Question question;
 
   @Override
   public boolean equals(Object object) {
@@ -52,7 +51,7 @@ public class Answer {
     return Objects.equals(id, answer.id) &&
         Objects.equals(answerText, answer.answerText) &&
         Objects.equals(isCorrect, answer.isCorrect) &&
-        Objects.equals(quizQuestion, answer.quizQuestion);
+        Objects.equals(question, answer.question);
   }
 
   @Override

@@ -42,7 +42,7 @@ public class QuizMapper {
         .description(quiz.getDescription())
         .author(userMapper.mapToPublicUserInformation(quiz.getAuthor()))
         .tags(quiz.getTags().stream()
-                .map(tagMapper::mapToTagDto).toList())
+            .map(tagMapper::mapToTagDto).toList())
 
         .questions(quiz.getQuestions().stream()
             .map(questionMapper::mapToQuizQuestionDTO)
@@ -80,17 +80,19 @@ public class QuizMapper {
         .name(quizCreationRequestDTO.getTitle())
         .description(quizCreationRequestDTO.getDescription())
         .tags(quizCreationRequestDTO.getTags().stream()
-                .map(tagMapper::mapToTag).toList())
-        .questions(quizCreationRequestDTO.getQuestions().stream()
-            .map(questionMapper::mapToQuizQuestion)
-            .toList())
+            .map(tagMapper::mapToTag).toList())
+        .questions(
+            quizCreationRequestDTO.getQuestions()
+                .stream()
+                .map(a -> questionMapper.mapToQuestion(a))
+                .toList())
+
         .author(user)
         .isOpen(quizCreationRequestDTO.isOpen())
         .build();
 
     createdQuiz.getQuestions().forEach(question -> {
       question.setQuiz(createdQuiz);
-      question.getAnswers().forEach(answer -> answer.setQuizQuestion(question));
     });
 
     return createdQuiz;

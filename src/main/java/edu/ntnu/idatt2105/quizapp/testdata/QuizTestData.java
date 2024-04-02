@@ -4,15 +4,14 @@ import edu.ntnu.idatt2105.quizapp.model.Role;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Answer;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Category;
+import edu.ntnu.idatt2105.quizapp.model.quiz.MultipleChoiceQuestion;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
-import edu.ntnu.idatt2105.quizapp.model.quiz.QuizQuestion;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Tag;
+import edu.ntnu.idatt2105.quizapp.model.quiz.TrueOrFalseQuestion;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.CategoryRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizRepository;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -21,9 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class QuizTestData {
 
   public static void addTestData(PasswordEncoder passwordEncoder,
-                                 UserRepository userRepository,
-                                 QuizRepository quizRepository,
-                                CategoryRepository categoryRepository ) {
+                          UserRepository userRepository,
+                          QuizRepository quizRepository,
+                          CategoryRepository categoryRepository) {
 
 
     User admin = User.builder()
@@ -41,6 +40,7 @@ public class QuizTestData {
 
     User emptyUser = User.builder()
         .username("a")
+        .email("a@gmail.com")
         .password(passwordEncoder.encode("a"))
         .role(Role.USER)
         .build();
@@ -53,7 +53,8 @@ public class QuizTestData {
     addTestDataToUser(user2, quizRepository, categoryRepository);
   }
 
-  public static void addTestDataToUser(User user, QuizRepository quizRepository, CategoryRepository categoryRepository) {
+  public static void addTestDataToUser(User user, QuizRepository quizRepository,
+                                       CategoryRepository categoryRepository) {
     Category exampleCategory = Category.builder().description("Food").build();
     Category exampleCategory2 = Category.builder().description("Sports").build();
     Category exampleCategory3 = Category.builder().description("Gaming").build();
@@ -67,69 +68,67 @@ public class QuizTestData {
           .name("Example quiz")
           .description("random desc: " + (randomIntBetween20And30 + i))
           .author(user)
-          .isOpen((i % 2) == 0)
+          .isOpen(true)
           .build();
 
-      QuizQuestion quizQuestion = QuizQuestion.builder()
+      Quiz savedQuiz = quizRepository.save(quiz);
+
+      MultipleChoiceQuestion multipleChoiceQuestion = MultipleChoiceQuestion.builder()
           .quiz(quiz)
           .questionText("What is the capital of Norway?")
           .build();
 
+      multipleChoiceQuestion.setQuiz(quiz);
+
+
+      TrueOrFalseQuestion trueOrFalseQuestion = TrueOrFalseQuestion.builder()
+          .quiz(quiz)
+          .questionText("Is the earth flat?")
+          .questionIsCorrect(false)
+          .build();
+
+      trueOrFalseQuestion.setQuiz(quiz);
+
+      quiz.setQuestions(List.of(multipleChoiceQuestion, trueOrFalseQuestion));
+
+
 
       List<Answer> exampleAnswers = List.of(
           Answer.builder()
-              .quizQuestion(quizQuestion)
+              .question(multipleChoiceQuestion)
               .answerText("Oslo")
               .isCorrect(true)
               .build(),
           Answer.builder()
               .answerText("Bergen")
-              .quizQuestion(quizQuestion)
+              .question(multipleChoiceQuestion)
               .isCorrect(false)
               .build(),
           Answer.builder()
               .answerText("Trondheim")
-              .quizQuestion(quizQuestion)
+              .question(multipleChoiceQuestion)
 
               .isCorrect(false)
               .build(),
           Answer.builder()
               .answerText("Stavanger")
-              .quizQuestion(quizQuestion)
+              .question(multipleChoiceQuestion)
               .isCorrect(false)
               .build()
       );
+
+      multipleChoiceQuestion.setAnswers(exampleAnswers);
+      exampleAnswers.forEach(answer -> answer.setQuestion(multipleChoiceQuestion));
 
       List<Tag> exampleTag = List.of(
-              Tag.builder().description("Mathematical").build(),
-              Tag.builder().description("Physics").build()
-      );
-
-
-      QuizQuestion quizQuestion2 = QuizQuestion.builder()
-          .quiz(quiz)
-          .questionText("5 == 5?")
-          .build();
-
-
-      List<Answer> exampleAnswers2 = List.of(
-          Answer.builder()
-              .quizQuestion(quizQuestion2)
-              .answerText("true")
-              .isCorrect(true)
-              .build(),
-          Answer.builder()
-              .answerText("false")
-              .quizQuestion(quizQuestion2)
-              .isCorrect(false)
-              .build()
+          Tag.builder().description("Mathematical").build(),
+          Tag.builder().description("Physics").build()
       );
 
       quiz.setCategory(exampleCategory);
-      quizQuestion.setAnswers(exampleAnswers);
-      quizQuestion2.setAnswers(exampleAnswers2);
-      quiz.setQuestions(List.of(quizQuestion, quizQuestion2));
       quiz.setTags(exampleTag);
+      quizRepository.save(quiz);
+
 
       System.out.println("Adding quiz: size" + quiz.getQuestions().size());
       Long id = quizRepository.save(quiz).getId();
@@ -139,10 +138,10 @@ public class QuizTestData {
 
       System.out.println(quiz1.getTags());
 
-      //System.out.println(quizRepository.findQuizByCategoryId(1L).size());
-
-
-      //System.out.println(quizRepository.findQuizByTagsDescription("Physics").get(0).getId());
+//      System.out.println(quizRepository.findQuizByCategoryId(1L).size());
+//
+//
+//      System.out.println(quizRepository.findQuizByTagsDescription("Physics").get(0).getId());
     }
   }
 
