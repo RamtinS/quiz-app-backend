@@ -58,17 +58,21 @@ public class User implements UserDetails {
   @NonNull
   private String password;
 
-  @Column(name = "email", unique = true)
+  @Column(name = "email", nullable = false, unique = true)
+  @NonNull
   private String email;
 
-  @Column(name = "first_name")
+  @Column(name = "first_name", nullable = false)
+  @NonNull
   private String name;
 
-  @Column(name = "last_name")
+  @Column(name = "last_name", nullable = false)
+  @NonNull
   private String surName;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "role")
+  @Column(name = "role", nullable = false)
+  @NonNull
   private Role role;
 
   @OneToMany(mappedBy = "author", cascade = CascadeType.PERSIST)
