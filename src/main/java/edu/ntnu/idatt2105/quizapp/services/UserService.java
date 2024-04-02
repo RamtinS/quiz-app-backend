@@ -2,6 +2,7 @@ package edu.ntnu.idatt2105.quizapp.services;
 
 import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDTO;
 import edu.ntnu.idatt2105.quizapp.dto.user.EditUserDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.UserDetailsDto;
 import edu.ntnu.idatt2105.quizapp.exception.user.EmailAlreadyExistsException;
 import edu.ntnu.idatt2105.quizapp.exception.user.UsernameAlreadyExistsException;
@@ -10,6 +11,8 @@ import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import java.util.List;
 import java.util.Optional;
+
+import edu.ntnu.idatt2105.quizapp.validation.validators.UserValidator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -51,32 +54,25 @@ public class UserService {
             .orElseThrow(() -> new UsernameNotFoundException(
                     "User with username " + username + " not found."));
 
-    if (editUserDto.getNewEmail() != null && !editUserDto.getNewEmail().isBlank()) {
+    UserValidator.validateEmail(editUserDto.getNewEmail());
 
-      Optional<User> existingUserWithEmail = userRepository
-              .findUserByEmail(editUserDto.getNewEmail());
+    Optional<User> existingUserWithEmail = userRepository
+            .findUserByEmail(editUserDto.getNewEmail());
 
-      if (existingUserWithEmail.isPresent()
-              && !existingUserWithEmail.get().getUsername().equals(user.getUsername())) {
+    if (existingUserWithEmail.isPresent() && !existingUserWithEmail
+            .get().getUsername().equals(user.getUsername())) {
 
-        throw new UsernameAlreadyExistsException();
-      }
-
-      user.setEmail(editUserDto.getNewEmail());
+      throw new EmailAlreadyExistsException();
     }
 
-    if (editUserDto.getNewPassword() != null && !editUserDto.getNewPassword().isBlank()) {
-      user.setPassword(passwordEncoder.encode(editUserDto.getNewPassword()));
-    }
+    UserValidator.validatePassword(editUserDto.getNewPassword());
+    UserValidator.validateName(editUserDto.getNewName());
+    UserValidator.validateSurname(editUserDto.getNewSurname());
 
-    if (editUserDto.getNewName() != null && !editUserDto.getNewName().isBlank()) {
-      user.setName(editUserDto.getNewName());
-    }
-
-    if (editUserDto.getNewSurname() != null && !editUserDto.getNewSurname().isBlank()) {
-      user.setSurName(editUserDto.getNewSurname());
-    }
-
+    user.setEmail(editUserDto.getNewEmail());
+    user.setPassword(passwordEncoder.encode(editUserDto.getNewPassword()));
+    user.setName(editUserDto.getNewName());
+    user.setSurName(editUserDto.getNewSurname());
     userRepository.save(user);
   }
 
