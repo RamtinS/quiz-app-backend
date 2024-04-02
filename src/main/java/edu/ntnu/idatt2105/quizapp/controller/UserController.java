@@ -1,7 +1,5 @@
 package edu.ntnu.idatt2105.quizapp.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDTO;
 import edu.ntnu.idatt2105.quizapp.dto.user.EditUserDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.UserDetailsDto;
@@ -100,24 +98,11 @@ public class UserController {
           @ApiResponse(responseCode = "500", description = "Internal server error")})
   @GetMapping()
   public ResponseEntity<List<PublicUserInformationDTO>> searchUsername(
-          @RequestParam String search,
-          @RequestParam int page,
-          @RequestParam int size
-  ) {
-    log.info("Searching for users with username: {}", search);
+          @RequestParam String search, @RequestParam int page, @RequestParam int size) {
 
-    try {
-      List<PublicUserInformationDTO> result = searchService.findPublicProfilesFromUsername(search,
-              Pageable.ofSize(size).withPage(page));
+    List<PublicUserInformationDTO> result = searchService
+            .findPublicProfilesFromUsername(search, Pageable.ofSize(size).withPage(page));
 
-      ObjectMapper objectMapper = new ObjectMapper();
-      String json = objectMapper.writeValueAsString(result);
-
-      log.info("Found users: {}", json);
-
-      return new ResponseEntity<>(result, HttpStatus.OK);
-    } catch (JsonProcessingException e) {
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    return new ResponseEntity<>(result, HttpStatus.OK);
   }
 }
