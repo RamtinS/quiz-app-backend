@@ -8,6 +8,7 @@ import edu.ntnu.idatt2105.quizapp.exception.user.UsernameAlreadyExistsException;
 import edu.ntnu.idatt2105.quizapp.model.Role;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
+import edu.ntnu.idatt2105.quizapp.validation.validators.UserValidator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +64,12 @@ public class AuthenticationService {
     if (userRepository.findUserByEmail(registrationDto.getEmail()).isPresent()) {
       throw new EmailAlreadyExistsException();
     }
+
+    UserValidator.validateUsername(registrationDto.getUsername());
+    UserValidator.validatePassword(registrationDto.getPassword());
+    UserValidator.validateEmail(registrationDto.getEmail());
+    UserValidator.validateName(registrationDto.getName());
+    UserValidator.validateSurname(registrationDto.getSurname());
 
     String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
 
