@@ -11,10 +11,11 @@ import lombok.NonNull;
  * @author Jytabiri
  */
 @Data
+
 public class RegistrationDto {
 
   @NonNull
-  private String c;
+  private String username;
 
   @NonNull
   private String password;
