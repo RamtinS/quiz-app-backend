@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.dto.user;
 
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,20 +14,20 @@ import lombok.NonNull;
  * @author Jytabiri
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class RegistrationDto {
 
   @NonNull
-  private String username;
+  private String c;
 
   @NonNull
   private String password;
 
+  @NonNull
   private String email;
 
+  @NonNull
   private String name;
 
+  @NonNull
   private String surname;
-  
 }
