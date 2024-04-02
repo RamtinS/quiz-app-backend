@@ -7,12 +7,14 @@ import edu.ntnu.idatt2105.quizapp.model.quiz.Category;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import edu.ntnu.idatt2105.quizapp.model.quiz.QuizQuestion;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Tag;
+import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.CategoryRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizRepository;
+
+import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -124,6 +126,16 @@ public class QuizTestData {
               .isCorrect(false)
               .build()
       );
+
+      QuizAttempt quizAttempt = QuizAttempt.builder()
+              .attemptDate(new Date())
+              .score(10)
+              .quiz(quiz)
+              .user(user)
+              .build();
+
+      System.out.println(quizAttempt.toString());
+
 
       quiz.setCategory(exampleCategory);
       quizQuestion.setAnswers(exampleAnswers);
