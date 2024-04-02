@@ -51,8 +51,8 @@ public class Quiz {
   @Column(name = "description")
   private String description;
 
-  @OneToMany(mappedBy = "quiz", cascade = CascadeType.PERSIST)
-  private List<QuizQuestion> questions;
+  @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
+  private List<Question> questions;
 
   @ManyToOne(fetch = FetchType.LAZY)
   private User author;

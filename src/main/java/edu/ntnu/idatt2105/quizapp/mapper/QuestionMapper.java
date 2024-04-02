@@ -1,7 +1,11 @@
 package edu.ntnu.idatt2105.quizapp.mapper;
 
-import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizQuestionDTO;
-import edu.ntnu.idatt2105.quizapp.model.quiz.QuizQuestion;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.MultipleChoiceQuestionDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.QuestionDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.TrueOrFalseQuestionDTO;
+import edu.ntnu.idatt2105.quizapp.model.quiz.MultipleChoiceQuestion;
+import edu.ntnu.idatt2105.quizapp.model.quiz.Question;
+import edu.ntnu.idatt2105.quizapp.model.quiz.TrueOrFalseQuestion;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -25,13 +29,34 @@ public class QuestionMapper {
    * @param question The QuizQuestion object to map.
    * @return The mapped QuizQuestionDTO object.
    */
-  public QuizQuestionDTO mapToQuizQuestionDTO(QuizQuestion question) {
-    return QuizQuestionDTO.builder()
+  public QuestionDTO mapToQuizQuestionDTO(Question question) {
+    if (question instanceof MultipleChoiceQuestion) {
+      return mapToQuizQuestionDTOFromMultipleChoice((MultipleChoiceQuestion) question);
+
+    } else if (question instanceof TrueOrFalseQuestion) {
+      return mapToQuizQuestionDTOFromTrueOrFalse((TrueOrFalseQuestion) question);
+    } else {
+      throw new IllegalArgumentException("Question type not supported");
+
+    }
+  }
+
+  public QuestionDTO mapToQuizQuestionDTOFromTrueOrFalse(TrueOrFalseQuestion question) {
+    return TrueOrFalseQuestionDTO.builder()
+        .questionIsCorrect(question.getQuestionIsCorrect())
         .questionText(question.getQuestionText())
+        .build();
+  }
+
+
+  public QuestionDTO mapToQuizQuestionDTOFromMultipleChoice(MultipleChoiceQuestion question) {
+
+    return MultipleChoiceQuestionDTO.builder()
         .answers(question.getAnswers()
             .stream()
             .map(answerMapper::mapToAnswerDTO)
             .toList())
+        .questionText(question.getQuestionText())
         .build();
   }
 
@@ -41,13 +66,23 @@ public class QuestionMapper {
    * @param questionDTO The QuizQuestionDTO object to map.
    * @return The mapped QuizQuestion object.
    */
-  public QuizQuestion mapToQuizQuestion(QuizQuestionDTO questionDTO) {
-    return QuizQuestion.builder()
-        .questionText(questionDTO.getQuestionText())
+  public Question mapToQuestion(QuestionDTO questionDTO) {
+
+    if (questionDTO instanceof MultipleChoiceQuestionDTO) {
+      return mapMultipleChoiceQuestionToQuestionDTO((MultipleChoiceQuestionDTO) questionDTO);
+    } else {
+      throw new IllegalArgumentException("Question type not supported");
+    }
+  }
+
+  public Question mapMultipleChoiceQuestionToQuestionDTO(MultipleChoiceQuestionDTO questionDTO) {
+    return MultipleChoiceQuestion.builder()
         .answers(questionDTO.getAnswers()
             .stream()
             .map(answerMapper::mapToAnswer)
             .toList())
+        .questionText(questionDTO.getQuestionText())
         .build();
   }
+
 }
