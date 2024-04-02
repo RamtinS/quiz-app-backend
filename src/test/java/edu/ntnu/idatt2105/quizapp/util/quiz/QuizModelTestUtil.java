@@ -1,9 +1,8 @@
 package edu.ntnu.idatt2105.quizapp.util.quiz;
 
-import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Answer;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
-import edu.ntnu.idatt2105.quizapp.model.quiz.QuizQuestion;
+import edu.ntnu.idatt2105.quizapp.model.quiz.MultipleChoiceQuestion;
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
 import java.util.List;
 
@@ -25,15 +24,15 @@ public class QuizModelTestUtil {
         .build();
   }
 
-  public static QuizQuestion createQuizQuestionA() {
-    return QuizQuestion.builder()
+  public static MultipleChoiceQuestion createQuizQuestionA() {
+    return MultipleChoiceQuestion.builder()
         .questionText("Question A")
         .answers(List.of(createAnswerA(), createAnswerB()))
         .build();
   }
 
-  public static QuizQuestion createQuizQuestionB() {
-    return QuizQuestion.builder()
+  public static MultipleChoiceQuestion createQuizQuestionB() {
+    return MultipleChoiceQuestion.builder()
         .questionText("Question B")
         .answers(List.of(createAnswerA(), createAnswerB()))
         .build();

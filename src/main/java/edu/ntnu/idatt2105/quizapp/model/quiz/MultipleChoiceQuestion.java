@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Model class for QuizQuestion.
@@ -30,23 +31,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@Table(name = "questions")
-public class QuizQuestion {
+@SuperBuilder
+@Table(name = "multiple_choice_questions")
+public class MultipleChoiceQuestion extends Question {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
 
-  @Column(name = "question_text")
-  private String questionText;
-
-  @OneToMany(mappedBy = "quizQuestion", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
   private List<Answer> answers;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Quiz quiz;
+
 
   @Override
   public boolean equals(Object object) {
@@ -56,14 +49,13 @@ public class QuizQuestion {
     if (object == null || getClass() != object.getClass()) {
       return false;
     }
-    QuizQuestion that = (QuizQuestion) object;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(questionText, that.questionText) &&
-        Objects.equals(answers, that.answers) && Objects.equals(quiz, that.quiz);
+    MultipleChoiceQuestion that = (MultipleChoiceQuestion) object;
+    return super.equals(object) &&
+        Objects.equals(answers, that.answers);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, questionText, quiz);
+    return Objects.hash(answers);
   }
 }
