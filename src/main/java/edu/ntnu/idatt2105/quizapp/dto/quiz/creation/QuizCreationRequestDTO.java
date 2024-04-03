@@ -2,7 +2,6 @@ package edu.ntnu.idatt2105.quizapp.dto.quiz.creation;
 
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuestionDTO;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.TagDto;
-import edu.ntnu.idatt2105.quizapp.model.quiz.Question;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -19,7 +18,7 @@ import lombok.Data;
  */
 @Builder
 @Data
-public class QuizCreationRequestDto {
+public class QuizCreationRequestDTO {
   @NotNull
   @NotBlank
   private String title;

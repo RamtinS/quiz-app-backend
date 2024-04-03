@@ -2,7 +2,7 @@ package edu.ntnu.idatt2105.quizapp.mapper;
 
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDTO;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import lombok.NonNull;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
  * @author Tobias Oftedal
  * @author Jeffrey Yaw Annor Tabiri
  * @version 1.0
- * @since 2024-03-27
  */
 @Component
 @RequiredArgsConstructor
@@ -74,7 +73,7 @@ public class QuizMapper {
    * @param user                   The user that created the quiz.
    * @return The mapped Quiz object.
    */
-  public Quiz mapToQuiz(QuizCreationRequestDto quizCreationRequestDTO, User user) {
+  public Quiz mapToQuiz(QuizCreationRequestDTO quizCreationRequestDTO, User user) {
 
     Quiz createdQuiz = Quiz.builder()
         .name(quizCreationRequestDTO.getTitle())
@@ -91,9 +90,7 @@ public class QuizMapper {
         .isOpen(quizCreationRequestDTO.isOpen())
         .build();
 
-    createdQuiz.getQuestions().forEach(question -> {
-      question.setQuiz(createdQuiz);
-    });
+    createdQuiz.getQuestions().forEach(question -> question.setQuiz(createdQuiz));
 
     return createdQuiz;
   }
