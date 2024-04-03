@@ -69,18 +69,27 @@ public class QuestionMapper {
   public Question mapToQuestion(QuestionDTO questionDTO) {
 
     if (questionDTO instanceof MultipleChoiceQuestionDTO) {
-      return mapMultipleChoiceQuestionToQuestionDTO((MultipleChoiceQuestionDTO) questionDTO);
+      return mapMultipleChoiceQuestionDTOToQuestion((MultipleChoiceQuestionDTO) questionDTO);
+    } else if (questionDTO instanceof TrueOrFalseQuestionDTO) {
+      return mapTrueOrFalsoToQuestion((TrueOrFalseQuestionDTO) questionDTO);
     } else {
       throw new IllegalArgumentException("Question type not supported");
     }
   }
 
-  public Question mapMultipleChoiceQuestionToQuestionDTO(MultipleChoiceQuestionDTO questionDTO) {
+  public Question mapMultipleChoiceQuestionDTOToQuestion(MultipleChoiceQuestionDTO questionDTO) {
     return MultipleChoiceQuestion.builder()
         .answers(questionDTO.getAnswers()
             .stream()
             .map(answerMapper::mapToAnswer)
             .toList())
+        .questionText(questionDTO.getQuestionText())
+        .build();
+  }
+
+  public Question mapTrueOrFalsoToQuestion(TrueOrFalseQuestionDTO questionDTO) {
+    return TrueOrFalseQuestion.builder()
+        .questionIsCorrect(questionDTO.getQuestionIsCorrect())
         .questionText(questionDTO.getQuestionText())
         .build();
   }
