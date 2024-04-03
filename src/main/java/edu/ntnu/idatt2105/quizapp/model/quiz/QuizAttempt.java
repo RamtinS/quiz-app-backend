@@ -16,14 +16,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * Entity model for quiz attempts.
  *
  * @author Jeffrey Yaw Annor Tabiri
  * @version 1.0
- * @since 02/04/2024
  */
 @Entity
 @Builder
