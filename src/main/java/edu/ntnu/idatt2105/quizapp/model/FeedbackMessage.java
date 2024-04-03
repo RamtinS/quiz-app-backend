@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -47,5 +49,5 @@ public class FeedbackMessage {
 
   @Column(name = "timestamp")
   @NonNull
-  private LocalDateTime timestamp;
+  private LocalDate timestamp;
 }
