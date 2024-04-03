@@ -1,19 +1,23 @@
 package edu.ntnu.idatt2105.quizapp.services;
 
+import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDTO;
 import edu.ntnu.idatt2105.quizapp.dto.user.EditUserDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.UserDetailsDto;
-import edu.ntnu.idatt2105.quizapp.model.User;
-import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDTO;
+import edu.ntnu.idatt2105.quizapp.exception.user.EmailAlreadyExistsException;
 import edu.ntnu.idatt2105.quizapp.mapper.UserMapper;
+import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
+import java.util.List;
+import java.util.Optional;
+
+import edu.ntnu.idatt2105.quizapp.validation.validators.UserValidator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import java.util.List;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+
 
 /**
  * Service class that encapsulates the logic for handling user-related operations.
@@ -39,7 +43,7 @@ public class UserService {
    * @param username The username of the user to be updated.
    * @param editUserDto The DTO containing the new user information.
    * @throws UsernameNotFoundException If the user is not found in the database.
-   * @throws IllegalArgumentException If email already in use by another user.
+   * @throws EmailAlreadyExistsException If the email already exists.
    */
   public void editUser(@NonNull String username, @NonNull EditUserDto editUserDto)
           throws UsernameNotFoundException, IllegalArgumentException {
@@ -48,28 +52,25 @@ public class UserService {
             .orElseThrow(() -> new UsernameNotFoundException(
                     "User with username " + username + " not found."));
 
-    if (editUserDto.getNewEmail() != null && !editUserDto.getNewEmail().isBlank()) {
+    UserValidator.validateEmail(editUserDto.getNewEmail());
 
-      Optional<User> existingUserWithEmail = userRepository.findUserByEmail(editUserDto.getNewEmail());
-      if (existingUserWithEmail.isPresent() && !existingUserWithEmail.get().getUsername().equals(user.getUsername())) {
-        throw new IllegalArgumentException("Email already in use by another user.");
-      }
+    Optional<User> existingUserWithEmail = userRepository
+            .findUserByEmail(editUserDto.getNewEmail());
 
-      user.setEmail(editUserDto.getNewEmail());
+    if (existingUserWithEmail.isPresent() && !existingUserWithEmail
+            .get().getUsername().equals(user.getUsername())) {
+
+      throw new EmailAlreadyExistsException();
     }
 
-    if (editUserDto.getNewPassword() != null && !editUserDto.getNewPassword().isBlank()) {
-      user.setPassword(passwordEncoder.encode(editUserDto.getNewPassword()));
-    }
+    UserValidator.validatePassword(editUserDto.getNewPassword());
+    UserValidator.validateName(editUserDto.getNewName());
+    UserValidator.validateSurname(editUserDto.getNewSurname());
 
-    if (editUserDto.getNewName() != null && !editUserDto.getNewName().isBlank()) {
-      user.setName(editUserDto.getNewName());
-    }
-
-    if (editUserDto.getNewSurname() != null && !editUserDto.getNewSurname().isBlank()) {
-      user.setSurName(editUserDto.getNewSurname());
-    }
-
+    user.setEmail(editUserDto.getNewEmail());
+    user.setPassword(passwordEncoder.encode(editUserDto.getNewPassword()));
+    user.setName(editUserDto.getNewName());
+    user.setSurName(editUserDto.getNewSurname());
     userRepository.save(user);
   }
 
@@ -95,12 +96,15 @@ public class UserService {
 
   /**
    * Finds a list of public profile DTOs based on the search parameter.
+   *
    * @param searchString the search parameter.
    * @param pageable the pageable used to find a specified page.
    * @return a list of public profile DTOs based on the search parameter.
    */
-  public List<PublicUserInformationDTO> findPublicProfilesFromUsername(String searchString, Pageable pageable) {
-    return userRepository.findAllByUsernameContainingIgnoreCase(
-            searchString, pageable).stream().map(userMapper::mapToPublicUserInformation).toList();
+  public List<PublicUserInformationDTO> findPublicProfilesFromUsername(
+          String searchString, Pageable pageable) {
+
+    return userRepository.findAllByUsernameContainingIgnoreCase(searchString, pageable)
+            .stream().map(userMapper::mapToPublicUserInformation).toList();
   }
 }

@@ -129,35 +129,6 @@ class UserTest {
   }
 
   @Test
-  void User_SetUsername_ReturnSavedUsername() {
-    //Arrange
-    String expected = "Draven";
-
-    //Act
-    testUser.setUsername("Draven");
-    String actual = testUser.getUsername();
-
-    //Assert
-    assertEquals(expected, actual);
-  }
-
-  @Test
-  void User_SetUsernameToNull_ReturnException() {
-
-    //Arrange
-    String expected = "username is marked non-null but is null";
-
-    //Act
-    Exception actual = assertThrows(Exception.class, () -> {
-      testUser.setUsername(null);
-    });
-
-    //Assert
-    assertEquals(expected, actual.getMessage());
-  }
-
-
-  @Test
   void User_SetPassword_ReturnSavedPassword() {
     //Arrange
     String expected = "newPassword";

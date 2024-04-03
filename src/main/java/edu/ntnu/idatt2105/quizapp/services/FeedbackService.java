@@ -25,9 +25,8 @@ public class FeedbackService {
    * The method saves a feedback message to the database.
    *
    * @param feedbackDto The feedback DTO containing feedback information.
-   * @throws NullPointerException If the feedbackDto object is null.
    */
-  public void saveFeedBackMessage(@NonNull FeedbackDto feedbackDto) throws NullPointerException {
+  public void saveFeedBackMessage(@NonNull FeedbackDto feedbackDto) {
 
     FeedbackMessage feedbackMessage = FeedbackMessage.builder()
             .email(feedbackDto.getEmail())
