@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -49,6 +50,6 @@ public class QuizAttempt {
   @Column(name = "score")
   private int score;
 
-  @Column(name = "attempt_timestamp")
-  private Date attemptDate;
+  @Column(name = "timestamp")
+  private LocalDate timestamp;
 }
