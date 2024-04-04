@@ -4,6 +4,10 @@ import edu.ntnu.idatt2105.quizapp.dto.user.LoginRequestDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.model.Role;
 import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
+import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
+import edu.ntnu.idatt2105.quizapp.model.quiz.Tag;
+import edu.ntnu.idatt2105.quizapp.util.quiz.QuizModelTestUtil;
 
 /**
  * Utility class for mock creation of models.
@@ -47,6 +51,23 @@ public class TestUtil {
     return User.builder()
             .username("Geoffrey")
             .password("Password")
+            .build();
+  }
+
+  public static Tag createTagA() {
+    return Tag.builder()
+            .description("Integrals")
+            .build();
+  }
+
+  public static QuizAttempt createQuizAttemptA() {
+
+    Quiz quiz = QuizModelTestUtil.createQuizA();
+    User user = TestUtil.createUserA();
+
+    return QuizAttempt.builder()
+            .quiz(quiz)
+            .user(user)
             .build();
   }
 
