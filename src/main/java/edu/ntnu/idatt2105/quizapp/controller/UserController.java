@@ -3,6 +3,7 @@ package edu.ntnu.idatt2105.quizapp.controller;
 import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDTO;
 import edu.ntnu.idatt2105.quizapp.dto.user.EditUserDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.UserDetailsDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.UserStatsDto;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,10 +64,10 @@ public class UserController {
   }
 
   /**
-   * REST-endpoint for changing user information.
+   * REST-endpoint for retrieving user information.
    *
    * @param principal The authenticated principal
-   * @return ResponseEntity containing user information DTO on success, or error on failure.
+   * @return ResponseEntity containing user information DTO on success.
    */
   @Operation(summary = "Retrieve user information")
   @ApiResponse(responseCode = "200", description = "User information successfully retrieved.",
@@ -104,5 +105,25 @@ public class UserController {
             .findPublicProfilesFromUsername(search, Pageable.ofSize(size).withPage(page));
 
     return new ResponseEntity<>(result, HttpStatus.OK);
+  }
+
+  /**
+   * REST-endpoint for retrieving user statistics.
+   *
+   * @param principal The authenticated principal
+   * @return ResponseEntity containing a DTO with user stats on success.
+   */
+  @Operation(summary = "Retrieve user statistics")
+  @ApiResponse(responseCode = "200", description = "User stats successfully retrieved.",
+          content = {@Content(mediaType = "application/json",
+                  schema = @Schema(implementation = UserStatsDto.class))}
+  )
+  @GetMapping("/stats")
+  public ResponseEntity<UserStatsDto> retrieveUserStats(Principal principal) {
+    String username = principal.getName();
+    log.info("Retrieving user stats for user {}.", username);
+    UserStatsDto userStats = userService.getUserStats(username);
+    log.info("User stats for {} successfully retrieved.", username);
+    return new ResponseEntity<>(userStats, HttpStatus.OK);
   }
 }
