@@ -8,7 +8,7 @@ import java.util.Map;
 @Data
 @Builder
 public class UserStatsDto {
-  private Map<LocalDate, Long> QuizAttemptsPerDay;
+  private Map<LocalDate, Long> quizAttemptsLastSevenDays;
   private int totalQuizAttempts;
   private int totalScore;
 }
