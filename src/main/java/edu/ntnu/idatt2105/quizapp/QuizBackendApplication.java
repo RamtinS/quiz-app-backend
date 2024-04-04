@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2105.quizapp;
 
-import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.CategoryRepository;
+import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizAttemptRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizRepository;
 import edu.ntnu.idatt2105.quizapp.testdata.QuizTestData;
 import org.springframework.boot.CommandLineRunner;
@@ -20,16 +20,14 @@ public class QuizBackendApplication {
 
   @Bean
   CommandLineRunner run(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                        QuizRepository quizRepository, CategoryRepository categoryRepository) {
+                        QuizRepository quizRepository, CategoryRepository categoryRepository,
+                        QuizAttemptRepository quizAttemptRepository) {
 
     return args -> {
 
-      QuizTestData.addTestData(passwordEncoder, userRepository, quizRepository, categoryRepository);
+      QuizTestData.addTestData(passwordEncoder, userRepository, quizRepository,
+              categoryRepository, quizAttemptRepository);
 
-      if (userRepository.findUserByUsername("Admin").isPresent()) {
-        User testUser = userRepository.findUserByUsername("Admin").get();
-        QuizTestData.addTestDataToUser(testUser, quizRepository, categoryRepository);
-      }
     };
   }
 }

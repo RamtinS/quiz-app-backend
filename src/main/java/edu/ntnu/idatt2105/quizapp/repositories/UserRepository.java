@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for managing User entities.
- * The interface extends JpaRepository.
- * The class allows for basic CRUD (Create, Read, Update, Delete) operations on users.
+ * The interface extends JpaRepository, allowing basic CRUD
+ * (Create, Read, Update, Delete) operations on users.
  *
  * @author Jeffrey Tabiri
  * @author Ramtin Samavat
@@ -35,6 +35,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @return An Optional containing the user if found, otherwise empty.
    */
   Optional<User> findUserByEmail(String email);
+
 
   List<User> findAllByUsernameContainingIgnoreCase(String username, Pageable pageable);
 }

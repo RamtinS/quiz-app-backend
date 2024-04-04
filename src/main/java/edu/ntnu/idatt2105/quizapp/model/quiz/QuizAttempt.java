@@ -13,18 +13,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Entity model for quiz attempts.
  *
  * @author Jeffrey Yaw Annor Tabiri
  * @version 1.0
- * @since 02/04/2024
  */
 @Entity
 @Builder
@@ -43,19 +40,16 @@ public class QuizAttempt {
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "quiz_id", nullable = false)
-  @NonNull
+  @JoinColumn(name = "quiz_id")
   private Quiz quiz;
 
   @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false)
-  @NonNull
+  @JoinColumn(name = "user_id")
   private User user;
 
-  @Column(name = "score", nullable = false)
+  @Column(name = "score")
   private int score;
 
-  @Column(name = "attempt_timestamp", nullable = false)
-  @NonNull
-  private Date attemptDate;
+  @Column(name = "timestamp")
+  private LocalDate timestamp;
 }
