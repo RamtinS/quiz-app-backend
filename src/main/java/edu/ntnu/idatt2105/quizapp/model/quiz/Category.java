@@ -11,6 +11,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
 import java.util.Objects;
+
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,9 +40,12 @@ public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false, unique = true)
+  @Setter(AccessLevel.NONE)
+  @Getter(AccessLevel.NONE)
   private Long id;
 
   @Column(name = "description", nullable = false)
+  @NonNull
   private String description;
 
   @OneToMany(mappedBy = "category")
@@ -65,4 +70,5 @@ public class Category {
   public int hashCode() {
     return Objects.hash(id, description);
   }
+
 }
