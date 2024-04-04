@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -43,15 +44,18 @@ public class QuizAttempt {
 
   @ManyToOne
   @JoinColumn(name = "quiz_id", nullable = false)
+  @NonNull
   private Quiz quiz;
 
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
+  @NonNull
   private User user;
 
-  @Column(name = "score")
+  @Column(name = "score", nullable = false)
   private int score;
 
-  @Column(name = "attempt_timestamp")
+  @Column(name = "attempt_timestamp", nullable = false)
+  @NonNull
   private Date attemptDate;
 }
