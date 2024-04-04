@@ -157,25 +157,32 @@ public class QuizTestData {
               .timestamp(LocalDate.now())
               .build();
 
-      QuizAttempt quizAttempt3 = QuizAttempt.builder()
+      QuizAttempt quizAttempt1 = QuizAttempt.builder()
               .quiz(quiz)
               .user(user)
               .score(2)
               .timestamp(LocalDate.now())
               .build();
 
-      QuizAttempt quizAttempt1 = QuizAttempt.builder()
-              .quiz(quiz)
-              .user(user)
-              .score(2)
-              .timestamp(LocalDate.of(2024, 4, 1))
-              .build();
-
       QuizAttempt quizAttempt2 = QuizAttempt.builder()
               .quiz(quiz)
               .user(user)
               .score(2)
+              .timestamp(LocalDate.of(2024, 4, 3))
+              .build();
+
+      QuizAttempt quizAttempt3 = QuizAttempt.builder()
+              .quiz(quiz)
+              .user(user)
+              .score(2)
               .timestamp(LocalDate.of(2024, 4, 2))
+              .build();
+
+      QuizAttempt quizAttempt4 = QuizAttempt.builder()
+              .quiz(quiz)
+              .user(user)
+              .score(2)
+              .timestamp(LocalDate.of(2024, 4, 1))
               .build();
 
       QuizAttempt quizAttempt5 = QuizAttempt.builder()
@@ -192,20 +199,13 @@ public class QuizTestData {
               .timestamp(LocalDate.of(2024, 3, 30))
               .build();
 
-      QuizAttempt quizAttempt7 = QuizAttempt.builder()
-              .quiz(quiz)
-              .user(user)
-              .score(2)
-              .timestamp(LocalDate.of(2024, 3, 29))
-              .build();
-
       quizAttemptRepository.save(quizAttempt5);
       quizAttemptRepository.save(quizAttempt6);
-      quizAttemptRepository.save(quizAttempt7);
       quizAttemptRepository.save(quizAttempt);
       quizAttemptRepository.save(quizAttempt1);
       quizAttemptRepository.save(quizAttempt2);
       quizAttemptRepository.save(quizAttempt3);
+      quizAttemptRepository.save(quizAttempt4);
     }
   }
 
