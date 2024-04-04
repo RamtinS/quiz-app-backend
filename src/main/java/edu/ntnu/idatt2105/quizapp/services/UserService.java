@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
-
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -56,29 +55,37 @@ public class UserService {
   public void editUser(@NonNull String username, @NonNull EditUserDto editUserDto)
           throws UsernameNotFoundException, IllegalArgumentException {
 
-    User user = userRepository.findUserByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException(
-                    "User with username " + username + " not found."));
-
-    UserValidator.validateEmail(editUserDto.getNewEmail());
+    User user = userRepository.findUserByUsername(username).orElseThrow(() ->
+            new UsernameNotFoundException("User with username " + username + " not found."));
 
     Optional<User> existingUserWithEmail = userRepository
             .findUserByEmail(editUserDto.getNewEmail());
 
     if (existingUserWithEmail.isPresent() && !existingUserWithEmail
             .get().getUsername().equals(user.getUsername())) {
-
       throw new EmailAlreadyExistsException();
     }
 
-    UserValidator.validatePassword(editUserDto.getNewPassword());
-    UserValidator.validateName(editUserDto.getNewName());
-    UserValidator.validateSurname(editUserDto.getNewSurname());
+    if (!editUserDto.getNewEmail().isBlank()) {
+      UserValidator.validateEmail(editUserDto.getNewEmail());
+      user.setEmail(editUserDto.getNewEmail());
+    }
 
-    user.setEmail(editUserDto.getNewEmail());
-    user.setPassword(passwordEncoder.encode(editUserDto.getNewPassword()));
-    user.setName(editUserDto.getNewName());
-    user.setSurName(editUserDto.getNewSurname());
+    if (!editUserDto.getNewPassword().isBlank()) {
+      UserValidator.validatePassword(editUserDto.getNewPassword());
+      user.setPassword(passwordEncoder.encode(editUserDto.getNewPassword()));
+    }
+
+    if (!editUserDto.getNewName().isBlank()) {
+      UserValidator.validateName(editUserDto.getNewName());
+      user.setName(editUserDto.getNewName());
+    }
+
+    if (!editUserDto.getNewSurname().isBlank()) {
+      UserValidator.validateSurname(editUserDto.getNewSurname());
+      user.setSurName(editUserDto.getNewSurname());
+    }
+
     userRepository.save(user);
   }
 
