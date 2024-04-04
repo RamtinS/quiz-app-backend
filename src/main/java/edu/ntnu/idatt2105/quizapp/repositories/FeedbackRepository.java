@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for managing feedback message entities.
- * The interface extends JpaRepository, allowing for basic CRUD
+ * The interface extends JpaRepository, allowing basic CRUD
  * (Create, Read, Update, Delete) operations.
  *
  * @author Ramtin Samavat
