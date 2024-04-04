@@ -1,6 +1,5 @@
 package edu.ntnu.idatt2105.quizapp.model.quiz;
 
-import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class TagTest {
 
-  Tag testTag;
+  Tag tag;
 
   @BeforeEach
   void setUp() {
-    testTag = TestUtil.createTagA();
+    tag = TestUtil.createTagA();
   }
 
   @Test
@@ -55,7 +54,7 @@ class TagTest {
     String expected = "Integrals";
 
     //Act
-    String actual = testTag.getDescription();
+    String actual = tag.getDescription();
 
     //Assert
     assertEquals(expected, actual);
@@ -68,8 +67,8 @@ class TagTest {
     String expected = "Derivative";
 
     //Act
-    testTag.setDescription(expected);
-    String actual = testTag.getDescription();
+    tag.setDescription(expected);
+    String actual = tag.getDescription();
 
     //Assert
     assertEquals(expected, actual);
@@ -78,7 +77,7 @@ class TagTest {
   @Test
   void Tag_SetDescriptionWithNull_ReturnException() {
     assertThrows(NullPointerException.class, () ->
-            testTag.setDescription(null)
+            tag.setDescription(null)
     );
   }
 }
