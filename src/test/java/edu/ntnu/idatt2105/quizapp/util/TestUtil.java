@@ -8,6 +8,7 @@ import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Tag;
 import edu.ntnu.idatt2105.quizapp.util.quiz.QuizModelTestUtil;
+import java.util.Date;
 
 /**
  * Utility class for mock creation of models.
@@ -68,6 +69,8 @@ public class TestUtil {
     return QuizAttempt.builder()
             .quiz(quiz)
             .user(user)
+            .attemptDate(new Date(420520L))
+            .score(37)
             .build();
   }
 
