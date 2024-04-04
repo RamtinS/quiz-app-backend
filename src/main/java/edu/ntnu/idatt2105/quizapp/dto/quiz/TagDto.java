@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2105.quizapp.dto.quiz;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +14,7 @@ import lombok.NoArgsConstructor;
  * @version 1.0
  * @since 2024-03-30
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type"
-)
+@JsonTypeName("TagDTO")
 @Data
 @Builder
 @AllArgsConstructor
