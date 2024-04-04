@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,14 +37,16 @@ public class QuizAttempt {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
+  @Setter(AccessLevel.NONE)
+  @Getter(AccessLevel.NONE)
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "quiz_id")
+  @JoinColumn(name = "quiz_id", nullable = false)
   private Quiz quiz;
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
   @Column(name = "score")
