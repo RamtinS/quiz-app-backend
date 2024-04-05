@@ -5,6 +5,7 @@ import edu.ntnu.idatt2105.quizapp.exception.user.UsernameAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -79,16 +80,28 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntityWithErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+    /**
+     * The method handles exceptions related to optimistic locking failure.
+     *
+     * @param ex The exception to handle.
+     * @return ResponseEntity containing the ErrorResponse with HTTP status code 404 (NOT_FOUND).
+     */
+  @ExceptionHandler(OptimisticLockingFailureException.class)
+  public ResponseEntity<ErrorResponse> handleOptimisticLockingFailureException(Exception ex) {
+    ErrorResponse errorResponse = new ErrorResponse("The entity could not be found");
+    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+  }
+
   /**
    * The method builds a ResponseEntity containing an ErrorResponse based on the given
    * exception and HTTP status.
    *
-   * @param ex The exception to handle.
+   * @param ex     The exception to handle.
    * @param status The HTTP status to set in the response.
    * @return ResponseEntity containing the ErrorResponse with the specified HTTP status.
    */
   private ResponseEntity<ErrorResponse> buildResponseEntityWithErrorResponse(
-          Exception ex, HttpStatus status) {
+      Exception ex, HttpStatus status) {
 
     log.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
     ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());

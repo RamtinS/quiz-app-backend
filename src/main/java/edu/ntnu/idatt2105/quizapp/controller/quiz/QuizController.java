@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -290,4 +291,16 @@ public class QuizController {
 
 
 
+
+  @PutMapping("quizzes/{quizId}")
+  public ResponseEntity<QuizCreationResponseDTO> updateQuiz(Principal principal,
+                                                            @PathVariable long quizId,
+                                                            @RequestBody
+                                                            QuizCreationRequestDTO quizCreationRequestDTO) {
+    log.info("Update quiz by id: " + quizId);
+    QuizCreationResponseDTO quizCreationResponseDTO =
+        quizService.updateQuiz(principal, quizId, quizCreationRequestDTO);
+    log.info("Returning quiz: " + quizCreationResponseDTO.getQuizId());
+    return new ResponseEntity<>(quizCreationResponseDTO, HttpStatus.OK);
+  }
 }

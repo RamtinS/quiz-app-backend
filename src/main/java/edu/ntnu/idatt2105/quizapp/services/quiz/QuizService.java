@@ -151,7 +151,7 @@ public class QuizService {
           Pageable pageable) {
 
     if (searchByCategory && searchByTags) {
-      List<QuizPreviewDTO> result = quizRepository.findQuizByCategoryDescriptionAndTagsDescriptionContainingIgnoreCaseAndIsOpen(search, search, true, pageable).stream()
+      return quizRepository.findQuizByCategoryDescriptionAndTagsDescriptionContainingIgnoreCaseAndIsOpen(search, search, true, pageable).stream()
               .map(quizMapper::mapToQuizPreviewDTO)
               .toList();
     }
@@ -172,5 +172,33 @@ public class QuizService {
               .map(quizMapper::mapToQuizPreviewDTO)
               .toList();
     }
+    }
+
+  public QuizCreationResponseDTO updateQuiz(Principal principal, long id,
+                                            QuizCreationRequestDTO quizCreationDTO) {
+    Optional<User> user = userRepository.findUserByUsername(principal.getName());
+    if (user.isEmpty()) {
+      throw new UsernameNotFoundException("User not found");
+    }
+
+    Quiz quiz = quizRepository.findQuizById(id).orElseThrow();
+    if (!quiz.getAuthor().getUsername().equals(principal.getName())) {
+      throw new IllegalArgumentException("User does not have permission to edit this quiz.");
+    }
+
+    quiz = quizMapper.mapToQuiz(quizCreationDTO, user.get());
+
+    Quiz savedQuiz = quizRepository.save(quiz);
+
+
+    Quiz originalQuiz = quizRepository.findQuizById(id).orElseThrow();
+    quizRepository.delete(originalQuiz);
+
+    return QuizCreationResponseDTO.builder()
+        .quizId(savedQuiz.getId())
+        .build();
+
   }
+
+
 }
