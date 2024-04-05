@@ -236,4 +236,58 @@ public class QuizController {
       return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  /**
+   * Get all public quizzes with the defined criteria paginated.
+   *
+   * @param pageSize the size of the requested page
+   * @param page     the page number of the requested page
+   * @return ResponseEntity containing a list of quiz previews, or a null response with
+   * a {@link HttpStatus#BAD_REQUEST}.
+   */
+  @Operation(summary = "Get all public with certain criteria quizzes paginated")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "The public quizzes with the specified criteria were found and returned",
+                  content = {@Content(mediaType = "application/json",
+                          schema = @Schema(implementation = QuizPreviewDTO.class))}),
+          @ApiResponse(responseCode = "500", description = "The quizzes could not be found" +
+                  " due to an internal server error",
+                  content = @Content)})
+  @GetMapping("browser/search")
+  public ResponseEntity<List<QuizPreviewDTO>> getAllQuizzesWithDefinedCriteria(
+          @RequestParam int pageSize,
+          @RequestParam int page,
+          @RequestParam String title,
+          @RequestParam boolean searchInCategory,
+          @RequestParam boolean searchInTags
+  ) {
+
+    log.info("Browsing quizzes with criteria");
+
+    if (searchInCategory) {
+      log.info("Criteria: Category");
+    }
+
+    if (searchInTags) {
+      log.info("Criteria: Tags");
+    }
+
+    try {
+
+      PageRequest pageRequest = PageRequest.of(page, pageSize);
+
+      List<QuizPreviewDTO> quizzes = quizService.getQuizBySearchParameters(
+              title, searchInCategory, searchInTags, pageRequest);
+
+      log.info("Returning " + quizzes.size() + " quizzes");
+      return new ResponseEntity<>(quizzes, HttpStatus.OK);
+
+    } catch (Exception e) {
+      log.error("Error: of type " + e.getClass().getName(), e);
+      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
+
 }
