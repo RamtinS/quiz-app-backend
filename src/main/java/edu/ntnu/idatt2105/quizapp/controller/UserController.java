@@ -58,7 +58,7 @@ public class UserController {
   public ResponseEntity<Void> editUserInformation(@RequestBody EditUserDto editUserDto,
                                                   Principal principal) {
     String username = principal.getName();
-    log.info("Editing user information for user {}. {}", username, editUserDto);
+    log.info("Editing user information for user {}.", username);
     userService.editUser(username, editUserDto);
     log.info("User information for {} successfully updated.", username);
     return new ResponseEntity<>(HttpStatus.OK);
