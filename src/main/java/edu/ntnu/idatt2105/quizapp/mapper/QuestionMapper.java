@@ -78,13 +78,15 @@ public class QuestionMapper {
   }
 
   public Question mapMultipleChoiceQuestionDTOToQuestion(MultipleChoiceQuestionDTO questionDTO) {
-    return MultipleChoiceQuestion.builder()
+    MultipleChoiceQuestion question = MultipleChoiceQuestion.builder()
         .answers(questionDTO.getAnswers()
             .stream()
             .map(answerMapper::mapToAnswer)
             .toList())
         .questionText(questionDTO.getQuestionText())
         .build();
+    question.getAnswers().forEach(answer -> answer.setQuestion(question));
+    return question;
   }
 
   public Question mapTrueOrFalsoToQuestion(TrueOrFalseQuestionDTO questionDTO) {
