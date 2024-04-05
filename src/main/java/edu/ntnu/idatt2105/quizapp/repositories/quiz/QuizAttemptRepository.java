@@ -23,4 +23,6 @@ public interface QuizAttemptRepository extends JpaRepository<QuizAttempt, Long> 
    * @return A list containing the user's quiz attempts.
    */
   List<QuizAttempt> findQuizAttemptByUser_Username(String username);
+
+  List<QuizAttempt> findQuizAttemptByQuiz_Id (Long id);
 }

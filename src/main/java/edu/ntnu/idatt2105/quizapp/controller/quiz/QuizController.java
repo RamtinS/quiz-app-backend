@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -303,4 +304,17 @@ public class QuizController {
     log.info("Returning quiz: " + quizCreationResponseDTO.getQuizId());
     return new ResponseEntity<>(quizCreationResponseDTO, HttpStatus.OK);
   }
+
+  @DeleteMapping("quizzes/{quizId}")
+  public ResponseEntity<String> deleteQuiz(Principal principal,
+                                                            @PathVariable long quizId) {
+    log.info("Delete quiz by id: " + quizId);
+    if (quizService.deleteQuiz(principal, quizId)) {
+      log.info("Deleted");
+      return new ResponseEntity<>("Deleted Successfully", HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>("Did not delete.", HttpStatus.OK);
+    }
+  }
+
 }

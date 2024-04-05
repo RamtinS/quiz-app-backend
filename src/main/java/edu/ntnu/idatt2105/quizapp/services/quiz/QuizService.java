@@ -7,7 +7,9 @@ import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDTO;
 import edu.ntnu.idatt2105.quizapp.mapper.QuizMapper;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
+import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
+import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizAttemptRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizRepository;
 import java.security.Principal;
 import java.util.List;
@@ -33,6 +35,8 @@ public class QuizService {
 
   @NonNull
   private final QuizRepository quizRepository;
+  @NonNull
+  private final QuizAttemptRepository quizAttemptRepository;
   @NonNull
   private final UserRepository userRepository;
   @NonNull
@@ -176,6 +180,7 @@ public class QuizService {
 
   public QuizCreationResponseDTO updateQuiz(Principal principal, long id,
                                             QuizCreationRequestDTO quizCreationDTO) {
+
     Optional<User> user = userRepository.findUserByUsername(principal.getName());
     if (user.isEmpty()) {
       throw new UsernameNotFoundException("User not found");
@@ -192,13 +197,35 @@ public class QuizService {
 
 
     Quiz originalQuiz = quizRepository.findQuizById(id).orElseThrow();
-    quizRepository.delete(originalQuiz);
+
+
+    deleteQuizHelper(id, originalQuiz);
 
     return QuizCreationResponseDTO.builder()
         .quizId(savedQuiz.getId())
         .build();
+  }
 
+  private boolean deleteQuizHelper(long id, Quiz originalQuiz) {
+    List<QuizAttempt> result = quizAttemptRepository.findQuizAttemptByQuiz_Id(id);
+    quizAttemptRepository.deleteAll(result);
+    quizRepository.delete(originalQuiz);
+    return quizRepository.findQuizById(id).isPresent();
   }
 
 
+  public boolean deleteQuiz(Principal principal, long quizId) {
+
+    Optional<User> user = userRepository.findUserByUsername(principal.getName());
+    if (user.isEmpty()) {
+      throw new UsernameNotFoundException("User not found");
+    }
+
+    Quiz quiz = quizRepository.findQuizById(quizId).orElseThrow();
+    if (!quiz.getAuthor().getUsername().equals(principal.getName())) {
+      throw new IllegalArgumentException("User does not have permission to edit this quiz.");
+    }
+
+    return deleteQuizHelper(quizId, quiz);
+  }
 }
