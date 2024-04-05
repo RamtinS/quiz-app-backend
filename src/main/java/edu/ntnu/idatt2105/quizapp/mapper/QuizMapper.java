@@ -37,6 +37,7 @@ public class QuizMapper {
    */
   public QuizDto mapToQuizDTO(Quiz quiz) {
     return QuizDto.builder()
+        .quizId(quiz.getId())
         .name(quiz.getName())
         .description(quiz.getDescription())
         .author(userMapper.mapToPublicUserInformation(quiz.getAuthor()))

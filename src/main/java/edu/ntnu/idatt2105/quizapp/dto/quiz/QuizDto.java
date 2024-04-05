@@ -16,6 +16,7 @@ import lombok.Data;
 @Data
 @Builder
 public class QuizDto {
+  private long quizId;
   private String name;
   private String description;
   private String categoryDescription;
