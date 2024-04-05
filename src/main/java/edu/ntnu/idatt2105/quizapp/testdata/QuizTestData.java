@@ -11,11 +11,10 @@ import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
 import edu.ntnu.idatt2105.quizapp.model.quiz.TrueOrFalseQuestion;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.CategoryRepository;
+import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizAttemptRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizRepository;
-
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class QuizTestData {
@@ -23,7 +22,8 @@ public class QuizTestData {
   public static void addTestData(PasswordEncoder passwordEncoder,
                                  UserRepository userRepository,
                                  QuizRepository quizRepository,
-                                 CategoryRepository categoryRepository) {
+                                 CategoryRepository categoryRepository,
+                                 QuizAttemptRepository quizAttemptRepository) {
 
 
     User admin = User.builder()
@@ -58,12 +58,14 @@ public class QuizTestData {
     userRepository.save(user2);
     userRepository.save(emptyUser);
 
-    addTestDataToUser(admin, quizRepository, categoryRepository);
-    addTestDataToUser(user2, quizRepository, categoryRepository);
+    addTestDataToUser(admin, quizRepository, categoryRepository, quizAttemptRepository);
+    addTestDataToUser(user2, quizRepository, categoryRepository, quizAttemptRepository);
   }
 
   public static void addTestDataToUser(User user, QuizRepository quizRepository,
-                                       CategoryRepository categoryRepository) {
+                                       CategoryRepository categoryRepository,
+                                       QuizAttemptRepository quizAttemptRepository) {
+
     Category exampleCategory = Category.builder().description("Food").build();
     Category exampleCategory2 = Category.builder().description("Sports").build();
     Category exampleCategory3 = Category.builder().description("Gaming").build();
@@ -147,10 +149,63 @@ public class QuizTestData {
 
       System.out.println(quiz1.getTags());
 
-//      System.out.println(quizRepository.findQuizByCategoryId(1L).size());
-//
-//
-//      System.out.println(quizRepository.findQuizByTagsDescription("Physics").get(0).getId());
+      //Quiz attempts.
+      QuizAttempt quizAttempt = QuizAttempt.builder()
+              .quiz(quiz)
+              .user(user)
+              .score(2)
+              .timestamp(LocalDate.now())
+              .build();
+
+      QuizAttempt quizAttempt1 = QuizAttempt.builder()
+              .quiz(quiz)
+              .user(user)
+              .score(2)
+              .timestamp(LocalDate.now())
+              .build();
+
+      QuizAttempt quizAttempt2 = QuizAttempt.builder()
+              .quiz(quiz)
+              .user(user)
+              .score(2)
+              .timestamp(LocalDate.of(2024, 4, 3))
+              .build();
+
+      QuizAttempt quizAttempt3 = QuizAttempt.builder()
+              .quiz(quiz)
+              .user(user)
+              .score(2)
+              .timestamp(LocalDate.of(2024, 4, 2))
+              .build();
+
+      QuizAttempt quizAttempt4 = QuizAttempt.builder()
+              .quiz(quiz)
+              .user(user)
+              .score(2)
+              .timestamp(LocalDate.of(2024, 4, 1))
+              .build();
+
+      QuizAttempt quizAttempt5 = QuizAttempt.builder()
+              .quiz(quiz)
+              .user(user)
+              .score(2)
+              .timestamp(LocalDate.of(2024, 3, 31))
+              .build();
+
+      QuizAttempt quizAttempt6 = QuizAttempt.builder()
+              .quiz(quiz)
+              .user(user)
+              .score(2)
+              .timestamp(LocalDate.of(2024, 3, 30))
+              .build();
+
+      quizAttemptRepository.save(quizAttempt5);
+      quizAttemptRepository.save(quizAttempt6);
+      quizAttemptRepository.save(quizAttempt);
+      quizAttemptRepository.save(quizAttempt1);
+      quizAttemptRepository.save(quizAttempt2);
+      quizAttemptRepository.save(quizAttempt3);
+      quizAttemptRepository.save(quizAttempt4);
     }
   }
 

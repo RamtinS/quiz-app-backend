@@ -10,7 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 
 /**
  * The FeedbackMessage class represents a message entity in the application.
@@ -47,5 +48,5 @@ public class FeedbackMessage {
 
   @Column(name = "timestamp")
   @NonNull
-  private LocalDateTime timestamp;
+  private LocalDate timestamp;
 }

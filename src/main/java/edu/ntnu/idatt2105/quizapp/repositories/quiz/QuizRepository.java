@@ -25,13 +25,12 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
   Optional<Quiz> findQuizById(Long id);
 
-  List<Quiz> findAllByNameContainingIgnoreCaseOrderByName(String title, Pageable pageable);
+  List<Quiz> findAllByNameContainingIgnoreCaseAndIsOpenOrderByName(String title, Boolean isOpen, Pageable pageable);
 
-  List<Quiz> findQuizByTagsDescription(String description, Pageable pageable);
+  List<Quiz> findQuizByTagsDescriptionContainingIgnoreCaseAndIsOpen(String description, Boolean isOpen, Pageable pageable);
 
-  List<Quiz> findQuizByTagsId(Long id);
 
-  List<Quiz> findQuizByCategoryDescription(String description);
+  List<Quiz> findQuizByCategoryDescriptionContainingIgnoreCaseAndIsOpen(String description, Boolean isOpen, Pageable pageable);
 
-  List<Quiz> findQuizByCategoryId(Long id);
+  List<Quiz> findQuizByCategoryDescriptionAndTagsDescriptionContainingIgnoreCaseAndIsOpen(String categoryDescription, String tagDescription, Boolean isOpen, Pageable pageable);
 }

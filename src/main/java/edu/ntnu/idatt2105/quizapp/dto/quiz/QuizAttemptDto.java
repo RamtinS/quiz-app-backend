@@ -1,21 +1,15 @@
 package edu.ntnu.idatt2105.quizapp.dto.quiz;
 
-import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
-
 /**
- * DTO Class for quiz attempts.
+ * DTO for representing information related to a quiz attempt.
  *
- * @author Jeffrey Yaw Annor Tabiri
+ * @author Ramtin Samavat
  * @version 1.0
- * @since 2024-04-02
  */
 @Data
-@Builder
 public class QuizAttemptDto {
+  private long quizId;
   private int score;
-  private Date date;
-  private String username;
 }

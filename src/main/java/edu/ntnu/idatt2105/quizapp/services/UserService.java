@@ -3,21 +3,26 @@ package edu.ntnu.idatt2105.quizapp.services;
 import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDTO;
 import edu.ntnu.idatt2105.quizapp.dto.user.EditUserDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.UserDetailsDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.UserStatsDto;
 import edu.ntnu.idatt2105.quizapp.exception.user.EmailAlreadyExistsException;
 import edu.ntnu.idatt2105.quizapp.mapper.UserMapper;
 import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
-import java.util.List;
-import java.util.Optional;
-
+import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizAttemptRepository;
 import edu.ntnu.idatt2105.quizapp.validation.validators.UserValidator;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 /**
  * Service class that encapsulates the logic for handling user-related operations.
@@ -32,10 +37,13 @@ public class UserService {
 
   //CRUD operations on user models.
   private final UserRepository userRepository;
+
   private final UserMapper userMapper;
 
   //Password encoder to hash passwords in a database.
   private final PasswordEncoder passwordEncoder;
+
+  private final QuizAttemptRepository quizAttemptRepository;
 
   /**
    * The method updates the user information of an existing user in the database.
@@ -106,5 +114,41 @@ public class UserService {
 
     return userRepository.findAllByUsernameContainingIgnoreCase(searchString, pageable)
             .stream().map(userMapper::mapToPublicUserInformation).toList();
+  }
+
+  /**
+   * The method retrieves the user's quiz statistics.
+   *
+   * @param username The username of the user to retrieve the data for.
+   * @return The UserStatsDto containing the user statistics.
+   */
+  public UserStatsDto getUserStats(@NonNull String username) {
+    LocalDate today = LocalDate.now();
+    LocalDate sevenDaysAgo = today.minusDays(7);
+
+    Map<LocalDate, Long> attemptsLastSevenDays = new TreeMap<>();
+    for (int i = 0; i < 7; i++) {
+      attemptsLastSevenDays.put(today.minusDays(i), 0L);
+    }
+
+    List<QuizAttempt> quizAttempts = quizAttemptRepository.findQuizAttemptByUser_Username(username);
+
+    List<QuizAttempt> attemptsLastDays = quizAttempts.stream()
+            .filter(attempt -> attempt.getTimestamp().isAfter(sevenDaysAgo))
+            .toList();
+
+    for (QuizAttempt attempt : attemptsLastDays) {
+      LocalDate attemptDate = attempt.getTimestamp().atStartOfDay().toLocalDate();
+      attemptsLastSevenDays.put(attemptDate, attemptsLastSevenDays.get(attemptDate) + 1);
+    }
+
+    int totalAttempts = quizAttempts.size();
+
+    int totalScore = quizAttempts.stream().mapToInt(QuizAttempt::getScore).sum();
+
+    return UserStatsDto.builder()
+            .quizAttemptsLastSevenDays(attemptsLastSevenDays)
+            .totalQuizAttempts(totalAttempts)
+            .totalScore(totalScore).build();
   }
 }

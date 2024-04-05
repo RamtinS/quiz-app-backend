@@ -6,7 +6,7 @@ import edu.ntnu.idatt2105.quizapp.repositories.FeedbackRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * Service class that encapsulates the logic for handling feedback-related operations.
@@ -33,7 +33,7 @@ public class FeedbackService {
             .name(feedbackDto.getName())
             .surname(feedbackDto.getSurname())
             .content(feedbackDto.getContent())
-            .timestamp(LocalDateTime.now())
+            .timestamp(LocalDate.now())
             .build();
 
     feedbackRepository.save(feedbackMessage);
