@@ -69,14 +69,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * The method handles generic exceptions.
+   * The method handles unexpected exceptions that may occur during the execution of the application.
    *
    * @param ex The exception to handle.
    * @return ResponseEntity containing the ErrorResponse with HTTP status code 500 (INTERNAL_SERVER_ERROR).
    */
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
-    return buildResponseEntityWithErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+  public ResponseEntity<ErrorResponse> handleUnexpectedException(Exception ex) {
+    log.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
+    log.debug("Stack Trace:", ex);
+    ErrorResponse errorResponse = new ErrorResponse("Internal Server Error");
+    return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   /**
@@ -89,7 +92,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   private ResponseEntity<ErrorResponse> buildResponseEntityWithErrorResponse(
           Exception ex, HttpStatus status) {
-
     log.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
     ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
     return new ResponseEntity<>(errorResponse, status);
