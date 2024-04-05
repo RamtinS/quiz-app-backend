@@ -137,12 +137,40 @@ public class QuizService {
   }
 
 
-  public List<QuizPreviewDTO> getQuizzesBySearchName(String search, Pageable pageable){
-    return quizRepository.findAllByNameContainingIgnoreCaseOrderByName(search, pageable)
-        .stream()
-        .map(quizMapper::mapToQuizPreviewDTO)
-        .toList();
+  /**
+   * Gets a public quiz by its name.
+   *
+   * @param search the term to search the quiz with.
+   * @param pageable The pageable object used to specify the page number and size.
+   * @return a list of quizPreviews.
+   */
+  public List<QuizPreviewDTO> getQuizBySearchParameters(
+          String search,
+          Boolean searchByCategory,
+          Boolean searchByTags,
+          Pageable pageable) {
+
+    if (searchByCategory && searchByTags) {
+      List<QuizPreviewDTO> result = quizRepository.findQuizByCategoryDescriptionAndTagsDescriptionContainingIgnoreCaseAndIsOpen(search, search, true, pageable).stream()
+              .map(quizMapper::mapToQuizPreviewDTO)
+              .toList();
+    }
+
+    if (searchByCategory) {
+      return quizRepository.findQuizByCategoryDescriptionContainingIgnoreCaseAndIsOpen(search, true, pageable).stream()
+              .map(quizMapper::mapToQuizPreviewDTO)
+              .toList();
+    }
+
+    if (searchByTags) {
+      return quizRepository.findQuizByTagsDescriptionContainingIgnoreCaseAndIsOpen(search, true, pageable).stream()
+              .map(quizMapper::mapToQuizPreviewDTO)
+              .toList();
+
+    } else {
+      return quizRepository.findAllByNameContainingIgnoreCaseAndIsOpenOrderByName(search, true, pageable).stream()
+              .map(quizMapper::mapToQuizPreviewDTO)
+              .toList();
+    }
   }
-
-
 }
