@@ -2,6 +2,7 @@ package edu.ntnu.idatt2105.quizapp.exception;
 
 import edu.ntnu.idatt2105.quizapp.exception.user.EmailAlreadyExistsException;
 import edu.ntnu.idatt2105.quizapp.exception.user.UsernameAlreadyExistsException;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -33,7 +34,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler({UsernameAlreadyExistsException.class, EmailAlreadyExistsException.class})
   public ResponseEntity<ErrorResponse> handleConflict(Exception ex) {
-    return buildResponseEntityWithErrorResponse(ex, HttpStatus.CONFLICT);
+    String errorMessage = ex.getMessage();
+    return buildResponseEntityWithErrorResponse(ex, errorMessage, HttpStatus.CONFLICT);
   }
 
   /**
@@ -44,18 +46,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler({NullPointerException.class, IllegalArgumentException.class})
   public ResponseEntity<ErrorResponse> handelNullPointerException(Exception ex) {
-    return buildResponseEntityWithErrorResponse(ex, HttpStatus.BAD_REQUEST);
+    String errorMessage = ex.getMessage();
+    return buildResponseEntityWithErrorResponse(ex, errorMessage, HttpStatus.BAD_REQUEST);
   }
 
   /**
-   * The method handles exceptions from when a user tries to log in with wrong credentials.
+   * The method handles exceptions from when a user authentication fails due to bad credentials.
    *
    * @param ex The exception to handle.
    * @return ResponseEntity containing the ErrorResponse with HTTP status code 401 (UNAUTHORIZED).
    */
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<ErrorResponse> handleBadCredentialsException(Exception ex) {
-    return buildResponseEntityWithErrorResponse(ex, HttpStatus.UNAUTHORIZED);
+    String errorMessage = "User authentication failed.";
+    return buildResponseEntityWithErrorResponse(ex, errorMessage, HttpStatus.UNAUTHORIZED);
   }
 
   /**
@@ -66,7 +70,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler(UsernameNotFoundException.class)
   public ResponseEntity<ErrorResponse> handleUsernameNotFoundException(Exception ex) {
-    return buildResponseEntityWithErrorResponse(ex, HttpStatus.NOT_FOUND);
+    String errorMessage = ex.getMessage();
+    return buildResponseEntityWithErrorResponse(ex, errorMessage, HttpStatus.NOT_FOUND);
+  }
+
+  /**
+   * The method handles exceptions related to optimistic locking failure.
+   *
+   * @param ex The exception to handle.
+   * @return ResponseEntity containing the ErrorResponse with HTTP status code 404 (NOT_FOUND).
+   */
+  @ExceptionHandler(OptimisticLockingFailureException.class)
+  public ResponseEntity<ErrorResponse> handleOptimisticLockingFailureException(Exception ex) {
+    String errorMessage = "The entity could not be found";
+    return buildResponseEntityWithErrorResponse(ex, errorMessage, HttpStatus.NOT_FOUND);
   }
 
   /**
@@ -83,18 +100,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-    /**
-     * The method handles exceptions related to optimistic locking failure.
-     *
-     * @param ex The exception to handle.
-     * @return ResponseEntity containing the ErrorResponse with HTTP status code 404 (NOT_FOUND).
-     */
-  @ExceptionHandler(OptimisticLockingFailureException.class)
-  public ResponseEntity<ErrorResponse> handleOptimisticLockingFailureException(Exception ex) {
-    ErrorResponse errorResponse = new ErrorResponse("The entity could not be found");
-    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-  }
-
   /**
    * The method builds a ResponseEntity containing an ErrorResponse based on the given
    * exception and HTTP status.
@@ -104,9 +109,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    * @return ResponseEntity containing the ErrorResponse with the specified HTTP status.
    */
   private ResponseEntity<ErrorResponse> buildResponseEntityWithErrorResponse(
-          Exception ex, HttpStatus status) {
+          Exception ex, String errorMessage, HttpStatus status) {
     log.error("{}: {}", ex.getClass().getSimpleName(), ex.getMessage());
-    ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+    ErrorResponse errorResponse = new ErrorResponse(errorMessage);
     return new ResponseEntity<>(errorResponse, status);
   }
 }
