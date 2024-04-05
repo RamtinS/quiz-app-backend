@@ -2,7 +2,6 @@ package edu.ntnu.idatt2105.quizapp.exception;
 
 import edu.ntnu.idatt2105.quizapp.exception.user.EmailAlreadyExistsException;
 import edu.ntnu.idatt2105.quizapp.exception.user.UsernameAlreadyExistsException;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -87,10 +86,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * The method handles unexpected exceptions that may occur during the execution of the application.
+   * The method handles unexpected exceptions that may occur during the execution
+   * of the application.
    *
    * @param ex The exception to handle.
-   * @return ResponseEntity containing the ErrorResponse with HTTP status code 500 (INTERNAL_SERVER_ERROR).
+   * @return ResponseEntity containing ErrorResponse with HTTP status 500 (INTERNAL_SERVER_ERROR).
    */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleUnexpectedException(Exception ex) {
