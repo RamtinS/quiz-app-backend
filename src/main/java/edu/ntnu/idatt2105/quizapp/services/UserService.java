@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
-
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +28,7 @@ import org.springframework.stereotype.Service;
  * It uses the {@link UserRepository} to perform the operations in the database.
  *
  * @author Ramtin Samavat
- * @version  1.0
+ * @version 1.0
  */
 @Service
 @RequiredArgsConstructor
@@ -48,25 +47,25 @@ public class UserService {
   /**
    * The method updates the user information of an existing user in the database.
    *
-   * @param username The username of the user to be updated.
+   * @param username    The username of the user to be updated.
    * @param editUserDto The DTO containing the new user information.
-   * @throws UsernameNotFoundException If the user is not found in the database.
+   * @throws UsernameNotFoundException   If the user is not found in the database.
    * @throws EmailAlreadyExistsException If the email already exists.
    */
   public void editUser(@NonNull String username, @NonNull EditUserDto editUserDto)
-          throws UsernameNotFoundException, IllegalArgumentException {
+      throws UsernameNotFoundException, IllegalArgumentException {
 
     User user = userRepository.findUserByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException(
-                    "User with username " + username + " not found."));
+        .orElseThrow(() -> new UsernameNotFoundException(
+            "User with username " + username + " not found."));
 
     UserValidator.validateEmail(editUserDto.getNewEmail());
 
     Optional<User> existingUserWithEmail = userRepository
-            .findUserByEmail(editUserDto.getNewEmail());
+        .findUserByEmail(editUserDto.getNewEmail());
 
     if (existingUserWithEmail.isPresent() && !existingUserWithEmail
-            .get().getUsername().equals(user.getUsername())) {
+        .get().getUsername().equals(user.getUsername())) {
 
       throw new EmailAlreadyExistsException();
     }
@@ -91,14 +90,14 @@ public class UserService {
    */
   public UserDetailsDto getUserDetails(@NonNull String username) throws UsernameNotFoundException {
     User user = userRepository.findUserByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException(
-                    "User with username " + username + " not found."));
+        .orElseThrow(() -> new UsernameNotFoundException(
+            "User with username " + username + " not found."));
 
     return UserDetailsDto.builder()
-            .email(user.getEmail())
-            .name(user.getName())
-            .surname(user.getSurName())
-            .build();
+        .email(user.getEmail())
+        .name(user.getName())
+        .surname(user.getSurName())
+        .build();
 
   }
 
@@ -106,14 +105,14 @@ public class UserService {
    * Finds a list of public profile DTOs based on the search parameter.
    *
    * @param searchString the search parameter.
-   * @param pageable the pageable used to find a specified page.
+   * @param pageable     the pageable used to find a specified page.
    * @return a list of public profile DTOs based on the search parameter.
    */
   public List<PublicUserInformationDTO> findPublicProfilesFromUsername(
-          String searchString, Pageable pageable) {
+      String searchString, Pageable pageable) {
 
     return userRepository.findAllByUsernameContainingIgnoreCase(searchString, pageable)
-            .stream().map(userMapper::mapToPublicUserInformation).toList();
+        .stream().map(userMapper::mapToPublicUserInformation).toList();
   }
 
   /**
@@ -134,8 +133,8 @@ public class UserService {
     List<QuizAttempt> quizAttempts = quizAttemptRepository.findQuizAttemptByUser_Username(username);
 
     List<QuizAttempt> attemptsLastDays = quizAttempts.stream()
-            .filter(attempt -> attempt.getTimestamp().isAfter(sevenDaysAgo))
-            .toList();
+        .filter(attempt -> attempt.getTimestamp().isAfter(sevenDaysAgo))
+        .toList();
 
     for (QuizAttempt attempt : attemptsLastDays) {
       LocalDate attemptDate = attempt.getTimestamp().atStartOfDay().toLocalDate();
@@ -147,8 +146,23 @@ public class UserService {
     int totalScore = quizAttempts.stream().mapToInt(QuizAttempt::getScore).sum();
 
     return UserStatsDto.builder()
-            .quizAttemptsLastSevenDays(attemptsLastSevenDays)
-            .totalQuizAttempts(totalAttempts)
-            .totalScore(totalScore).build();
+        .quizAttemptsLastSevenDays(attemptsLastSevenDays)
+        .totalQuizAttempts(totalAttempts)
+        .totalScore(totalScore).build();
+  }
+
+  /**
+   * Retrieves the public user information for the specified username.
+   *
+   * @param username The username of the user to retrieve the public information for.
+   * @return The PublicUserInformationDTO containing the public user information.
+   * @throws UsernameNotFoundException If the user is not found in the database.
+   */
+  public PublicUserInformationDTO getPublicUserInformation(String username) {
+    User user = userRepository.findUserByUsername(username)
+        .orElseThrow(() -> new UsernameNotFoundException(
+            "User with username " + username + " not found."));
+
+    return userMapper.mapToPublicUserInformation(user);
   }
 }

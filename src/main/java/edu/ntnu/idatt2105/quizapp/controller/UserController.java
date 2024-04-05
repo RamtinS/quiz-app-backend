@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +48,7 @@ public class UserController {
   /**
    * REST-endpoint for changing user information. .
    *
-   * @param principal The authenticated principal
+   * @param principal   The authenticated principal
    * @param editUserDto The DTO containing new user information.
    * @return ResponseEntity indicating the status of the edit request.
    */
@@ -71,8 +72,8 @@ public class UserController {
    */
   @Operation(summary = "Retrieve user information")
   @ApiResponse(responseCode = "200", description = "User information successfully retrieved.",
-          content = {@Content(mediaType = "application/json",
-                  schema = @Schema(implementation = UserDetailsDto.class))}
+      content = {@Content(mediaType = "application/json",
+          schema = @Schema(implementation = UserDetailsDto.class))}
   )
   @GetMapping(path = "/details")
   public ResponseEntity<UserDetailsDto> retrieveUserInformation(Principal principal) {
@@ -93,16 +94,16 @@ public class UserController {
    */
   @Operation(summary = "Search for users by username")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200",
-                  content = {@Content(mediaType = "application/json",
-                          array = @ArraySchema(schema = @Schema(implementation = User.class)))}),
-          @ApiResponse(responseCode = "500", description = "Internal server error")})
+      @ApiResponse(responseCode = "200",
+          content = {@Content(mediaType = "application/json",
+              array = @ArraySchema(schema = @Schema(implementation = User.class)))}),
+      @ApiResponse(responseCode = "500", description = "Internal server error")})
   @GetMapping()
   public ResponseEntity<List<PublicUserInformationDTO>> searchUsername(
-          @RequestParam String search, @RequestParam int page, @RequestParam int size) {
+      @RequestParam String search, @RequestParam int page, @RequestParam int size) {
 
     List<PublicUserInformationDTO> result = searchService
-            .findPublicProfilesFromUsername(search, Pageable.ofSize(size).withPage(page));
+        .findPublicProfilesFromUsername(search, Pageable.ofSize(size).withPage(page));
 
     return new ResponseEntity<>(result, HttpStatus.OK);
   }
@@ -115,8 +116,8 @@ public class UserController {
    */
   @Operation(summary = "Retrieve user statistics")
   @ApiResponse(responseCode = "200", description = "User stats successfully retrieved.",
-          content = {@Content(mediaType = "application/json",
-                  schema = @Schema(implementation = UserStatsDto.class))}
+      content = {@Content(mediaType = "application/json",
+          schema = @Schema(implementation = UserStatsDto.class))}
   )
   @GetMapping("/stats")
   public ResponseEntity<UserStatsDto> retrieveUserStats(Principal principal) {
@@ -126,4 +127,25 @@ public class UserController {
     log.info("User stats for {} successfully retrieved.", username);
     return new ResponseEntity<>(userStats, HttpStatus.OK);
   }
+
+  /**
+   * REST-endpoint for retrieving public user information for a specified user.
+   *
+   * @param username the username of the user to retrieve public information for.
+   * @return ResponseEntity containing a DTO with public user information on success.
+   */
+  @Operation(summary = "Retrieve public user information for a specified user")
+  @ApiResponse(responseCode = "200", description = "Public user information successfully "
+      + "retrieved.",
+      content = {@Content(mediaType = "application/json",
+          schema = @Schema(implementation = PublicUserInformationDTO.class))}
+  )
+  @GetMapping("/{username}/public-info")
+  public ResponseEntity<PublicUserInformationDTO> getPublicUserInfo(@PathVariable String username) {
+    log.error("im here");
+    PublicUserInformationDTO publicUserInformationDTO =
+        userService.getPublicUserInformation(username);
+    return new ResponseEntity<>(publicUserInformationDTO, HttpStatus.OK);
+  }
+
 }
