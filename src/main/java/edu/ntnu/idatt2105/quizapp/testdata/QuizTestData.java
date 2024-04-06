@@ -51,10 +51,10 @@ public class QuizTestData {
             .role(Role.USER)
             .build();
 
-    User emptyUser = User.builder()
-            .username("aaaa")
-            .password(passwordEncoder.encode("a"))
-            .email("a@ntnu.edu")
+    User emptyUser = User.builder() // Do not change. Is used for testing in frontend.
+            .username("TestUser")
+            .password(passwordEncoder.encode("password"))
+            .email("test@test.no")
             .name("Test")
             .surName("Test")
             .role(Role.USER)
