@@ -57,11 +57,11 @@ public class AuthenticationService {
   public AuthenticationDto registerUser(@NonNull RegistrationDto registrationDto)
           throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
 
-    if (userRepository.findUserByUsername(registrationDto.getUsername()).isPresent()) {
+    if (userRepository.findUserByUsernameIgnoreCase(registrationDto.getUsername()).isPresent()) {
       throw new UsernameAlreadyExistsException();
     }
 
-    if (userRepository.findUserByEmail(registrationDto.getEmail()).isPresent()) {
+    if (userRepository.findUserByEmailIgnoreCase(registrationDto.getEmail()).isPresent()) {
       throw new EmailAlreadyExistsException();
     }
 
@@ -103,7 +103,7 @@ public class AuthenticationService {
     authManager.authenticate(new UsernamePasswordAuthenticationToken(
             loginRequestDto.getUsername(), loginRequestDto.getPassword()));
 
-    User user = userRepository.findUserByUsername(loginRequestDto.getUsername())
+    User user = userRepository.findUserByUsernameIgnoreCase(loginRequestDto.getUsername())
             .orElseThrow(() -> new UsernameNotFoundException("User "
                     + loginRequestDto.getUsername() + " not found."));
 

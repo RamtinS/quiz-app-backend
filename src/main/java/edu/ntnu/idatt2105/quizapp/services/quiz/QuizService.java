@@ -55,7 +55,7 @@ public class QuizService {
                                             Principal principal)
       throws UsernameNotFoundException {
 
-    Optional<User> user = userRepository.findUserByUsername(principal.getName());
+    Optional<User> user = userRepository.findUserByUsernameIgnoreCase(principal.getName());
 
     if (user.isEmpty()) {
       throw new UsernameNotFoundException("User not found");
@@ -181,7 +181,7 @@ public class QuizService {
   public QuizCreationResponseDTO updateQuiz(Principal principal, long id,
                                             QuizCreationRequestDTO quizCreationDTO) {
 
-    Optional<User> user = userRepository.findUserByUsername(principal.getName());
+    Optional<User> user = userRepository.findUserByUsernameIgnoreCase(principal.getName());
     if (user.isEmpty()) {
       throw new UsernameNotFoundException("User not found");
     }
@@ -216,7 +216,7 @@ public class QuizService {
 
   public boolean deleteQuiz(Principal principal, long quizId) {
 
-    Optional<User> user = userRepository.findUserByUsername(principal.getName());
+    Optional<User> user = userRepository.findUserByUsernameIgnoreCase(principal.getName());
     if (user.isEmpty()) {
       throw new UsernameNotFoundException("User not found");
     }

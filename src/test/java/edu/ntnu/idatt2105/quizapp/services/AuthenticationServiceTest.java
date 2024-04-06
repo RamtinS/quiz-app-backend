@@ -58,7 +58,7 @@ class AuthenticationServiceTest {
     //Arrange
     LoginRequestDto mockLogin = TestUtil.createLoginDtoA();
     User mockUser = TestUtil.createUserA();
-    when(userRepository.findUserByUsername("Mark")).thenReturn(Optional.ofNullable(mockUser));
+    when(userRepository.findUserByUsernameIgnoreCase("Mark")).thenReturn(Optional.ofNullable(mockUser));
     when(jwtService.generateToken(any(User.class))).thenReturn("MockToken");
 
     //Act
