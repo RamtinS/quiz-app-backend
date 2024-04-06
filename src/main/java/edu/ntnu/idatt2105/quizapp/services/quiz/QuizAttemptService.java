@@ -41,7 +41,7 @@ public class QuizAttemptService {
 
     Quiz quiz = quizRepository.findQuizById(quizAttemptDto.getQuizId()).orElse(null);
 
-    User user = userRepository.findUserByUsername(username).orElseThrow(() ->
+    User user = userRepository.findUserByUsernameIgnoreCase(username).orElseThrow(() ->
             new UsernameNotFoundException("User with username " + username + " not found."));
 
     QuizAttempt quizAttempt = QuizAttempt.builder()

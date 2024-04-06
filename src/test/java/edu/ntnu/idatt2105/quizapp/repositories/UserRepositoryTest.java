@@ -44,7 +44,7 @@ class UserRepositoryTest {
     User expected = userRepository.save(TestUtil.createUserD());
 
     //Act
-    User actual = userRepository.findUserByUsername(expected.getUsername()).get();
+    User actual = userRepository.findUserByUsernameIgnoreCase(expected.getUsername()).get();
 
     //Assert
     assertEquals(expected.getUserId(), actual.getUserId());
@@ -58,7 +58,7 @@ class UserRepositoryTest {
     User expected = userRepository.save(TestUtil.createUserB());
 
     //Act
-    User actual = userRepository.findUserByUsername(expected.getUsername()).get();
+    User actual = userRepository.findUserByUsernameIgnoreCase(expected.getUsername()).get();
 
     //Assert
     assertEquals(expected.getUsername(), actual.getUsername());
@@ -74,7 +74,7 @@ class UserRepositoryTest {
 
     //Act
     userRepository.delete(actual);
-    boolean isUserPresent = userRepository.findUserByUsername(actual.getUsername()).isPresent();
+    boolean isUserPresent = userRepository.findUserByUsernameIgnoreCase(actual.getUsername()).isPresent();
 
     //Assert
     assertFalse(isUserPresent);

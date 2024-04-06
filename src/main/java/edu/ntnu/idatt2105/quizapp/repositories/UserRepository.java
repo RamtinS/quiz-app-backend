@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2105.quizapp.repositories;
 
 import edu.ntnu.idatt2105.quizapp.model.User;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @param username The username of the user to retrieve.
    * @return An Optional containing the user if found, otherwise empty.
    */
-  Optional<User> findUserByUsername(String username);
+  Optional<User> findUserByUsernameIgnoreCase(String username);
 
   /**
    * Retrieves user with the given email.
@@ -34,8 +34,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
    * @param email The email of the user to retrieve
    * @return An Optional containing the user if found, otherwise empty.
    */
-  Optional<User> findUserByEmail(String email);
+  Optional<User> findUserByEmailIgnoreCase(String email);
 
 
+  /**
+   * Retrieves all users with usernames containing the given username.
+   */
   List<User> findAllByUsernameContainingIgnoreCase(String username, Pageable pageable);
 }

@@ -55,11 +55,11 @@ public class UserService {
   public void editUser(@NonNull String username, @NonNull EditUserDto editUserDto)
           throws UsernameNotFoundException, IllegalArgumentException {
 
-    User user = userRepository.findUserByUsername(username).orElseThrow(() ->
+    User user = userRepository.findUserByUsernameIgnoreCase(username).orElseThrow(() ->
             new UsernameNotFoundException("User with username " + username + " not found."));
 
     Optional<User> existingUserWithEmail = userRepository
-            .findUserByEmail(editUserDto.getNewEmail());
+            .findUserByEmailIgnoreCase(editUserDto.getNewEmail());
 
     if (existingUserWithEmail.isPresent() && !existingUserWithEmail
             .get().getUsername().equals(user.getUsername())) {
@@ -97,7 +97,7 @@ public class UserService {
    * @throws UsernameNotFoundException If the user is not found in the database.
    */
   public UserDetailsDto getUserDetails(@NonNull String username) throws UsernameNotFoundException {
-    User user = userRepository.findUserByUsername(username)
+    User user = userRepository.findUserByUsernameIgnoreCase(username)
             .orElseThrow(() -> new UsernameNotFoundException(
                     "User with username " + username + " not found."));
 
@@ -167,7 +167,7 @@ public class UserService {
    * @throws UsernameNotFoundException If the user is not found in the database.
    */
   public PublicUserInformationDTO getPublicUserInformation(String username) {
-    User user = userRepository.findUserByUsername(username)
+    User user = userRepository.findUserByUsernameIgnoreCase(username)
         .orElseThrow(() -> new UsernameNotFoundException(
             "User with username " + username + " not found."));
 
