@@ -1,8 +1,7 @@
 package edu.ntnu.idatt2105.quizapp.controller.quiz;
 
-import edu.ntnu.idatt2105.quizapp.dto.quiz.TagDto;
-import edu.ntnu.idatt2105.quizapp.mapper.TagMapper;
-import edu.ntnu.idatt2105.quizapp.services.quiz.TagService;
+import edu.ntnu.idatt2105.quizapp.model.quiz.Category;
+import edu.ntnu.idatt2105.quizapp.services.quiz.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,37 +21,35 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/tag-management")
+@RequestMapping("/api/v1/category-management")
 @CrossOrigin(origins = "http://localhost:3000")
-public class TagController {
+public class CategoryController {
 
   @NonNull
-  TagService tagService;
-
-  @NonNull
-  TagMapper tagMapper;
+  CategoryService categoryService;
 
   /**
-   * Get all possible tags stored in the database
+   * Get all possible categories stored in the database
    *
-   * @return a list of all possible tags
+   * @return a list of all possible categories
    */
-  @Operation(summary = "Get all possible tags")
+  @Operation(summary = "Get all possible categories")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Successfully retrieved all tags"),
+      @ApiResponse(responseCode = "200", description = "Successfully retrieved all categories"),
       @ApiResponse(responseCode = "500", description = "Internal server error")
   })
-  @GetMapping("/tags")
-  public ResponseEntity<List<TagDto>> getAllTags(
+  @GetMapping("/categories")
+  public ResponseEntity<List<String>> getAllCategories(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size
   ) {
-    List<TagDto> receivedTags = tagService.getAllPossibleTags(Pageable.ofSize(size).withPage(page))
-        .stream()
-        .map(tagMapper::mapToTagDto)
-        .toList();
-    return new ResponseEntity<>(receivedTags, HttpStatus.OK);
+
+    log.info("page: {}, size: {}", page, size);
+    List<String> receivedCategories =
+        categoryService.getAllPossibleCategories(Pageable.ofSize(size).withPage(page))
+            .stream()
+            .map(Category::getDescription)
+            .toList();
+    return new ResponseEntity<>(receivedCategories, HttpStatus.OK);
   }
-
-
 }
