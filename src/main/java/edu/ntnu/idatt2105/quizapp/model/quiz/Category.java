@@ -44,7 +44,7 @@ public class Category {
   @Getter(AccessLevel.NONE)
   private Long id;
 
-  @Column(name = "description", nullable = false)
+  @Column(name = "description", nullable = false, unique = true)
   @NonNull
   private String description;
 
