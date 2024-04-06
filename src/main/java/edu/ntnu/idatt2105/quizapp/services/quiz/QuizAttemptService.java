@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2105.quizapp.services.quiz;
 
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizAttemptDto;
+import edu.ntnu.idatt2105.quizapp.exception.quiz.QuizNotFoundException;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
@@ -39,7 +40,7 @@ public class QuizAttemptService {
 
     // TODO utilize mapper.
 
-    Quiz quiz = quizRepository.findQuizById(quizAttemptDto.getQuizId()).orElse(null);
+    Quiz quiz = quizRepository.findQuizById(quizAttemptDto.getQuizId()).orElseThrow(QuizNotFoundException::new);
 
     User user = userRepository.findUserByUsernameIgnoreCase(username).orElseThrow(() ->
             new UsernameNotFoundException("User with username " + username + " not found."));
