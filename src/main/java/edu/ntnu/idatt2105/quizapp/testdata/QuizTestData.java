@@ -25,6 +25,12 @@ public class QuizTestData {
                                  CategoryRepository categoryRepository,
                                  QuizAttemptRepository quizAttemptRepository) {
 
+    Category exampleCategory = Category.builder().description("Food").build();
+    Category exampleCategory2 = Category.builder().description("Sports").build();
+    Category exampleCategory3 = Category.builder().description("Gaming").build();
+    Category exampleCategory4 = Category.builder().description("Math").build();
+    Category exampleCategory5 = Category.builder().description("Physics").build();
+    Category exampleCategory6 = Category.builder().description("Chemistry").build();
 
     User admin = User.builder()
             .username("Admin")
@@ -58,20 +64,29 @@ public class QuizTestData {
     userRepository.save(user2);
     userRepository.save(emptyUser);
 
+
+
+    categoryRepository.save(exampleCategory);
+    categoryRepository.save(exampleCategory2);
+    categoryRepository.save(exampleCategory3);
+    categoryRepository.save(exampleCategory4);
+    categoryRepository.save(exampleCategory5);
+    categoryRepository.save(exampleCategory6);
+
     addTestDataToUser(admin, quizRepository, categoryRepository, quizAttemptRepository);
     addTestDataToUser(user2, quizRepository, categoryRepository, quizAttemptRepository);
+
+
   }
 
   public static void addTestDataToUser(User user, QuizRepository quizRepository,
                                        CategoryRepository categoryRepository,
                                        QuizAttemptRepository quizAttemptRepository) {
 
-    Category exampleCategory = Category.builder().description("Food").build();
-    Category exampleCategory2 = Category.builder().description("Sports").build();
-    Category exampleCategory3 = Category.builder().description("Gaming").build();
-    categoryRepository.save(exampleCategory);
-    categoryRepository.save(exampleCategory2);
-    categoryRepository.save(exampleCategory3);
+
+    categoryRepository.save(categoryRepository.findCategoryByDescription("Food").get());
+    categoryRepository.save(categoryRepository.findCategoryByDescription("Sports").get());
+    categoryRepository.save(categoryRepository.findCategoryByDescription("Gaming").get());
     int randomIntBetween20And30 = (int) (Math.random() * 20) + 10;
     for (int i = 0; i < 1; i++) {
 
@@ -136,7 +151,7 @@ public class QuizTestData {
               Tag.builder().description("Physics").build()
       );
 
-      quiz.setCategory(exampleCategory);
+      quiz.setCategory(categoryRepository.findCategoryByDescription("food").get());
       quiz.setTags(exampleTag);
       quizRepository.save(quiz);
 
