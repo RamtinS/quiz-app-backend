@@ -38,9 +38,8 @@ public class QuizAttemptService {
   public void saveQuizAttempt(@NonNull QuizAttemptDto quizAttemptDto, @NonNull String username)
           throws UsernameNotFoundException {
 
-    // TODO utilize mapper.
-
-    Quiz quiz = quizRepository.findQuizById(quizAttemptDto.getQuizId()).orElseThrow(QuizNotFoundException::new);
+    Quiz quiz = quizRepository.findQuizById(quizAttemptDto.getQuizId())
+            .orElseThrow(QuizNotFoundException::new);
 
     User user = userRepository.findUserByUsernameIgnoreCase(username).orElseThrow(() ->
             new UsernameNotFoundException("User with username " + username + " not found."));
