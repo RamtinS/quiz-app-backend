@@ -1,13 +1,13 @@
 package edu.ntnu.idatt2105.quizapp.testdata;
 
-import edu.ntnu.idatt2105.quizapp.model.user.Role;
-import edu.ntnu.idatt2105.quizapp.model.user.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Answer;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Category;
 import edu.ntnu.idatt2105.quizapp.model.quiz.MultipleChoiceQuestion;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
 import edu.ntnu.idatt2105.quizapp.model.quiz.TrueOrFalseQuestion;
+import edu.ntnu.idatt2105.quizapp.model.user.Role;
+import edu.ntnu.idatt2105.quizapp.model.user.User;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.CategoryRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizAttemptRepository;
@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import lombok.Generated;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -37,6 +36,14 @@ public class QuizTestData {
       "Miscellaneous", "Food", "Sports", "Gaming", "Math", "Physics", "Chemistry"
   };
 
+  public static boolean checkIfTestDataExists(UserRepository userRepository,
+                                              QuizRepository quizRepository,
+                                              CategoryRepository categoryRepository,
+                                              QuizAttemptRepository quizAttemptRepository) {
+    return userRepository.count() > 0 || quizRepository.count() > 0
+        || categoryRepository.count() > 0 || quizAttemptRepository.count() > 0;
+  }
+
   /**
    * Adds test data to the database.
    *
@@ -51,6 +58,11 @@ public class QuizTestData {
                                  CategoryRepository categoryRepository,
                                  QuizAttemptRepository quizAttemptRepository) {
     try {
+      if (checkIfTestDataExists(userRepository, quizRepository, categoryRepository,
+          quizAttemptRepository)) {
+        log.info("Data already exists in database, so no test data will be added.");
+        return;
+      }
       List<Category> categories = createAndSaveCategories(categoryRepository);
       List<User> users = createTestUsers(passwordEncoder, userRepository);
       addCypressUser(passwordEncoder, userRepository);
@@ -92,8 +104,11 @@ public class QuizTestData {
     for (String category : possibleCategories) {
       Category createdCategory = Category.builder().description(category).build();
       if (categoryRepository.findCategoryByDescription(category).isEmpty()) {
+        log.info("Adding new category");
         Category savedCategory = categoryRepository.save(createdCategory);
         categories.add(savedCategory);
+      } else {
+        log.info("Category already exists in database");
       }
     }
     return categories;
