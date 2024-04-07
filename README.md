@@ -8,8 +8,8 @@
 - [Wiki](#wiki)
 - [Features](#features)
 - [Setup and Run](#setup-and-run)
-- [Credits](#credits)
 - [License](#license)
+- [Acknowledgements](#acknowledgements)
 
 ## Overview
 The Semester Project is a full-stack web application aiming to provide a comprehensive and user-friendly platform for creating, managing, and taking quizzes for educational, training, or entertainment purposes. The project utilizes the following technologies:
