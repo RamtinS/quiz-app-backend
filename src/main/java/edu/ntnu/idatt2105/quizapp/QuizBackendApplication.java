@@ -30,31 +30,47 @@ public class QuizBackendApplication {
     SpringApplication.run(QuizBackendApplication.class, args);
   }
 
+  /**
+   * A CommandLineRunner bean that runs on startup. The commandline runner should not
+   * be used in production. It is only used for testing purposes.
+   *
+   * @param userRepository        the user repository
+   * @param passwordEncoder       the password encoder
+   * @param quizRepository        the quiz repository
+   * @param categoryRepository    the category repository
+   * @param quizAttemptRepository the quiz attempt repository
+   * @return a CommandLineRunner bean
+   */
   @Bean
   CommandLineRunner run(UserRepository userRepository, PasswordEncoder passwordEncoder,
                         QuizRepository quizRepository, CategoryRepository categoryRepository,
                         QuizAttemptRepository quizAttemptRepository) {
 
     return args -> {
-
-
-      if (args.length > 0) {
-        log.info("Running with argument: " + args[0]);
-        if (args[0].equalsIgnoreCase("--data")) {
-          QuizTestData.addTestData(userRepository, passwordEncoder, quizRepository,
-              categoryRepository, quizAttemptRepository);
-        } else if (args[0].equalsIgnoreCase("--help")) {
-          log.info("Possible options: ");
-          log.info("data: Add test data to the database to be able to run existing " +
-              "quizzes");
-        } else {
-          log.error(args[0] + " is not a valid argument. Please try running with '--help' " +
-              "to see possible options.");
-        }
+      if (args.length == 0) {
+        QuizTestData.addTestData(userRepository, passwordEncoder, quizRepository,
+            categoryRepository,
+            quizAttemptRepository);
+      } else if (args[0].equalsIgnoreCase("--noTestData")) {
+        log.info("Running tests without adding data");
+      } else if (args[0].equalsIgnoreCase("--deleteAllData")) {
+        log.info("Deleting all data in the database");
+        quizAttemptRepository.deleteAll();
+        quizRepository.deleteAll();
+        userRepository.deleteAll();
+        categoryRepository.deleteAll();
+      } else if (args[0].equalsIgnoreCase("--help")) {
+        log.info(
+            """
+                Commands:
+                --noTestData: Run the program without adding new data
+                 --resetTestData: Drops all tables in the database""");
       } else {
-        log.info("No arguments given, running without adding any data except categories");
-        QuizTestData.createAndSaveCategories(categoryRepository);
+        log.error("Invalid command. Use --help for a list of commands");
+        System.exit(1);
       }
     };
   }
+
+
 }
