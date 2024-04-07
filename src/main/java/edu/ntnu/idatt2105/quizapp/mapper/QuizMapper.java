@@ -64,6 +64,7 @@ public class QuizMapper {
         .title(quiz.getName())
         .description(quiz.getDescription())
         .open(quiz.getIsOpen())
+        .category(quiz.getCategory().getDescription())
         .build();
   }
 
