@@ -1,5 +1,5 @@
-# Quiz-app-Backend 
-"Hubro" is the backend of a full-stack application. This is apart of a project of IDATT2105 Full-stack application development at NTNU.
+# Quiz-app-Backend: Hubro
+This project serves as the backend for a full-stack application. This is a part of a project of IDATT2105 Full-stack application development at NTNU.
 
 ### Team: Ramtin Forouzandehjoo Samavat, Tobias Skipevåg Oftedal, Jeffrey Yaw Annor Tabiri
 
