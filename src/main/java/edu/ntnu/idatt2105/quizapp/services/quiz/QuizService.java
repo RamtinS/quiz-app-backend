@@ -4,6 +4,7 @@ import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDto;
+import edu.ntnu.idatt2105.quizapp.exception.auth.UnauthorizedOperationException;
 import edu.ntnu.idatt2105.quizapp.exception.quiz.QuizNotFoundException;
 import edu.ntnu.idatt2105.quizapp.mapper.QuizMapper;
 import edu.ntnu.idatt2105.quizapp.model.User;
@@ -14,8 +15,6 @@ import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizAttemptRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizRepository;
 import java.security.Principal;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.domain.Pageable;
@@ -116,20 +115,20 @@ public class QuizService {
    * Retrieves a quiz by its ID if the quiz is public or the principal is the author.
    *
    * @param principal The principal of the logged-in user.
-   * @param id        The ID of the quiz.
+   * @param id The ID of the quiz.
    * @return A QuizDTO of the quiz.
-   * @throws NoSuchElementException   If the quiz is not found.
-   * @throws IllegalArgumentException If the principal has no access to the quiz.
+   * @throws QuizNotFoundException If the quiz is not found.
+   * @throws UnauthorizedOperationException If the principal has no access to the quiz.
    */
   public QuizDto getQuizById(Principal principal, long id)
-      throws NoSuchElementException, IllegalArgumentException {
+      throws QuizNotFoundException, UnauthorizedOperationException {
 
-    Quiz quiz = quizRepository.findQuizById(id).orElseThrow();
+    Quiz quiz = quizRepository.findQuizById(id).orElseThrow(QuizNotFoundException::new);
 
     if (quiz.getIsOpen() || quiz.getAuthor().getUsername().equals(principal.getName())) {
       return quizMapper.mapToQuizDto(quiz);
     } else {
-      throw new IllegalArgumentException("Principal has no access to this quiz.");
+      throw new UnauthorizedOperationException("Principal has no access to this quiz.");
     }
 
   }
@@ -182,31 +181,33 @@ public class QuizService {
   /**
    * The method updates a quiz with the provided information.
    *
-   * @param principal       The principal of the logged-in user.
-   * @param id              The ID of the quiz to update.
+   * @param principal The principal of the logged-in user.
+   * @param id The ID of the quiz to update.
    * @param quizCreationDTO The DTO containing the updated quiz information.
    * @return The response DTO containing the ID of the updated quiz.
+   * @throws UsernameNotFoundException If the user is not found.
+   * @throws UnauthorizedOperationException If the user does not have permission to delete the quiz.
+   * @throws QuizNotFoundException If the quiz is not found.
    */
   public QuizCreationResponseDto updateQuiz(Principal principal, long id,
-                                            QuizCreationRequestDto quizCreationDTO) {
+                                            QuizCreationRequestDto quizCreationDTO)
+          throws UsernameNotFoundException, UnauthorizedOperationException, QuizNotFoundException {
 
-    Optional<User> user = userRepository.findUserByUsernameIgnoreCase(principal.getName());
-    if (user.isEmpty()) {
-      throw new UsernameNotFoundException("User not found");
-    }
+    String username = principal.getName();
+
+    User user = userRepository.findUserByUsernameIgnoreCase(username).orElseThrow(() ->
+            new UsernameNotFoundException("User with username " + username + " not found"));
 
     Quiz quiz = quizRepository.findQuizById(id).orElseThrow();
-    if (!quiz.getAuthor().getUsername().equals(principal.getName())) {
-      throw new IllegalArgumentException("User does not have permission to edit this quiz.");
+    if (!quiz.getAuthor().getUsername().equals(username)) {
+      throw new UnauthorizedOperationException("User does not have permission to edit this quiz.");
     }
 
-    quiz = quizMapper.mapToQuiz(quizCreationDTO, user.get());
+    quiz = quizMapper.mapToQuiz(quizCreationDTO, user);
 
     Quiz savedQuiz = quizRepository.save(quiz);
 
-
-    Quiz originalQuiz = quizRepository.findQuizById(id).orElseThrow();
-
+    Quiz originalQuiz = quizRepository.findQuizById(id).orElseThrow(QuizNotFoundException::new);
 
     deleteQuizAndCorrespondingAttempts(id, originalQuiz);
 
@@ -222,9 +223,10 @@ public class QuizService {
    * @param quizId  The ID of the quiz to be deleted.
    * @throws UsernameNotFoundException If the user is not found.
    * @throws QuizNotFoundException If the quiz is not found.
-   * @throws IllegalArgumentException If the principal does not have permission to delete the quiz.
+   * @throws UnauthorizedOperationException If the user does not have permission to delete the quiz.
    */
-  public void deleteQuiz(Principal principal, long quizId) {
+  public void deleteQuiz(Principal principal, long quizId) throws UsernameNotFoundException,
+          QuizNotFoundException, UnauthorizedOperationException {
 
     String username = principal.getName();
 
@@ -234,7 +236,7 @@ public class QuizService {
     Quiz quiz = quizRepository.findQuizById(quizId).orElseThrow(QuizNotFoundException::new);
 
     if (!quiz.getAuthor().getUsername().equals(username)) {
-      throw new IllegalArgumentException("User does not have permission to edit this quiz.");
+      throw new UnauthorizedOperationException("User does not have permission to edit this quiz.");
     }
 
     deleteQuizAndCorrespondingAttempts(quizId, quiz);
