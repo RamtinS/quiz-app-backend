@@ -11,23 +11,20 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
 import java.util.Objects;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
 /**
- * Model class for Category.
+ * The Category class represents a category entity in the application.
+ * Each Category object encapsulates information about a category.
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Entity
 @Table(name = "categories")

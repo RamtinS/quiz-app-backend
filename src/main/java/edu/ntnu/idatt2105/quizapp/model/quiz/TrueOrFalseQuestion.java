@@ -10,6 +10,15 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 
+/**
+ * The TrueOrFalseQuestion class represents a true or false question entity in the application.
+ * Each TrueOrFalseQuestion object encapsulates information about a true or false question.
+ * This class extends the Question class.
+ *
+ * @version 1.0
+ * @see Question
+ * @author Tobias Oftedal
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

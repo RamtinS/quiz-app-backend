@@ -20,7 +20,6 @@ import lombok.Setter;
  *
  * @author Jeffrey Yaw Annor Tabiri
  * @version 1.0
- * @since 2024-03-31
  */
 @Entity
 @Table(name = "tags")
