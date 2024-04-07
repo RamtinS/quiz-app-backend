@@ -5,6 +5,7 @@ import edu.ntnu.idatt2105.quizapp.repositories.quiz.CategoryRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizAttemptRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizRepository;
 import edu.ntnu.idatt2105.quizapp.testdata.QuizTestData;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,11 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * This class is responsible for starting the Spring Boot application.
  * The class also contains a CommandLineRunner bean that runs on startup.
  *
- * @version 1.0
  * @author Tobias Oftedal
  * @author Jeffrey Yaw Annor Tabiri
  * @author Ramtin Samavat
+ * @version 1.0
  */
+@Slf4j
 @SpringBootApplication
 public class QuizBackendApplication {
 
@@ -35,9 +37,24 @@ public class QuizBackendApplication {
 
     return args -> {
 
-      QuizTestData.addTestData(passwordEncoder, userRepository, quizRepository,
-              categoryRepository, quizAttemptRepository);
 
+      if (args.length > 0) {
+        log.info("Running with argument: " + args[0]);
+        if (args[0].equalsIgnoreCase("--data")) {
+          QuizTestData.addTestData(userRepository, passwordEncoder, quizRepository,
+              categoryRepository, quizAttemptRepository);
+        } else if (args[0].equalsIgnoreCase("--help")) {
+          log.info("Possible options: ");
+          log.info("data: Add test data to the database to be able to run existing " +
+              "quizzes");
+        } else {
+          log.error(args[0] + " is not a valid argument. Please try running with '--help' " +
+              "to see possible options.");
+        }
+      } else {
+        log.info("No arguments given, running without adding any data except categories");
+        QuizTestData.createAndSaveCategories(categoryRepository);
+      }
     };
   }
 }

@@ -16,4 +16,5 @@ public class QuizPreviewDto {
   private String title;
   private String description;
   private boolean open;
+  private String category;
 }
