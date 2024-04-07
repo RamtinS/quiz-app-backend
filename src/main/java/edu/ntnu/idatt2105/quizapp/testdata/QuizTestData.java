@@ -33,7 +33,7 @@ public class QuizTestData {
     Category exampleCategory6 = Category.builder().description("Chemistry").build();
 
     User admin = User.builder()
-            .username("Admin")
+            .username("admin")
             .password(passwordEncoder.encode("password"))
             .email("admin@ntnu.edu")
             .name("Test")
@@ -43,7 +43,7 @@ public class QuizTestData {
 
 
     User user2 = User.builder()
-            .username("Geir1")
+            .username("geir1")
             .password(passwordEncoder.encode("password"))
             .email("geir1@ntnu.edu")
             .name("Test")
@@ -52,7 +52,7 @@ public class QuizTestData {
             .build();
 
     User emptyUser = User.builder() // Do not change. Is used for testing in frontend.
-            .username("TestUser")
+            .username("testUser")
             .password(passwordEncoder.encode("password"))
             .email("test@test.no")
             .name("Test")
