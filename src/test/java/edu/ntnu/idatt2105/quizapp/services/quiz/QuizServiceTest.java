@@ -3,6 +3,7 @@ package edu.ntnu.idatt2105.quizapp.services.quiz;
 
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDto;
+import edu.ntnu.idatt2105.quizapp.exception.auth.UnauthorizedOperationException;
 import edu.ntnu.idatt2105.quizapp.mapper.QuizMapper;
 import edu.ntnu.idatt2105.quizapp.model.user.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
@@ -144,7 +145,7 @@ class QuizServiceTest {
     when(quizRepository.findQuizById(quiz.getId())).thenReturn(Optional.of(expected));
 
     //Act
-    assertThrows(IllegalArgumentException.class, () -> quizService.getQuizById(testPrincipal, quiz.getId()));
+    assertThrows(UnauthorizedOperationException.class, () -> quizService.getQuizById(testPrincipal, quiz.getId()));
   }
 
 
