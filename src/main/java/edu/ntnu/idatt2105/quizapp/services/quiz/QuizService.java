@@ -79,7 +79,7 @@ public class QuizService {
 
     return quizRepository.findAllByAuthorUsername(principal.getName(), pageable)
         .stream()
-        .map(quizMapper::mapToQuizPreviewDTO)
+        .map(quizMapper::mapToQuizPreviewDto)
         .toList();
   }
 
@@ -95,7 +95,7 @@ public class QuizService {
                                                                        Pageable pageable) {
     return quizRepository.findAllByAuthorUsernameAndIsOpen(username, pageable, true)
         .stream()
-        .map(quizMapper::mapToQuizPreviewDTO)
+        .map(quizMapper::mapToQuizPreviewDto)
         .toList();
   }
 
@@ -108,7 +108,7 @@ public class QuizService {
   public List<QuizPreviewDto> browsePublicQuizzesPaginated(Pageable pageable) {
     return quizRepository.findAllByIsOpen(true, pageable)
         .stream()
-        .map(quizMapper::mapToQuizPreviewDTO)
+        .map(quizMapper::mapToQuizPreviewDto)
         .toList();
   }
 
@@ -127,7 +127,7 @@ public class QuizService {
     Quiz quiz = quizRepository.findQuizById(id).orElseThrow();
 
     if (quiz.getIsOpen() || quiz.getAuthor().getUsername().equals(principal.getName())) {
-      return quizMapper.mapToQuizDTO(quiz);
+      return quizMapper.mapToQuizDto(quiz);
     } else {
       throw new IllegalArgumentException("Principal has no access to this quiz.");
     }
@@ -151,7 +151,7 @@ public class QuizService {
       return quizRepository
               .findQuizByCategoryDescriptionAndTagsDescriptionContainingIgnoreCaseAndIsOpen(
                       search, search, true, pageable).stream()
-              .map(quizMapper::mapToQuizPreviewDTO)
+              .map(quizMapper::mapToQuizPreviewDto)
               .toList();
     }
 
@@ -159,7 +159,7 @@ public class QuizService {
       return quizRepository
               .findQuizByCategoryDescriptionContainingIgnoreCaseAndIsOpen(search, true, pageable)
               .stream()
-              .map(quizMapper::mapToQuizPreviewDTO)
+              .map(quizMapper::mapToQuizPreviewDto)
               .toList();
     }
 
@@ -167,14 +167,14 @@ public class QuizService {
       return quizRepository
               .findQuizByTagsDescriptionContainingIgnoreCaseAndIsOpen(search, true, pageable)
               .stream()
-              .map(quizMapper::mapToQuizPreviewDTO)
+              .map(quizMapper::mapToQuizPreviewDto)
               .toList();
 
     } else {
       return quizRepository
               .findAllByNameContainingIgnoreCaseAndIsOpenOrderByName(search, true, pageable)
               .stream()
-              .map(quizMapper::mapToQuizPreviewDTO)
+              .map(quizMapper::mapToQuizPreviewDto)
               .toList();
     }
   }

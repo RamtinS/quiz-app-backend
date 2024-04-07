@@ -94,7 +94,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    * @return ResponseEntity containing the ErrorResponse with HTTP status code 404 (NOT_FOUND).
    */
   @ExceptionHandler(OptimisticLockingFailureException.class)
-  public ResponseEntity<ErrorResponse> handleOptimisticLockingFailureException(@NonNull Exception ex) {
+  public ResponseEntity<ErrorResponse>
+  handleOptimisticLockingFailureException(@NonNull Exception ex) {
     String errorMessage = "The entity could not be found.";
     return buildResponseEntityWithErrorResponse(ex, errorMessage, HttpStatus.NOT_FOUND);
   }

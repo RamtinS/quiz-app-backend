@@ -29,12 +29,12 @@ public class QuestionMapper {
    * @param question The QuizQuestion object to map.
    * @return The mapped QuizQuestionDTO object.
    */
-  public QuestionDto mapToQuizQuestionDTO(Question question) {
+  public QuestionDto mapToQuizQuestionDto(Question question) {
     if (question instanceof MultipleChoiceQuestion) {
-      return mapToQuizQuestionDTOFromMultipleChoice((MultipleChoiceQuestion) question);
+      return mapToQuizQuestionDtoFromMultipleChoice((MultipleChoiceQuestion) question);
 
     } else if (question instanceof TrueOrFalseQuestion) {
-      return mapToQuizQuestionDTOFromTrueOrFalse((TrueOrFalseQuestion) question);
+      return mapToQuizQuestionDtoFromTrueOrFalse((TrueOrFalseQuestion) question);
     } else {
       throw new IllegalArgumentException("Question type not supported");
 
@@ -47,7 +47,7 @@ public class QuestionMapper {
    * @param question The TrueOrFalseQuestion object to map.
    * @return The mapped TrueOrFalseQuestionDTO object.
    */
-  public QuestionDto mapToQuizQuestionDTOFromTrueOrFalse(TrueOrFalseQuestion question) {
+  public QuestionDto mapToQuizQuestionDtoFromTrueOrFalse(TrueOrFalseQuestion question) {
     return TrueOrFalseQuestionDto.builder()
         .questionIsCorrect(question.getQuestionIsCorrect())
         .questionText(question.getQuestionText())
@@ -60,12 +60,12 @@ public class QuestionMapper {
    * @param question The MultipleChoiceQuestion object to map.
    * @return The mapped MultipleChoiceQuestionDTO object.
    */
-  public QuestionDto mapToQuizQuestionDTOFromMultipleChoice(MultipleChoiceQuestion question) {
+  public QuestionDto mapToQuizQuestionDtoFromMultipleChoice(MultipleChoiceQuestion question) {
 
     return MultipleChoiceQuestionDto.builder()
         .answers(question.getAnswers()
             .stream()
-            .map(answerMapper::mapToAnswerDTO)
+            .map(answerMapper::mapToAnswerDto)
             .toList())
         .questionText(question.getQuestionText())
         .build();
@@ -74,15 +74,15 @@ public class QuestionMapper {
   /**
    * Maps a QuizQuestionDTO object to a QuizQuestion object.
    *
-   * @param questionDTO The QuizQuestionDTO object to map.
+   * @param questionDto The QuizQuestionDTO object to map.
    * @return The mapped QuizQuestion object.
    */
-  public Question mapToQuestion(QuestionDto questionDTO) {
+  public Question mapToQuestion(QuestionDto questionDto) {
 
-    if (questionDTO instanceof MultipleChoiceQuestionDto) {
-      return mapMultipleChoiceQuestionDTOToQuestion((MultipleChoiceQuestionDto) questionDTO);
-    } else if (questionDTO instanceof TrueOrFalseQuestionDto) {
-      return mapTrueOrFalsoToQuestion((TrueOrFalseQuestionDto) questionDTO);
+    if (questionDto instanceof MultipleChoiceQuestionDto) {
+      return mapMultipleChoiceQuestionDtoToQuestion((MultipleChoiceQuestionDto) questionDto);
+    } else if (questionDto instanceof TrueOrFalseQuestionDto) {
+      return mapTrueOrFalsoToQuestion((TrueOrFalseQuestionDto) questionDto);
     } else {
       throw new IllegalArgumentException("Question type not supported");
     }
@@ -91,16 +91,16 @@ public class QuestionMapper {
   /**
    * Maps a MultipleChoiceQuestionDTO object to a MultipleChoiceQuestion object.
    *
-   * @param questionDTO The MultipleChoiceQuestionDTO object to map.
+   * @param questionDto The MultipleChoiceQuestionDTO object to map.
    * @return The mapped MultipleChoiceQuestion object.
    */
-  public Question mapMultipleChoiceQuestionDTOToQuestion(MultipleChoiceQuestionDto questionDTO) {
+  public Question mapMultipleChoiceQuestionDtoToQuestion(MultipleChoiceQuestionDto questionDto) {
     MultipleChoiceQuestion question = MultipleChoiceQuestion.builder()
-        .answers(questionDTO.getAnswers()
+        .answers(questionDto.getAnswers()
             .stream()
             .map(answerMapper::mapToAnswer)
             .toList())
-        .questionText(questionDTO.getQuestionText())
+        .questionText(questionDto.getQuestionText())
         .build();
     question.getAnswers().forEach(answer -> answer.setQuestion(question));
     return question;
@@ -109,13 +109,13 @@ public class QuestionMapper {
   /**
    * Maps a TrueOrFalseQuestionDTO object to a TrueOrFalseQuestion object.
    *
-   * @param questionDTO The TrueOrFalseQuestionDTO object to map.
+   * @param questionDto The TrueOrFalseQuestionDTO object to map.
    * @return The mapped TrueOrFalseQuestion object.
    */
-  public Question mapTrueOrFalsoToQuestion(TrueOrFalseQuestionDto questionDTO) {
+  public Question mapTrueOrFalsoToQuestion(TrueOrFalseQuestionDto questionDto) {
     return TrueOrFalseQuestion.builder()
-        .questionIsCorrect(questionDTO.getQuestionIsCorrect())
-        .questionText(questionDTO.getQuestionText())
+        .questionIsCorrect(questionDto.getQuestionIsCorrect())
+        .questionText(questionDto.getQuestionText())
         .build();
   }
 }

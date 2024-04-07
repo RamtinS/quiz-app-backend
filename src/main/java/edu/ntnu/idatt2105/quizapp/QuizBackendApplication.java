@@ -11,6 +11,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * The main class of the application.
+ * This class is responsible for starting the Spring Boot application.
+ * The class also contains a CommandLineRunner bean that runs on startup.
+ *
+ * @version 1.0
+ * @author Tobias Oftedal
+ * @author Jeffrey Yaw Annor Tabiri
+ * @author Ramtin Samavat
+ */
 @SpringBootApplication
 public class QuizBackendApplication {
 
