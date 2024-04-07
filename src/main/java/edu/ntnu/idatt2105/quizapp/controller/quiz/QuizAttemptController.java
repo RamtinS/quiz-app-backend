@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller class responsible for handling quiz attempt-related endpoints.
+ * This class is responsible for handling requests related to quiz attempts.
  *
  * @author Ramitn Samavat
  * @version 1.0

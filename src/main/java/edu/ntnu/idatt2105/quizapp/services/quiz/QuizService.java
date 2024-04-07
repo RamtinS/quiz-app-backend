@@ -1,9 +1,9 @@
 package edu.ntnu.idatt2105.quizapp.services.quiz;
 
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDto;
 import edu.ntnu.idatt2105.quizapp.exception.quiz.QuizNotFoundException;
 import edu.ntnu.idatt2105.quizapp.mapper.QuizMapper;
 import edu.ntnu.idatt2105.quizapp.model.User;
@@ -49,7 +49,7 @@ public class QuizService {
    * @return The response DTO containing the ID of the created quiz.
    * @throws UsernameNotFoundException If the user is not found.
    */
-  public QuizCreationResponseDTO createQuiz(QuizCreationRequestDTO quizCreationDTO,
+  public QuizCreationResponseDto createQuiz(QuizCreationRequestDto quizCreationDTO,
                                             Principal principal) throws UsernameNotFoundException {
 
     String username = principal.getName();
@@ -61,7 +61,7 @@ public class QuizService {
 
     Quiz savedQuiz = quizRepository.save(createdQuiz);
 
-    return QuizCreationResponseDTO.builder()
+    return QuizCreationResponseDto.builder()
         .quizId(savedQuiz.getId())
         .build();
   }
@@ -74,7 +74,7 @@ public class QuizService {
    * @param pageable  The pageable object containing the page number and size.
    * @return A list of quiz previews based on the pageable.
    */
-  public List<QuizPreviewDTO> getAllQuizPreviewsForUserPaginated(Principal principal,
+  public List<QuizPreviewDto> getAllQuizPreviewsForUserPaginated(Principal principal,
                                                                  Pageable pageable) {
 
     return quizRepository.findAllByAuthorUsername(principal.getName(), pageable)
@@ -91,7 +91,7 @@ public class QuizService {
    * @param pageable The pageable object used to specify the page number and size.
    * @return A list of quiz public quiz previews of the user based on the pageable.
    */
-  public List<QuizPreviewDTO> getAllPublicQuizPreviewsForUserPaginated(String username,
+  public List<QuizPreviewDto> getAllPublicQuizPreviewsForUserPaginated(String username,
                                                                        Pageable pageable) {
     return quizRepository.findAllByAuthorUsernameAndIsOpen(username, pageable, true)
         .stream()
@@ -105,7 +105,7 @@ public class QuizService {
    * @param pageable The pageable object used to specify the page number and size.
    * @return A list of quiz previews based on the pageable.
    */
-  public List<QuizPreviewDTO> browsePublicQuizzesPaginated(Pageable pageable) {
+  public List<QuizPreviewDto> browsePublicQuizzesPaginated(Pageable pageable) {
     return quizRepository.findAllByIsOpen(true, pageable)
         .stream()
         .map(quizMapper::mapToQuizPreviewDTO)
@@ -141,7 +141,7 @@ public class QuizService {
    * @param pageable The pageable object used to specify the page number and size.
    * @return a list of quizPreviews.
    */
-  public List<QuizPreviewDTO> getQuizBySearchParameters(
+  public List<QuizPreviewDto> getQuizBySearchParameters(
           String search,
           Boolean searchByCategory,
           Boolean searchByTags,
@@ -187,8 +187,8 @@ public class QuizService {
    * @param quizCreationDTO The DTO containing the updated quiz information.
    * @return The response DTO containing the ID of the updated quiz.
    */
-  public QuizCreationResponseDTO updateQuiz(Principal principal, long id,
-                                            QuizCreationRequestDTO quizCreationDTO) {
+  public QuizCreationResponseDto updateQuiz(Principal principal, long id,
+                                            QuizCreationRequestDto quizCreationDTO) {
 
     Optional<User> user = userRepository.findUserByUsernameIgnoreCase(principal.getName());
     if (user.isEmpty()) {
@@ -210,7 +210,7 @@ public class QuizService {
 
     deleteQuizAndCorrespondingAttempts(id, originalQuiz);
 
-    return QuizCreationResponseDTO.builder()
+    return QuizCreationResponseDto.builder()
         .quizId(savedQuiz.getId())
         .build();
   }

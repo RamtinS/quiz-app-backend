@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2105.quizapp.mapper;
 
-import edu.ntnu.idatt2105.quizapp.dto.quiz.MultipleChoiceQuestionDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.QuestionDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.TrueOrFalseQuestionDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.MultipleChoiceQuestionDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.QuestionDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.TrueOrFalseQuestionDto;
 import edu.ntnu.idatt2105.quizapp.model.quiz.MultipleChoiceQuestion;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Question;
 import edu.ntnu.idatt2105.quizapp.model.quiz.TrueOrFalseQuestion;
@@ -29,7 +29,7 @@ public class QuestionMapper {
    * @param question The QuizQuestion object to map.
    * @return The mapped QuizQuestionDTO object.
    */
-  public QuestionDTO mapToQuizQuestionDTO(Question question) {
+  public QuestionDto mapToQuizQuestionDTO(Question question) {
     if (question instanceof MultipleChoiceQuestion) {
       return mapToQuizQuestionDTOFromMultipleChoice((MultipleChoiceQuestion) question);
 
@@ -47,8 +47,8 @@ public class QuestionMapper {
    * @param question The TrueOrFalseQuestion object to map.
    * @return The mapped TrueOrFalseQuestionDTO object.
    */
-  public QuestionDTO mapToQuizQuestionDTOFromTrueOrFalse(TrueOrFalseQuestion question) {
-    return TrueOrFalseQuestionDTO.builder()
+  public QuestionDto mapToQuizQuestionDTOFromTrueOrFalse(TrueOrFalseQuestion question) {
+    return TrueOrFalseQuestionDto.builder()
         .questionIsCorrect(question.getQuestionIsCorrect())
         .questionText(question.getQuestionText())
         .build();
@@ -60,9 +60,9 @@ public class QuestionMapper {
    * @param question The MultipleChoiceQuestion object to map.
    * @return The mapped MultipleChoiceQuestionDTO object.
    */
-  public QuestionDTO mapToQuizQuestionDTOFromMultipleChoice(MultipleChoiceQuestion question) {
+  public QuestionDto mapToQuizQuestionDTOFromMultipleChoice(MultipleChoiceQuestion question) {
 
-    return MultipleChoiceQuestionDTO.builder()
+    return MultipleChoiceQuestionDto.builder()
         .answers(question.getAnswers()
             .stream()
             .map(answerMapper::mapToAnswerDTO)
@@ -77,12 +77,12 @@ public class QuestionMapper {
    * @param questionDTO The QuizQuestionDTO object to map.
    * @return The mapped QuizQuestion object.
    */
-  public Question mapToQuestion(QuestionDTO questionDTO) {
+  public Question mapToQuestion(QuestionDto questionDTO) {
 
-    if (questionDTO instanceof MultipleChoiceQuestionDTO) {
-      return mapMultipleChoiceQuestionDTOToQuestion((MultipleChoiceQuestionDTO) questionDTO);
-    } else if (questionDTO instanceof TrueOrFalseQuestionDTO) {
-      return mapTrueOrFalsoToQuestion((TrueOrFalseQuestionDTO) questionDTO);
+    if (questionDTO instanceof MultipleChoiceQuestionDto) {
+      return mapMultipleChoiceQuestionDTOToQuestion((MultipleChoiceQuestionDto) questionDTO);
+    } else if (questionDTO instanceof TrueOrFalseQuestionDto) {
+      return mapTrueOrFalsoToQuestion((TrueOrFalseQuestionDto) questionDTO);
     } else {
       throw new IllegalArgumentException("Question type not supported");
     }
@@ -94,7 +94,7 @@ public class QuestionMapper {
    * @param questionDTO The MultipleChoiceQuestionDTO object to map.
    * @return The mapped MultipleChoiceQuestion object.
    */
-  public Question mapMultipleChoiceQuestionDTOToQuestion(MultipleChoiceQuestionDTO questionDTO) {
+  public Question mapMultipleChoiceQuestionDTOToQuestion(MultipleChoiceQuestionDto questionDTO) {
     MultipleChoiceQuestion question = MultipleChoiceQuestion.builder()
         .answers(questionDTO.getAnswers()
             .stream()
@@ -112,7 +112,7 @@ public class QuestionMapper {
    * @param questionDTO The TrueOrFalseQuestionDTO object to map.
    * @return The mapped TrueOrFalseQuestion object.
    */
-  public Question mapTrueOrFalsoToQuestion(TrueOrFalseQuestionDTO questionDTO) {
+  public Question mapTrueOrFalsoToQuestion(TrueOrFalseQuestionDto questionDTO) {
     return TrueOrFalseQuestion.builder()
         .questionIsCorrect(questionDTO.getQuestionIsCorrect())
         .questionText(questionDTO.getQuestionText())

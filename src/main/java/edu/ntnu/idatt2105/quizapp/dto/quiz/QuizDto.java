@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.dto.quiz;
 
-import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDTO;
+import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDto;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -20,8 +20,8 @@ public class QuizDto {
   private String name;
   private String description;
   private String categoryDescription;
-  private List<QuestionDTO> questions;
+  private List<QuestionDto> questions;
   private List<TagDto> tags;
-  private PublicUserInformationDTO author;
+  private PublicUserInformationDto author;
   private boolean isOpen;
 }

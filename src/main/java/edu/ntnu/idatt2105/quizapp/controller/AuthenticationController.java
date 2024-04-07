@@ -37,6 +37,7 @@ public class AuthenticationController {
 
   /**
    * REST-endpoint to register a user.
+   * If the user is registered successfully, a token is generated and returned.
    *
    * @param registrationDto DTO containing user registration information.
    * @return ResponseEntity containing a DTO with a token on success, or error on failure.
@@ -61,6 +62,7 @@ public class AuthenticationController {
 
   /**
    * REST-endpoint to authenticate a user login request.
+   * If the user is authenticated, a token is generated and returned.
    *
    * @param loginRequestDto DTO containing user login credentials.
    * @return ResponseEntity containing a DTO with a token on success, or UNAUTHORIZED on failure.

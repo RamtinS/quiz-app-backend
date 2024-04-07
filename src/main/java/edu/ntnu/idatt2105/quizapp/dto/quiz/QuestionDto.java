@@ -9,10 +9,10 @@ import lombok.experimental.SuperBuilder;
 
 /**
  * DTO class used for creating a quiz question.
+ * Contains the question text and the type of question.
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Data
 @SuperBuilder
@@ -22,9 +22,9 @@ import lombok.experimental.SuperBuilder;
     use = JsonTypeInfo.Id.NAME,
     property = "questionType")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = TrueOrFalseQuestionDTO.class, name = "TrueOrFalseQuestionDTO"),
-    @JsonSubTypes.Type(value = MultipleChoiceQuestionDTO.class, name = "MultipleChoiceQuestionDTO")}
+    @JsonSubTypes.Type(value = TrueOrFalseQuestionDto.class, name = "TrueOrFalseQuestionDTO"),
+    @JsonSubTypes.Type(value = MultipleChoiceQuestionDto.class, name = "MultipleChoiceQuestionDTO")}
 )
-public abstract class QuestionDTO {
+public abstract class QuestionDto {
   private String questionText;
 }

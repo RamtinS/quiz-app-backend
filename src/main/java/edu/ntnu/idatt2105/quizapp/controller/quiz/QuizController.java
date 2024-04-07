@@ -1,9 +1,9 @@
 package edu.ntnu.idatt2105.quizapp.controller.quiz;
 
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDto;
 import edu.ntnu.idatt2105.quizapp.services.quiz.QuizService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,11 +12,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import java.security.Principal;
-import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import java.security.Principal;
+import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,22 +57,22 @@ public class QuizController {
    */
   @Operation(summary = "Submit a quiz for a user and save it to the database")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "The quiz was created and saved " +
-          "successfully", content = {
-          @Content(mediaType = "application/json", schema = @Schema(implementation =
-              QuizCreationResponseDTO.class))}),
-      @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
-      @Content)})
+          @ApiResponse(responseCode = "200", description = "The quiz was created and saved "
+                  + "successfully", content = {
+                  @Content(mediaType = "application/json", schema = @Schema(implementation =
+                          QuizCreationResponseDto.class))}),
+          @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
+          @Content)})
   @PostMapping("/quizzes")
-  public ResponseEntity<QuizCreationResponseDTO> submitQuiz(
-      @RequestBody QuizCreationRequestDTO quizCreationRequestDTO,
-      Principal authenticatedPrincipal) {
+  public ResponseEntity<QuizCreationResponseDto> submitQuiz(
+          @RequestBody QuizCreationRequestDto quizCreationRequestDTO,
+          Principal authenticatedPrincipal) {
 
 
     log.info("Submit quiz for user: " + authenticatedPrincipal.getName());
 
-    QuizCreationResponseDTO quizCreationResponseDTO =
-        quizService.createQuiz(quizCreationRequestDTO, authenticatedPrincipal);
+    QuizCreationResponseDto quizCreationResponseDTO =
+            quizService.createQuiz(quizCreationRequestDTO, authenticatedPrincipal);
 
     log.info("Quiz has been saved");
 
@@ -92,17 +92,17 @@ public class QuizController {
    * code if something goes wrong
    */
   @Operation(summary = "Get all quizzes for a specified user paginated", description =
-      "If the user is not the same as the authenticated user, only " +
-          "public quizzes are returned")
+          "If the user is not the same as the authenticated user, only " +
+                  "public quizzes are returned")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "The quizzes were found and returned"),
-      @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
-      @Content)})
+          @ApiResponse(responseCode = "200", description = "The quizzes were found and returned"),
+          @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
+          @Content)})
   @Parameters({@Parameter(name = "pageSize", description = "The size of the requested page"),
-      @Parameter(name = "page", description = "The page number of the requested page"),
-      @Parameter(name = "username", description = "The username of the user who owns the quizzes")})
+          @Parameter(name = "page", description = "The page number of the requested page"),
+          @Parameter(name = "username", description = "The username of the user who owns the quizzes")})
   @GetMapping("/users/{username}/previews")
-  public ResponseEntity<List<QuizPreviewDTO>> getPreviewsForUserPaginated(Principal principal,
+  public ResponseEntity<List<QuizPreviewDto>> getPreviewsForUserPaginated(Principal principal,
                                                                           @RequestParam int page,
                                                                           @RequestParam
                                                                           int pageSize,
@@ -114,14 +114,14 @@ public class QuizController {
 
     if (principal != null && principal.getName().equals(username)) {
       log.info("Returning private quizzes");
-      List<QuizPreviewDTO> quizzes =
-          quizService.getAllQuizPreviewsForUserPaginated(principal, pageRequest);
+      List<QuizPreviewDto> quizzes =
+              quizService.getAllQuizPreviewsForUserPaginated(principal, pageRequest);
       return new ResponseEntity<>(quizzes, HttpStatus.OK);
     } else {
       log.info("Returning public quizzes");
 
-      List<QuizPreviewDTO> quizzes =
-          quizService.getAllPublicQuizPreviewsForUserPaginated(username, pageRequest);
+      List<QuizPreviewDto> quizzes =
+              quizService.getAllPublicQuizPreviewsForUserPaginated(username, pageRequest);
       return new ResponseEntity<>(quizzes, HttpStatus.OK);
     }
   }
@@ -136,21 +136,21 @@ public class QuizController {
    */
   @Operation(summary = "Get all public quizzes paginated")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "The public quizzes were found and " +
-          "returned", content = {
-          @Content(mediaType = "application/json", schema = @Schema(implementation =
-              QuizPreviewDTO.class))}),
-      @ApiResponse(responseCode = "500", description = "The public quizzes could not be found" +
-          " due to an internal server error", content = @Content)})
+          @ApiResponse(responseCode = "200", description = "The public quizzes were found and " +
+                  "returned", content = {
+                  @Content(mediaType = "application/json", schema = @Schema(implementation =
+                          QuizPreviewDto.class))}),
+          @ApiResponse(responseCode = "500", description = "The public quizzes could not be found" +
+                  " due to an internal server error", content = @Content)})
   @GetMapping("browser/previews")
-  public ResponseEntity<List<QuizPreviewDTO>> getAllPublicQuizPreviewsPaginated(
-      @RequestParam int pageSize, @RequestParam int page) {
+  public ResponseEntity<List<QuizPreviewDto>> getAllPublicQuizPreviewsPaginated(
+          @RequestParam int pageSize, @RequestParam int page) {
     log.info("Browsing public quizzes");
 
 
     PageRequest pageRequest = PageRequest.of(page, pageSize);
 
-    List<QuizPreviewDTO> quizzes = quizService.browsePublicQuizzesPaginated(pageRequest);
+    List<QuizPreviewDto> quizzes = quizService.browsePublicQuizzesPaginated(pageRequest);
 
     log.info("Returning " + quizzes.size() + " quizzes");
     return new ResponseEntity<>(quizzes, HttpStatus.OK);
@@ -168,16 +168,16 @@ public class QuizController {
    */
   @Operation(summary = "Get a quiz by its id")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "The quiz was found and returned",
-          content = {
-              @Content(mediaType = "application/json", schema = @Schema(implementation =
-                  QuizDto.class))}),
-      @ApiResponse(responseCode = "400", description = "The quiz could not be found", content =
-      @Content),
-      @ApiResponse(responseCode = "403", description = "The user is not authorized to view the " +
-          "quiz", content = @Content),
-      @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
-      @Content),})
+          @ApiResponse(responseCode = "200", description = "The quiz was found and returned",
+                  content = {
+                          @Content(mediaType = "application/json", schema = @Schema(implementation =
+                                  QuizDto.class))}),
+          @ApiResponse(responseCode = "400", description = "The quiz could not be found", content =
+          @Content),
+          @ApiResponse(responseCode = "403", description = "The user is not authorized to view the " +
+                  "quiz", content = @Content),
+          @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
+          @Content),})
   @GetMapping("quizzes/{quizId}")
   public ResponseEntity<QuizDto> getQuizById(Principal principal, @PathVariable long quizId) {
 
@@ -197,21 +197,21 @@ public class QuizController {
    */
   @Operation(summary = "Get all public with certain criteria quizzes paginated")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "The public quizzes with the specified " +
-          "criteria were found and returned", content = {
-          @Content(mediaType = "application/json", schema = @Schema(implementation =
-              QuizPreviewDTO.class))}),
-      @ApiResponse(responseCode = "500", description = "The quizzes could not be found" +
-          " due to an internal server error", content = @Content)})
+          @ApiResponse(responseCode = "200", description = "The public quizzes with the specified " +
+                  "criteria were found and returned", content = {
+                  @Content(mediaType = "application/json", schema = @Schema(implementation =
+                          QuizPreviewDto.class))}),
+          @ApiResponse(responseCode = "500", description = "The quizzes could not be found" +
+                  " due to an internal server error", content = @Content)})
   @Parameters({@Parameter(name = "pageSize", description = "The size of the requested page"),
-      @Parameter(name = "page", description = "The page number of the requested page"),
-      @Parameter(name = "title", description = "The title of the quiz"),
-      @Parameter(name = "searchInCategory", description = "Whether to search in the categories"),
-      @Parameter(name = "searchInTags", description = "Whether to search in the tags")})
+          @Parameter(name = "page", description = "The page number of the requested page"),
+          @Parameter(name = "title", description = "The title of the quiz"),
+          @Parameter(name = "searchInCategory", description = "Whether to search in the categories"),
+          @Parameter(name = "searchInTags", description = "Whether to search in the tags")})
   @GetMapping("browser/search")
-  public ResponseEntity<List<QuizPreviewDTO>> getAllQuizzesWithDefinedCriteria(
-      @RequestParam int pageSize, @RequestParam int page, @RequestParam String title,
-      @RequestParam boolean searchInCategory, @RequestParam boolean searchInTags) {
+  public ResponseEntity<List<QuizPreviewDto>> getAllQuizzesWithDefinedCriteria(
+          @RequestParam int pageSize, @RequestParam int page, @RequestParam String title,
+          @RequestParam boolean searchInCategory, @RequestParam boolean searchInTags) {
 
     log.info("Browsing quizzes with criteria");
 
@@ -226,8 +226,8 @@ public class QuizController {
 
     PageRequest pageRequest = PageRequest.of(page, pageSize);
 
-    List<QuizPreviewDTO> quizzes =
-        quizService.getQuizBySearchParameters(title, searchInCategory, searchInTags, pageRequest);
+    List<QuizPreviewDto> quizzes =
+            quizService.getQuizBySearchParameters(title, searchInCategory, searchInTags, pageRequest);
 
     log.info("Returning " + quizzes.size() + " quizzes");
     return new ResponseEntity<>(quizzes, HttpStatus.OK);
@@ -249,25 +249,25 @@ public class QuizController {
    */
   @Operation(summary = "Update a quiz by its id")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "The quiz was updated and returned",
-          content = {
-              @Content(mediaType = "application/json", schema = @Schema(implementation =
-                  QuizCreationResponseDTO.class))}),
-      @ApiResponse(responseCode = "404", description = "The quiz could not be found", content =
-      @Content),
-      @ApiResponse(responseCode = "403", description = "The user is not authorized to update the " +
-          "quiz", content = @Content),
-      @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
-      @Content),})
+          @ApiResponse(responseCode = "200", description = "The quiz was updated and returned",
+                  content = {
+                          @Content(mediaType = "application/json", schema = @Schema(implementation =
+                                  QuizCreationResponseDto.class))}),
+          @ApiResponse(responseCode = "404", description = "The quiz could not be found", content =
+          @Content),
+          @ApiResponse(responseCode = "403", description = "The user is not authorized to update the " +
+                  "quiz", content = @Content),
+          @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
+          @Content),})
   @PutMapping("editor/{quizId}")
-  public ResponseEntity<QuizCreationResponseDTO>
+  public ResponseEntity<QuizCreationResponseDto>
   updateQuiz(Principal principal,
              @PathVariable long quizId, @RequestBody
-             QuizCreationRequestDTO quizCreationRequestDTO) {
+             QuizCreationRequestDto quizCreationRequestDTO) {
 
     log.info("Update quiz by id: " + quizId);
-    QuizCreationResponseDTO quizCreationResponseDTO = quizService.updateQuiz(
-        principal, quizId, quizCreationRequestDTO);
+    QuizCreationResponseDto quizCreationResponseDTO = quizService.updateQuiz(
+            principal, quizId, quizCreationRequestDTO);
     log.info("Returning quiz: " + quizCreationResponseDTO.getQuizId());
     return new ResponseEntity<>(quizCreationResponseDTO, HttpStatus.OK);
   }
@@ -285,17 +285,22 @@ public class QuizController {
    */
   @Operation(summary = "Delete a quiz by its id")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "The quiz was deleted", content = {
-          @Content(mediaType = "application/json", schema =
-          @Schema(implementation = String.class))}),
-      @ApiResponse(responseCode = "404", description = "The quiz could not be found", content =
-      @Content),
-      @ApiResponse(responseCode = "403", description = "The user is not authorized to delete the " +
-          "quiz", content = @Content),
-      @ApiResponse(responseCode = "409", description = "The quiz could not be deleted", content =
-      @Content),
-      @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
-      @Content)})
+          @ApiResponse(responseCode = "200",
+                  description = "The quiz was deleted", content = {
+                  @Content(mediaType = "application/json", schema =
+                  @Schema(implementation = String.class))}),
+          @ApiResponse(responseCode = "404",
+                  description = "The quiz could not be found", content =
+          @Content),
+          @ApiResponse(responseCode = "403",
+                  description = "The user is not authorized to delete the " +
+                  "quiz", content = @Content),
+          @ApiResponse(responseCode = "409",
+                  description = "The quiz could not be deleted", content =
+          @Content),
+          @ApiResponse(responseCode = "500",
+                  description = "Unknown internal server error", content =
+          @Content)})
   @DeleteMapping("editor/{quizId}")
   public ResponseEntity<String> deleteQuiz(Principal principal, @PathVariable long quizId) {
     log.info("Attempting to delete quiz: " + quizId);

@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.controller;
 
-import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDTO;
+import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.EditUserDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.UserDetailsDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.UserStatsDto;
@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Controller class responsible for handling user related operations,
  * such as changing their information.
+ *
  *
  * @author Ramtin Samavat
  * @author Tobias Oftedal
@@ -103,10 +104,10 @@ public class UserController {
               array = @ArraySchema(schema = @Schema(implementation = User.class)))}),
       @ApiResponse(responseCode = "500", description = "Internal server error")})
   @GetMapping("/public")
-  public ResponseEntity<List<PublicUserInformationDTO>> searchUsername(
+  public ResponseEntity<List<PublicUserInformationDto>> searchUsername(
       @RequestParam String search, @RequestParam int page, @RequestParam int size) {
 
-    List<PublicUserInformationDTO> result = searchService
+    List<PublicUserInformationDto> result = searchService
         .findPublicProfilesFromUsername(search, Pageable.ofSize(size).withPage(page));
 
     return new ResponseEntity<>(result, HttpStatus.OK);
@@ -142,13 +143,13 @@ public class UserController {
   @ApiResponse(responseCode = "200", description = "Public user information successfully "
       + "retrieved.",
       content = {@Content(mediaType = "application/json",
-          schema = @Schema(implementation = PublicUserInformationDTO.class))}
+          schema = @Schema(implementation = PublicUserInformationDto.class))}
   )
   @GetMapping("/public/{username}")
-  public ResponseEntity<PublicUserInformationDTO> getPublicUserInfo(@PathVariable String username) {
-    PublicUserInformationDTO publicUserInformationDTO =
+  public ResponseEntity<PublicUserInformationDto> getPublicUserInfo(@PathVariable String username) {
+    PublicUserInformationDto publicUserInformationDto =
         userService.getPublicUserInformation(username);
-    return new ResponseEntity<>(publicUserInformationDTO, HttpStatus.OK);
+    return new ResponseEntity<>(publicUserInformationDto, HttpStatus.OK);
   }
 
 }

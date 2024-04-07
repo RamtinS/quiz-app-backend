@@ -20,6 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller class responsible for handling category-related operations.
+ * This class is responsible for handling requests related to categories.
+ *
+ * @version 1.0
+ * @author Tobias Oftedal
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +38,7 @@ public class CategoryController {
   CategoryService categoryService;
 
   /**
-   * Get all possible categories stored in the database
+   * Get all possible categories stored in the database.
    *
    * @return a list of all possible categories
    */

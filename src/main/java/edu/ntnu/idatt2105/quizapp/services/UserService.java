@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.services;
 
-import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDTO;
+import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.EditUserDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.UserDetailsDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.UserStatsDto;
@@ -119,7 +119,7 @@ public class UserService {
    * @param pageable the pageable used to find a specified page.
    * @return a list of public profile DTOs based on the search parameter.
    */
-  public List<PublicUserInformationDTO> findPublicProfilesFromUsername(
+  public List<PublicUserInformationDto> findPublicProfilesFromUsername(
           String searchString, Pageable pageable) {
 
     return userRepository.findAllByUsernameContainingIgnoreCase(searchString, pageable)
@@ -169,7 +169,7 @@ public class UserService {
    * @return The PublicUserInformationDTO containing the public user information.
    * @throws UsernameNotFoundException If the user is not found in the database.
    */
-  public PublicUserInformationDTO getPublicUserInformation(String username) {
+  public PublicUserInformationDto getPublicUserInformation(String username) {
     User user = userRepository.findUserByUsernameIgnoreCase(username).orElseThrow(() ->
             new UsernameNotFoundException("User with username " + username + " not found."));
 

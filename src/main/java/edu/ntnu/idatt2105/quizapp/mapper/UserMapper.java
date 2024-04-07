@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.mapper;
 
-import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDTO;
+import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDto;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
@@ -21,8 +21,8 @@ public class UserMapper {
    * @return The mapped PublicUserInformationDTO object.
    * @throws NullPointerException if the provided user is null
    */
-  public PublicUserInformationDTO mapToPublicUserInformation(@NonNull User user) {
-    return PublicUserInformationDTO.builder()
+  public PublicUserInformationDto mapToPublicUserInformation(@NonNull User user) {
+    return PublicUserInformationDto.builder()
         .username(user.getUsername())
         .build();
   }

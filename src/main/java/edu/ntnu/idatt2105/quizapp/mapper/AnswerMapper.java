@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.mapper;
 
-import edu.ntnu.idatt2105.quizapp.dto.quiz.AnswerDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.AnswerDto;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Answer;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +19,8 @@ public class AnswerMapper {
    * @param answer The Answer object to map.
    * @return The mapped AnswerDTO object.
    */
-  public AnswerDTO mapToAnswerDTO(Answer answer) {
-    return AnswerDTO.builder()
+  public AnswerDto mapToAnswerDTO(Answer answer) {
+    return AnswerDto.builder()
         .answerText(answer.getAnswerText())
         .isCorrect(answer.getIsCorrect())
         .build();
@@ -32,7 +32,7 @@ public class AnswerMapper {
    * @param answerDTO The AnswerDTO object to map.
    * @return The mapped Answer object.
    */
-  public Answer mapToAnswer(AnswerDTO answerDTO) {
+  public Answer mapToAnswer(AnswerDto answerDTO) {
     return Answer.builder()
         .answerText(answerDTO.getAnswerText())
         .isCorrect(answerDTO.isCorrect())
