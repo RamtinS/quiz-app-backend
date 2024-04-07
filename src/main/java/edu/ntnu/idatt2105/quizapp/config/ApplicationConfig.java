@@ -40,7 +40,8 @@ public class ApplicationConfig {
   }
 
   /**
-   * The method defines an AuthenticationProvider bean using DaoAuthenticationProvider for authentication.
+   * The method defines an AuthenticationProvider bean using
+   * DaoAuthenticationProvider for authentication.
    *
    * @return An implementation of AuthenticationProvider.
    */
@@ -53,14 +54,17 @@ public class ApplicationConfig {
   }
 
   /**
-   * The method defines an AuthenticationManager bean using the provided AuthenticationConfiguration.
+   * The method defines an AuthenticationManager bean using the provided
+   * AuthenticationConfiguration.
    *
    * @param config The AuthenticationConfiguration to configure the AuthenticationManager.
    * @return An implementation of AuthenticationManager.
    * @throws Exception If an error occurs while configuring the AuthenticationManager.
    */
   @Bean
-  public AuthenticationManager authenticationManager(@NonNull AuthenticationConfiguration config) throws Exception {
+  public AuthenticationManager authenticationManager(@NonNull AuthenticationConfiguration config)
+          throws Exception {
+
     return config.getAuthenticationManager();
   }
 

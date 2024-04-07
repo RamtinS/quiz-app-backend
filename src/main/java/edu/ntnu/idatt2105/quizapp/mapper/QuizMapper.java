@@ -95,9 +95,4 @@ public class QuizMapper {
 
     return createdQuiz;
   }
-
 }
-
-
-
-

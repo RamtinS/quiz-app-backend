@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Component
 @RequiredArgsConstructor
 public class QuestionMapper {
+
   @NonNull
-  AnswerMapper answerMapper;
+  private final AnswerMapper answerMapper;
 
   /**
    * Maps a QuizQuestion object to a QuizQuestionDTO object.
@@ -41,6 +41,12 @@ public class QuestionMapper {
     }
   }
 
+  /**
+   * Maps a TrueOrFalseQuestion object to a TrueOrFalseQuestionDTO object.
+   *
+   * @param question The TrueOrFalseQuestion object to map.
+   * @return The mapped TrueOrFalseQuestionDTO object.
+   */
   public QuestionDTO mapToQuizQuestionDTOFromTrueOrFalse(TrueOrFalseQuestion question) {
     return TrueOrFalseQuestionDTO.builder()
         .questionIsCorrect(question.getQuestionIsCorrect())
@@ -48,7 +54,12 @@ public class QuestionMapper {
         .build();
   }
 
-
+  /**
+   * Maps a MultipleChoiceQuestion object to a MultipleChoiceQuestionDTO object.
+   *
+   * @param question The MultipleChoiceQuestion object to map.
+   * @return The mapped MultipleChoiceQuestionDTO object.
+   */
   public QuestionDTO mapToQuizQuestionDTOFromMultipleChoice(MultipleChoiceQuestion question) {
 
     return MultipleChoiceQuestionDTO.builder()
@@ -77,6 +88,12 @@ public class QuestionMapper {
     }
   }
 
+  /**
+   * Maps a MultipleChoiceQuestionDTO object to a MultipleChoiceQuestion object.
+   *
+   * @param questionDTO The MultipleChoiceQuestionDTO object to map.
+   * @return The mapped MultipleChoiceQuestion object.
+   */
   public Question mapMultipleChoiceQuestionDTOToQuestion(MultipleChoiceQuestionDTO questionDTO) {
     MultipleChoiceQuestion question = MultipleChoiceQuestion.builder()
         .answers(questionDTO.getAnswers()
@@ -89,11 +106,16 @@ public class QuestionMapper {
     return question;
   }
 
+  /**
+   * Maps a TrueOrFalseQuestionDTO object to a TrueOrFalseQuestion object.
+   *
+   * @param questionDTO The TrueOrFalseQuestionDTO object to map.
+   * @return The mapped TrueOrFalseQuestion object.
+   */
   public Question mapTrueOrFalsoToQuestion(TrueOrFalseQuestionDTO questionDTO) {
     return TrueOrFalseQuestion.builder()
         .questionIsCorrect(questionDTO.getQuestionIsCorrect())
         .questionText(questionDTO.getQuestionText())
         .build();
   }
-
 }

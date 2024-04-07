@@ -1,10 +1,11 @@
-package edu.ntnu.idatt2105.quizapp.config;
+package edu.ntnu.idatt2105.quizapp.filter;
 
 import edu.ntnu.idatt2105.quizapp.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import java.io.IOException;
 
 /**
  * The class is responsible for authenticating JWT in incoming HTTP requests.
@@ -23,7 +23,6 @@ import java.io.IOException;
  * @author Ramtin samavat
  * @author Jeffrey Tabiri
  * @version 1.0
- * @since 2024-03-25
  */
 @Slf4j
 @Component
@@ -43,8 +42,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
    * @throws IOException if an I/O error occurs.
    */
   @Override
-  protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-                                  @NonNull FilterChain filterChain) throws ServletException, IOException {
+  protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                  @NonNull HttpServletResponse response,
+                                  @NonNull FilterChain filterChain)
+          throws ServletException, IOException {
 
     final String authHeader = request.getHeader("Authorization");
     final String token;

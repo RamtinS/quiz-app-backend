@@ -5,13 +5,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import java.util.Date;
+import java.util.function.Function;
+import javax.crypto.SecretKey;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.function.Function;
 
 /**
  * Service class for handling JSON Web Token (JWT) operations.
@@ -19,7 +19,6 @@ import java.util.function.Function;
  * @author Jeffrey Tabiri
  * @author Ramtin Samavat
  * @version 1.0
- * @since 2024-03-25
  */
 @Slf4j
 @Service
@@ -62,7 +61,7 @@ public class JwtService {
     return Jwts.builder()
             .subject(user.getUsername())
             .issuedAt(new Date(System.currentTimeMillis()))
-            .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // The expiration date is 30 min from the current time.
+            .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
             .signWith(getSignKey())
             .compact();
   }

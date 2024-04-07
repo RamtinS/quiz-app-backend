@@ -37,11 +37,13 @@ public class UserService {
   //CRUD operations on user models.
   private final UserRepository userRepository;
 
+  // Mapper for mapping user DTOs to entities and vice versa.
   private final UserMapper userMapper;
 
   //Password encoder to hash passwords in a database.
   private final PasswordEncoder passwordEncoder;
 
+  // Repository for managing quiz attempts.
   private final QuizAttemptRepository quizAttemptRepository;
 
   /**
@@ -99,9 +101,8 @@ public class UserService {
    * @throws UsernameNotFoundException If the user is not found in the database.
    */
   public UserDetailsDto getUserDetails(@NonNull String username) throws UsernameNotFoundException {
-    User user = userRepository.findUserByUsernameIgnoreCase(username)
-            .orElseThrow(() -> new UsernameNotFoundException(
-                    "User with username " + username + " not found."));
+    User user = userRepository.findUserByUsernameIgnoreCase(username).orElseThrow(() ->
+            new UsernameNotFoundException("User with username " + username + " not found."));
 
     return UserDetailsDto.builder()
             .email(user.getEmail())
@@ -169,9 +170,8 @@ public class UserService {
    * @throws UsernameNotFoundException If the user is not found in the database.
    */
   public PublicUserInformationDTO getPublicUserInformation(String username) {
-    User user = userRepository.findUserByUsernameIgnoreCase(username)
-        .orElseThrow(() -> new UsernameNotFoundException(
-            "User with username " + username + " not found."));
+    User user = userRepository.findUserByUsernameIgnoreCase(username).orElseThrow(() ->
+            new UsernameNotFoundException("User with username " + username + " not found."));
 
     return userMapper.mapToPublicUserInformation(user);
   }

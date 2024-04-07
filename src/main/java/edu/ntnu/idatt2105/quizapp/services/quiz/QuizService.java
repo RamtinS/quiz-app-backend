@@ -4,6 +4,7 @@ import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDTO;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDTO;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDTO;
+import edu.ntnu.idatt2105.quizapp.exception.quiz.QuizNotFoundException;
 import edu.ntnu.idatt2105.quizapp.mapper.QuizMapper;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
@@ -17,7 +18,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,6 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  */
 @Service
-@Slf4j
 @AllArgsConstructor
 public class QuizService {
 
@@ -42,7 +41,6 @@ public class QuizService {
   @NonNull
   private final QuizMapper quizMapper;
 
-
   /**
    * Creates a quiz from a quiz creation DTO for the logged-in user.
    *
@@ -52,16 +50,14 @@ public class QuizService {
    * @throws UsernameNotFoundException If the user is not found.
    */
   public QuizCreationResponseDTO createQuiz(QuizCreationRequestDTO quizCreationDTO,
-                                            Principal principal)
-      throws UsernameNotFoundException {
+                                            Principal principal) throws UsernameNotFoundException {
 
-    Optional<User> user = userRepository.findUserByUsernameIgnoreCase(principal.getName());
+    String username = principal.getName();
 
-    if (user.isEmpty()) {
-      throw new UsernameNotFoundException("User not found");
-    }
+    User user = userRepository.findUserByUsernameIgnoreCase(username).orElseThrow(() ->
+            new UsernameNotFoundException("User with username " + username + " not found"));
 
-    Quiz createdQuiz = quizMapper.mapToQuiz(quizCreationDTO, user.get());
+    Quiz createdQuiz = quizMapper.mapToQuiz(quizCreationDTO, user);
 
     Quiz savedQuiz = quizRepository.save(createdQuiz);
 
@@ -69,7 +65,6 @@ public class QuizService {
         .quizId(savedQuiz.getId())
         .build();
   }
-
 
   /**
    * Creates a paginated list of previews for all quizzes (both public and private)
@@ -81,7 +76,6 @@ public class QuizService {
    */
   public List<QuizPreviewDTO> getAllQuizPreviewsForUserPaginated(Principal principal,
                                                                  Pageable pageable) {
-
 
     return quizRepository.findAllByAuthorUsername(principal.getName(), pageable)
         .stream()
@@ -119,7 +113,7 @@ public class QuizService {
   }
 
   /**
-   * Gets a quiz by its ID if the quiz is public or the principal is the author.
+   * Retrieves a quiz by its ID if the quiz is public or the principal is the author.
    *
    * @param principal The principal of the logged-in user.
    * @param id        The ID of the quiz.
@@ -140,9 +134,8 @@ public class QuizService {
 
   }
 
-
   /**
-   * Gets a public quiz by its name.
+   * Retrieves a public quiz by its name.
    *
    * @param search the term to search the quiz with.
    * @param pageable The pageable object used to specify the page number and size.
@@ -155,29 +148,45 @@ public class QuizService {
           Pageable pageable) {
 
     if (searchByCategory && searchByTags) {
-      return quizRepository.findQuizByCategoryDescriptionAndTagsDescriptionContainingIgnoreCaseAndIsOpen(search, search, true, pageable).stream()
+      return quizRepository
+              .findQuizByCategoryDescriptionAndTagsDescriptionContainingIgnoreCaseAndIsOpen(
+                      search, search, true, pageable).stream()
               .map(quizMapper::mapToQuizPreviewDTO)
               .toList();
     }
 
     if (searchByCategory) {
-      return quizRepository.findQuizByCategoryDescriptionContainingIgnoreCaseAndIsOpen(search, true, pageable).stream()
+      return quizRepository
+              .findQuizByCategoryDescriptionContainingIgnoreCaseAndIsOpen(search, true, pageable)
+              .stream()
               .map(quizMapper::mapToQuizPreviewDTO)
               .toList();
     }
 
     if (searchByTags) {
-      return quizRepository.findQuizByTagsDescriptionContainingIgnoreCaseAndIsOpen(search, true, pageable).stream()
+      return quizRepository
+              .findQuizByTagsDescriptionContainingIgnoreCaseAndIsOpen(search, true, pageable)
+              .stream()
               .map(quizMapper::mapToQuizPreviewDTO)
               .toList();
 
     } else {
-      return quizRepository.findAllByNameContainingIgnoreCaseAndIsOpenOrderByName(search, true, pageable).stream()
+      return quizRepository
+              .findAllByNameContainingIgnoreCaseAndIsOpenOrderByName(search, true, pageable)
+              .stream()
               .map(quizMapper::mapToQuizPreviewDTO)
               .toList();
     }
-    }
+  }
 
+  /**
+   * The method updates a quiz with the provided information.
+   *
+   * @param principal       The principal of the logged-in user.
+   * @param id              The ID of the quiz to update.
+   * @param quizCreationDTO The DTO containing the updated quiz information.
+   * @return The response DTO containing the ID of the updated quiz.
+   */
   public QuizCreationResponseDTO updateQuiz(Principal principal, long id,
                                             QuizCreationRequestDTO quizCreationDTO) {
 
@@ -206,25 +215,40 @@ public class QuizService {
         .build();
   }
 
-  private void deleteQuizAndCorrespondingAttempts(long id, Quiz originalQuiz) {
-    List<QuizAttempt> result = quizAttemptRepository.findQuizAttemptByQuiz_Id(id);
-    quizAttemptRepository.deleteAll(result);
-    quizRepository.delete(originalQuiz);
-  }
-
-
+  /**
+   * The method deletes a quiz.
+   *
+   * @param principal The principal of the logged-in user.
+   * @param quizId  The ID of the quiz to be deleted.
+   * @throws UsernameNotFoundException If the user is not found.
+   * @throws QuizNotFoundException If the quiz is not found.
+   * @throws IllegalArgumentException If the principal does not have permission to delete the quiz.
+   */
   public void deleteQuiz(Principal principal, long quizId) {
 
-    Optional<User> user = userRepository.findUserByUsernameIgnoreCase(principal.getName());
-    if (user.isEmpty()) {
-      throw new UsernameNotFoundException("User not found");
-    }
+    String username = principal.getName();
 
-    Quiz quiz = quizRepository.findQuizById(quizId).orElseThrow();
-    if (!quiz.getAuthor().getUsername().equals(principal.getName())) {
+    userRepository.findUserByUsernameIgnoreCase(username).orElseThrow(() ->
+            new UsernameNotFoundException("User with username" + username + "not found."));
+
+    Quiz quiz = quizRepository.findQuizById(quizId).orElseThrow(QuizNotFoundException::new);
+
+    if (!quiz.getAuthor().getUsername().equals(username)) {
       throw new IllegalArgumentException("User does not have permission to edit this quiz.");
     }
 
     deleteQuizAndCorrespondingAttempts(quizId, quiz);
+  }
+
+  /**
+   * Deletes a quiz and its corresponding attempts from the database.
+   *
+   * @param id The ID of the quiz to be deleted.
+   * @param originalQuiz The original quiz object to delete attempts from.
+   */
+  private void deleteQuizAndCorrespondingAttempts(long id, Quiz originalQuiz) {
+    List<QuizAttempt> result = quizAttemptRepository.findQuizAttemptByQuiz_Id(id);
+    quizAttemptRepository.deleteAll(result);
+    quizRepository.delete(originalQuiz);
   }
 }
