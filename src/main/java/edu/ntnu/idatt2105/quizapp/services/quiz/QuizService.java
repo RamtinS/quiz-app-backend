@@ -44,7 +44,7 @@ public class QuizService {
 
 
   /**
-   * Creates a quiz from a quiz creation DTO for the logged in user.
+   * Creates a quiz from a quiz creation DTO for the logged-in user.
    *
    * @param quizCreationDTO The DTO containing the quiz information.
    * @param principal       The principal of the logged-in user.
@@ -135,7 +135,7 @@ public class QuizService {
     if (quiz.getIsOpen() || quiz.getAuthor().getUsername().equals(principal.getName())) {
       return quizMapper.mapToQuizDTO(quiz);
     } else {
-      throw new IllegalArgumentException("Principal has no acces to this quiz.");
+      throw new IllegalArgumentException("Principal has no access to this quiz.");
     }
 
   }
@@ -199,22 +199,21 @@ public class QuizService {
     Quiz originalQuiz = quizRepository.findQuizById(id).orElseThrow();
 
 
-    deleteQuizHelper(id, originalQuiz);
+    deleteQuizAndCorrespondingAttempts(id, originalQuiz);
 
     return QuizCreationResponseDTO.builder()
         .quizId(savedQuiz.getId())
         .build();
   }
 
-  private boolean deleteQuizHelper(long id, Quiz originalQuiz) {
+  private void deleteQuizAndCorrespondingAttempts(long id, Quiz originalQuiz) {
     List<QuizAttempt> result = quizAttemptRepository.findQuizAttemptByQuiz_Id(id);
     quizAttemptRepository.deleteAll(result);
     quizRepository.delete(originalQuiz);
-    return quizRepository.findQuizById(id).isPresent();
   }
 
 
-  public boolean deleteQuiz(Principal principal, long quizId) {
+  public void deleteQuiz(Principal principal, long quizId) {
 
     Optional<User> user = userRepository.findUserByUsernameIgnoreCase(principal.getName());
     if (user.isEmpty()) {
@@ -226,6 +225,6 @@ public class QuizService {
       throw new IllegalArgumentException("User does not have permission to edit this quiz.");
     }
 
-    return deleteQuizHelper(quizId, quiz);
+    deleteQuizAndCorrespondingAttempts(quizId, quiz);
   }
 }
