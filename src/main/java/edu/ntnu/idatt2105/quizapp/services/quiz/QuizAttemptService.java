@@ -2,7 +2,7 @@ package edu.ntnu.idatt2105.quizapp.services.quiz;
 
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizAttemptDto;
 import edu.ntnu.idatt2105.quizapp.exception.quiz.QuizNotFoundException;
-import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.user.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;

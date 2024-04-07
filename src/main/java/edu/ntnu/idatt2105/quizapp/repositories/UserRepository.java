@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.repositories;
 
-import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.user.User;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Pageable;

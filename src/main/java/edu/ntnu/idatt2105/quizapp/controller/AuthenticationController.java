@@ -3,7 +3,7 @@ package edu.ntnu.idatt2105.quizapp.controller;
 import edu.ntnu.idatt2105.quizapp.dto.user.AuthenticationDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.LoginRequestDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
-import edu.ntnu.idatt2105.quizapp.services.AuthenticationService;
+import edu.ntnu.idatt2105.quizapp.services.user.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,7 +1,6 @@
 
 package edu.ntnu.idatt2105.quizapp.model.user;
 
-import edu.ntnu.idatt2105.quizapp.model.Role;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

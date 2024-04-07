@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2105.quizapp.model;
+package edu.ntnu.idatt2105.quizapp.model.user;
 
 /**
  * Enum class representing the different roles a user can have in the application.

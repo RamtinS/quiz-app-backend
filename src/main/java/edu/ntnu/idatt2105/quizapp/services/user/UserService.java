@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2105.quizapp.services;
+package edu.ntnu.idatt2105.quizapp.services.user;
 
 import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.EditUserDto;
@@ -6,7 +6,7 @@ import edu.ntnu.idatt2105.quizapp.dto.user.UserDetailsDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.UserStatsDto;
 import edu.ntnu.idatt2105.quizapp.exception.user.EmailAlreadyExistsException;
 import edu.ntnu.idatt2105.quizapp.mapper.UserMapper;
-import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.user.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizAttemptRepository;

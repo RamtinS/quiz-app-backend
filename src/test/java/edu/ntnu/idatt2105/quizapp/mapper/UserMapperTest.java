@@ -1,7 +1,7 @@
 package edu.ntnu.idatt2105.quizapp.mapper;
 
 import edu.ntnu.idatt2105.quizapp.dto.PublicUserInformationDto;
-import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.user.User;
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
 import org.junit.jupiter.api.Test;
 

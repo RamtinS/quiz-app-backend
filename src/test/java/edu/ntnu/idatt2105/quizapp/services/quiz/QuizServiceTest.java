@@ -4,7 +4,7 @@ package edu.ntnu.idatt2105.quizapp.services.quiz;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDto;
 import edu.ntnu.idatt2105.quizapp.mapper.QuizMapper;
-import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.user.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import edu.ntnu.idatt2105.quizapp.repositories.quiz.QuizAttemptRepository;

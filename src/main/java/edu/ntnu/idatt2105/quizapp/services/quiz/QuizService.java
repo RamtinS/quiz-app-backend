@@ -7,7 +7,7 @@ import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDto;
 import edu.ntnu.idatt2105.quizapp.exception.auth.UnauthorizedOperationException;
 import edu.ntnu.idatt2105.quizapp.exception.quiz.QuizNotFoundException;
 import edu.ntnu.idatt2105.quizapp.mapper.QuizMapper;
-import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.user.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;

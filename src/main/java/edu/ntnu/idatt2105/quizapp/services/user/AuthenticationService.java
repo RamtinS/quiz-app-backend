@@ -1,13 +1,14 @@
-package edu.ntnu.idatt2105.quizapp.services;
+package edu.ntnu.idatt2105.quizapp.services.user;
 
 import edu.ntnu.idatt2105.quizapp.dto.user.AuthenticationDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.LoginRequestDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
 import edu.ntnu.idatt2105.quizapp.exception.user.EmailAlreadyExistsException;
 import edu.ntnu.idatt2105.quizapp.exception.user.UsernameAlreadyExistsException;
-import edu.ntnu.idatt2105.quizapp.model.Role;
-import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.user.Role;
+import edu.ntnu.idatt2105.quizapp.model.user.User;
 import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
+import edu.ntnu.idatt2105.quizapp.services.JwtService;
 import edu.ntnu.idatt2105.quizapp.validation.validators.UserValidator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

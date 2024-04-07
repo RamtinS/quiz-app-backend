@@ -1,7 +1,5 @@
 package edu.ntnu.idatt2105.quizapp.model.user;
 
-import edu.ntnu.idatt2105.quizapp.model.Role;
-import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
 import edu.ntnu.idatt2105.quizapp.util.quiz.QuizModelTestUtil;
 import org.junit.jupiter.api.BeforeEach;

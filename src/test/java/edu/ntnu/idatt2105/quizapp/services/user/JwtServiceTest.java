@@ -2,10 +2,9 @@ package edu.ntnu.idatt2105.quizapp.services.user;
 
 import edu.ntnu.idatt2105.quizapp.services.JwtService;
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
-import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.user.User;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.Function;

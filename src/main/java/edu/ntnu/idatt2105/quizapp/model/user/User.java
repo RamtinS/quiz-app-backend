@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2105.quizapp.model;
+package edu.ntnu.idatt2105.quizapp.model.user;
 
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import jakarta.persistence.CascadeType;

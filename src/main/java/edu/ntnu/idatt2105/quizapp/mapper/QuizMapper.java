@@ -3,7 +3,7 @@ package edu.ntnu.idatt2105.quizapp.mapper;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDto;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDto;
-import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.user.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

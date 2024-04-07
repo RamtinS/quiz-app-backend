@@ -1,7 +1,7 @@
 package edu.ntnu.idatt2105.quizapp.testdata;
 
-import edu.ntnu.idatt2105.quizapp.model.Role;
-import edu.ntnu.idatt2105.quizapp.model.User;
+import edu.ntnu.idatt2105.quizapp.model.user.Role;
+import edu.ntnu.idatt2105.quizapp.model.user.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Answer;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Category;
 import edu.ntnu.idatt2105.quizapp.model.quiz.MultipleChoiceQuestion;
