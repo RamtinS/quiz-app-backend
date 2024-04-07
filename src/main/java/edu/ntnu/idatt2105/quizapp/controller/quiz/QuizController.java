@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.security.Principal;
 import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -99,14 +98,16 @@ public class QuizController {
       @ApiResponse(responseCode = "200", description = "The quizzes were found and returned"),
       @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
       @Content)})
-  @Parameters({
-      @Parameter(name = "pageSize", description = "The size of the requested page"),
+  @Parameters({@Parameter(name = "pageSize", description = "The size of the requested page"),
       @Parameter(name = "page", description = "The page number of the requested page"),
       @Parameter(name = "username", description = "The username of the user who owns the quizzes")})
   @GetMapping("/users/{username}/previews")
-  public ResponseEntity<List<QuizPreviewDTO>> getPreviewsForUserPaginated(
-      Principal principal, @RequestParam int page, @RequestParam int pageSize,
-      @PathVariable String username) {
+  public ResponseEntity<List<QuizPreviewDTO>> getPreviewsForUserPaginated(Principal principal,
+                                                                          @RequestParam int page,
+                                                                          @RequestParam
+                                                                          int pageSize,
+                                                                          @PathVariable
+                                                                          String username) {
 
     PageRequest pageRequest = PageRequest.of(page, pageSize);
 
@@ -136,9 +137,8 @@ public class QuizController {
           "returned", content = {
           @Content(mediaType = "application/json", schema = @Schema(implementation =
               QuizPreviewDTO.class))}),
-      @ApiResponse(responseCode = "500", description =
-          "The public quizzes could not be found" +
-              " due to an internal server error", content = @Content)})
+      @ApiResponse(responseCode = "500", description = "The public quizzes could not be found" +
+          " due to an internal server error", content = @Content)})
   @GetMapping("browser/previews")
   public ResponseEntity<List<QuizPreviewDTO>> getAllPublicQuizPreviewsPaginated(
       @RequestParam int pageSize, @RequestParam int page) {
@@ -176,28 +176,12 @@ public class QuizController {
       @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
       @Content),})
   @GetMapping("quizzes/{quizId}")
-  public ResponseEntity<QuizDto> getQuizById(Principal principal,
-                                             @PathVariable long quizId) {
+  public ResponseEntity<QuizDto> getQuizById(Principal principal, @PathVariable long quizId) {
 
     log.info("Returning quiz: " + quizId);
-    try {
-      log.info("Get quiz by id: " + quizId);
-      QuizDto quiz = quizService.getQuizById(principal, quizId);
-      log.info("Returning quiz: " + quiz.getName());
-      return new ResponseEntity<>(quiz, HttpStatus.OK);
-
-    } catch (IllegalArgumentException | NullPointerException e) {
-      log.error("Error: of type " + e.getClass().getName(), e);
-      return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
-
-    } catch (NoSuchElementException e) {
-      log.error("Error: of type " + e.getClass().getName(), e);
-      return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-
-    } catch (Exception e) {
-      log.error("Error: of type " + e.getClass().getName(), e);
-      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    QuizDto quiz = quizService.getQuizById(principal, quizId);
+    log.info("Returning quiz: " + quiz.getName());
+    return new ResponseEntity<>(quiz, HttpStatus.OK);
   }
 
   /**
@@ -205,7 +189,7 @@ public class QuizController {
    *
    * @param pageSize the size of the requested page
    * @param page     the page number of the requested page
-   * @return ResponseEntity containing a list of quiz previews, or a null response with
+   * @return ResponseEntity containing a list of quiz previews, or an error response with
    * a {@link HttpStatus#BAD_REQUEST}.
    */
   @Operation(summary = "Get all public with certain criteria quizzes paginated")
@@ -216,8 +200,7 @@ public class QuizController {
               QuizPreviewDTO.class))}),
       @ApiResponse(responseCode = "500", description = "The quizzes could not be found" +
           " due to an internal server error", content = @Content)})
-  @Parameters({
-      @Parameter(name = "pageSize", description = "The size of the requested page"),
+  @Parameters({@Parameter(name = "pageSize", description = "The size of the requested page"),
       @Parameter(name = "page", description = "The page number of the requested page"),
       @Parameter(name = "title", description = "The title of the quiz"),
       @Parameter(name = "searchInCategory", description = "Whether to search in the categories"),
@@ -237,21 +220,14 @@ public class QuizController {
       log.info("Criteria: Tags");
     }
 
-    try {
 
-      PageRequest pageRequest = PageRequest.of(page, pageSize);
+    PageRequest pageRequest = PageRequest.of(page, pageSize);
 
-      List<QuizPreviewDTO> quizzes =
-          quizService.getQuizBySearchParameters(title, searchInCategory, searchInTags,
-              pageRequest);
+    List<QuizPreviewDTO> quizzes =
+        quizService.getQuizBySearchParameters(title, searchInCategory, searchInTags, pageRequest);
 
-      log.info("Returning " + quizzes.size() + " quizzes");
-      return new ResponseEntity<>(quizzes, HttpStatus.OK);
-
-    } catch (Exception e) {
-      log.error("Error: of type " + e.getClass().getName(), e);
-      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    log.info("Returning " + quizzes.size() + " quizzes");
+    return new ResponseEntity<>(quizzes, HttpStatus.OK);
   }
 
 
@@ -281,13 +257,14 @@ public class QuizController {
       @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
       @Content),})
   @PutMapping("quizzes/{quizId}")
-  public ResponseEntity<QuizCreationResponseDTO> updateQuiz(Principal principal,
-                                                            @PathVariable long quizId,
-                                                            @RequestBody
-                                                            QuizCreationRequestDTO quizCreationRequestDTO) {
+  public ResponseEntity<QuizCreationResponseDTO>
+  updateQuiz(Principal principal,
+             @PathVariable long quizId, @RequestBody
+             QuizCreationRequestDTO quizCreationRequestDTO) {
+
     log.info("Update quiz by id: " + quizId);
-    QuizCreationResponseDTO quizCreationResponseDTO =
-        quizService.updateQuiz(principal, quizId, quizCreationRequestDTO);
+    QuizCreationResponseDTO quizCreationResponseDTO = quizService.updateQuiz(
+        principal, quizId, quizCreationRequestDTO);
     log.info("Returning quiz: " + quizCreationResponseDTO.getQuizId());
     return new ResponseEntity<>(quizCreationResponseDTO, HttpStatus.OK);
   }
@@ -317,14 +294,12 @@ public class QuizController {
       @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
       @Content)})
   @DeleteMapping("quizzes/{quizId}")
-  public ResponseEntity<String> deleteQuiz(Principal principal,
-                                           @PathVariable long quizId) {
-    log.info("Trying to delete quiz: " + quizId);
-    if (quizService.deleteQuiz(principal, quizId)) {
-      return new ResponseEntity<>("Deleted Successfully", HttpStatus.OK);
-    } else {
-      return new ResponseEntity<>("Could not delete quiz", HttpStatus.CONFLICT);
-    }
+  public ResponseEntity<String> deleteQuiz(Principal principal, @PathVariable long quizId) {
+    log.info("Attempting to delete quiz: " + quizId);
+
+    quizService.deleteQuiz(principal, quizId);
+
+    return new ResponseEntity<>("Deleted Successfully", HttpStatus.OK);
   }
 
 }
