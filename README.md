@@ -21,7 +21,7 @@ Database: MySQL for runtime and H2 for tests
 ## Wiki
 These are system documents which descirves the various aspects of a software system. These documents capture the details of the system's design, implementation, operation and maintenance, serving as a reference for developers.
 - [System Architecture Program](docs/system-architect-diagram.png)
-- [Class Diagram](docs/getQuizDiagram.png)
+- [Class Diagram](docs/Class-Diagram.png)
 - [Sequence diagram for getting quiz](docs/getQuizDiagram.png)
 - [Sequence diagram for login user](docs/loginDiagram.png)
 
