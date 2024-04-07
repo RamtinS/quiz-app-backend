@@ -74,7 +74,7 @@ public class AuthenticationService {
     String encodedPassword = passwordEncoder.encode(registrationDto.getPassword());
 
     User user = User.builder()
-            .username(registrationDto.getUsername())
+            .username(registrationDto.getUsername().replaceAll("\\s", "").toLowerCase())
             .password(encodedPassword)
             .email(registrationDto.getEmail())
             .name(registrationDto.getName())

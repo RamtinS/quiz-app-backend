@@ -28,14 +28,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private static final String[] WHITELIST_URL = {"/api/v1/auth/**", "/api/v1/feedback/**",
-      "/api/v1/quiz-management/users/**",
-      "/api/v1/quiz-management/browser/**",
+  private static final String[] WHITELIST_URL = {
+      "/api/v1/auth/**",
+      "/api/v1/feedback/**",
+      "api/v1/users/public/**",
+      "api/v1/quiz-management/browser/**",
       "api/v1/quiz-management/quizzes/{quizId}",
-      "/api/v1/quiz-management/users/{username}/previews",
-      "/api/v1/docs/**",
-      "/api/v1/users/**",
-      "/api/v1/quiz-management/browser/search"
+      "api/v1/category-management/categories/"
   };
 
   private final JwtAuthenticationFilter jwtAuthFilter;
@@ -66,7 +65,8 @@ public class SecurityConfig {
 
   /**
    * The method configure CORS (Cross-Origin Resource Sharing) for the application.
-   * This method defines allowed origins, methods, headers, and credentials for cross-origin requests.
+   * This method defines allowed origins, methods, headers, and credentials for cross-origin
+   * requests.
    *
    * @return CorsConfigurationSource with configured CORS settings.
    */
