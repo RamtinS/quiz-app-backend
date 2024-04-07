@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2105.quizapp.config;
+package edu.ntnu.idatt2105.quizapp.filter;
 
 import edu.ntnu.idatt2105.quizapp.services.JwtService;
 import jakarta.servlet.FilterChain;
