@@ -55,6 +55,8 @@ public class UserService {
   public void editUser(@NonNull String username, @NonNull EditUserDto editUserDto)
           throws UsernameNotFoundException, IllegalArgumentException {
 
+    editUserDto.setNewName(editUserDto.getNewName().replaceAll("\\s", "").toLowerCase());
+
     User user = userRepository.findUserByUsernameIgnoreCase(username).orElseThrow(() ->
             new UsernameNotFoundException("User with username " + username + " not found."));
 
