@@ -12,13 +12,13 @@ This project serves as the backend for a full-stack application. This is a part 
 - [Acknowledgements](#acknowledgements)
 
 ## Overview
-The Semester Project is a full-stack web application aiming to provide a comprehensive and user-friendly platform for creating, managing, and taking quizzes for educational, training, or entertainment purposes. The project utilizes the following technologies:
+The semester project is a full-stack web application aiming to provide a comprehensive and user-friendly platform for creating, managing, and taking quizzes for educational, training, or entertainment purposes. The project utilizes the following technologies:
 
 Frontend: Vue.js
 Backend: Java 21 with Spring Boot V3
 Database: MySQL for runtime and H2 for tests
 
-## Wiki
+## System Documents
 These are system documents which descirves the various aspects of a software system. These documents capture the details of the system's design, implementation, operation and maintenance, serving as a reference for developers.
 - [System Architecture Program](docs/system-architect-diagram.png)
 - [Class Diagram](docs/Class-Diagram.png)
@@ -59,7 +59,6 @@ These are system documents which descirves the various aspects of a software sys
    ```
    mvn run
    ```
-   This command will start the database required for the backend to function.
    From here on out you can send request to to backend.
 
 ## Test
