@@ -113,9 +113,7 @@ public class TestUtil {
   public static QuizCreationResponseDto createQuizCreationResponseDtoA() {
     return QuizCreationResponseDto.builder()
             .quizId(1L)
-            .errorMessage("Error")
             .build();
-
   }
 
   public static QuizCreationRequestDto createQuizCreationRequestDtoA() {
