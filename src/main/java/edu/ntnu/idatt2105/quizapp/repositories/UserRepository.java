@@ -36,9 +36,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
    */
   Optional<User> findUserByEmailIgnoreCase(String email);
 
-
   /**
    * Retrieves all users with usernames containing the given username.
+   *
+   * @param username The partial username to search for.
+   * @param pageable The pageable information for pagination.
+   * @return A list of users matching the given username pattern.
    */
   List<User> findAllByUsernameContainingIgnoreCase(String username, Pageable pageable);
 }

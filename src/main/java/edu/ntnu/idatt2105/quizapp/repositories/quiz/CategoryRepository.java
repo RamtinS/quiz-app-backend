@@ -1,21 +1,25 @@
 package edu.ntnu.idatt2105.quizapp.repositories.quiz;
 
 import edu.ntnu.idatt2105.quizapp.model.quiz.Category;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-
-
 /**
- * Repository for CRUD-queries with a category class.
+ * Repository interface for managing category entities.
+ * The interface extends JpaRepository, allowing basic CRUD
+ * (Create, Read, Update, Delete) operations on users.
  *
  * @author Jeffrey Yaw Annor Tabiri
- * @since 3/31/2024
+ * @version 1.0
  */
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-  List<Category> findCategoriesByDescription(String description);
 
+  /**
+   * Retrieves a category by its description.
+   *
+   * @param description the description of the category to search for.
+   * @return an Optional containing the category, if found.
+   */
   Optional<Category> findCategoryByDescription(String description);
 
 }
