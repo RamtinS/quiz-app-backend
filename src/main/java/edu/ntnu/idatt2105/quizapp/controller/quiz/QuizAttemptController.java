@@ -3,6 +3,7 @@ package edu.ntnu.idatt2105.quizapp.controller.quiz;
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizAttemptDto;
 import edu.ntnu.idatt2105.quizapp.services.quiz.QuizAttemptService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.security.Principal;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class QuizAttemptController {
    */
   @Operation(summary = "Submit quiz attempt")
   @ApiResponse(responseCode = "200", description = "Attempts successfully submitted.")
+  @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
   @PostMapping()
   public ResponseEntity<Void> submitAttempt(@RequestBody QuizAttemptDto quizAttemptDto,
                                             Principal principal) {

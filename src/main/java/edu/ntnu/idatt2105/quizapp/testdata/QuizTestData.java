@@ -156,13 +156,10 @@ public class QuizTestData {
       quizRepository.save(quiz);
 
 
-      System.out.println("Adding quiz: size" + quiz.getQuestions().size());
       Long id = quizRepository.save(quiz).getId();
       Quiz quiz1 = quizRepository.findQuizById(id).get();
 
-      System.out.println(quiz1.getCategory().getDescription());
 
-      System.out.println(quiz1.getTags());
 
       //Quiz attempts.
       QuizAttempt quizAttempt = QuizAttempt.builder()

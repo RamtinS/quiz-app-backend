@@ -51,7 +51,8 @@ public class AuthenticationController {
       @ApiResponse(responseCode = "500", description = "Unknown internal server error.")
   })
   @PostMapping("/register")
-  public ResponseEntity<AuthenticationDto> registerUser(@RequestBody RegistrationDto registrationDto) {
+  public ResponseEntity<AuthenticationDto> registerUser(
+      @RequestBody RegistrationDto registrationDto) {
     log.info("Attempting to register user: {}", registrationDto.getUsername());
     AuthenticationDto authenticationDto = authenticationService.registerUser(registrationDto);
     log.info("User {} registered successfully.", registrationDto.getUsername());
@@ -71,6 +72,7 @@ public class AuthenticationController {
               schema = @Schema(implementation = AuthenticationDto.class))}
       ),
       @ApiResponse(responseCode = "401", description = "User is unauthorized to log in"),
+      @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
   })
   @PostMapping("/login")
   public ResponseEntity<AuthenticationDto> loginUser(@RequestBody LoginRequestDto loginRequestDto) {

@@ -3,6 +3,8 @@ package edu.ntnu.idatt2105.quizapp.controller.quiz;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Category;
 import edu.ntnu.idatt2105.quizapp.services.quiz.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
@@ -35,8 +37,11 @@ public class CategoryController {
    */
   @Operation(summary = "Get all possible categories")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Successfully retrieved all categories"),
-      @ApiResponse(responseCode = "500", description = "Internal server error")
+      @ApiResponse(responseCode = "200", description = "Successfully retrieved all categories",
+          content = {
+              @Content(mediaType = "application/json",
+                  schema = @Schema(implementation = List.class))}),
+      @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
   })
   @GetMapping("/categories")
   public ResponseEntity<List<String>> getAllCategories(
@@ -44,7 +49,6 @@ public class CategoryController {
       @RequestParam(defaultValue = "10") int size
   ) {
 
-    log.info("page: {}, size: {}", page, size);
     List<String> receivedCategories =
         categoryService.getAllPossibleCategories(Pageable.ofSize(size).withPage(page))
             .stream()

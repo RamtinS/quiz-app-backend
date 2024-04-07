@@ -53,7 +53,11 @@ public class UserController {
    * @return ResponseEntity indicating the status of the edit request.
    */
   @Operation(summary = "Change user information")
-  @ApiResponse(responseCode = "200", description = "User information successfully updated.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "User information successfully updated."),
+      @ApiResponse(responseCode = "500", description = "Unknown internal server error.", content
+          = @Content)
+  })
   @PutMapping()
   public ResponseEntity<Void> editUserInformation(@RequestBody EditUserDto editUserDto,
                                                   Principal principal) {
