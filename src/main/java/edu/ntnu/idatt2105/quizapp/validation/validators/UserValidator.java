@@ -55,7 +55,8 @@ public class UserValidator extends SimpleValidator {
    */
   public static void validateName(String name) {
     if (!isNotNullOrBlank(name) || !name.matches(UserValidationRules.NAME.getRegex())) {
-      throw new IllegalArgumentException("First name must be 1-64 characters and contain only letters.");
+      throw new IllegalArgumentException("First name must be 1-64 characters "
+              + "and contain only letters.");
     }
   }
 
@@ -67,7 +68,8 @@ public class UserValidator extends SimpleValidator {
    */
   public static void validateSurname(String surname) {
     if (!isNotNullOrBlank(surname) || !surname.matches(UserValidationRules.SURNAME.getRegex())) {
-      throw new IllegalArgumentException("Surname must be 1-64 characters and contain only letters.");
+      throw new IllegalArgumentException("Surname must be 1-64 characters"
+              + " and contain only letters.");
     }
   }
 }
