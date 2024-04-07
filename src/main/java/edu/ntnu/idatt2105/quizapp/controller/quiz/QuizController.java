@@ -108,14 +108,17 @@ public class QuizController {
                                                                           int pageSize,
                                                                           @PathVariable
                                                                           String username) {
-
+    log.info("Returning quizzes for user: " + username);
     PageRequest pageRequest = PageRequest.of(page, pageSize);
 
+
     if (principal != null && principal.getName().equals(username)) {
+      log.info("Returning private quizzes");
       List<QuizPreviewDTO> quizzes =
           quizService.getAllQuizPreviewsForUserPaginated(principal, pageRequest);
       return new ResponseEntity<>(quizzes, HttpStatus.OK);
     } else {
+      log.info("Returning public quizzes");
 
       List<QuizPreviewDTO> quizzes =
           quizService.getAllPublicQuizPreviewsForUserPaginated(username, pageRequest);
@@ -256,7 +259,7 @@ public class QuizController {
           "quiz", content = @Content),
       @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
       @Content),})
-  @PutMapping("quizzes/{quizId}")
+  @PutMapping("editor/{quizId}")
   public ResponseEntity<QuizCreationResponseDTO>
   updateQuiz(Principal principal,
              @PathVariable long quizId, @RequestBody
@@ -293,7 +296,7 @@ public class QuizController {
       @Content),
       @ApiResponse(responseCode = "500", description = "Unknown internal server error", content =
       @Content)})
-  @DeleteMapping("quizzes/{quizId}")
+  @DeleteMapping("editor/{quizId}")
   public ResponseEntity<String> deleteQuiz(Principal principal, @PathVariable long quizId) {
     log.info("Attempting to delete quiz: " + quizId);
 

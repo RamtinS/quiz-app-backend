@@ -102,7 +102,7 @@ public class UserController {
           content = {@Content(mediaType = "application/json",
               array = @ArraySchema(schema = @Schema(implementation = User.class)))}),
       @ApiResponse(responseCode = "500", description = "Internal server error")})
-  @GetMapping()
+  @GetMapping("/public")
   public ResponseEntity<List<PublicUserInformationDTO>> searchUsername(
       @RequestParam String search, @RequestParam int page, @RequestParam int size) {
 
@@ -144,9 +144,8 @@ public class UserController {
       content = {@Content(mediaType = "application/json",
           schema = @Schema(implementation = PublicUserInformationDTO.class))}
   )
-  @GetMapping("/{username}/public-info")
+  @GetMapping("/public/{username}")
   public ResponseEntity<PublicUserInformationDTO> getPublicUserInfo(@PathVariable String username) {
-    log.error("im here");
     PublicUserInformationDTO publicUserInformationDTO =
         userService.getPublicUserInformation(username);
     return new ResponseEntity<>(publicUserInformationDTO, HttpStatus.OK);
