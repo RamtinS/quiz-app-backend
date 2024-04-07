@@ -2,9 +2,9 @@
 package edu.ntnu.idatt2105.quizapp.services.feedback;
 
 import edu.ntnu.idatt2105.quizapp.dto.FeedbackDto;
+import edu.ntnu.idatt2105.quizapp.mapper.FeedbackMapper;
 import edu.ntnu.idatt2105.quizapp.model.FeedbackMessage;
 import edu.ntnu.idatt2105.quizapp.repositories.FeedbackRepository;
-import edu.ntnu.idatt2105.quizapp.repositories.UserRepository;
 import edu.ntnu.idatt2105.quizapp.services.FeedbackService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +26,9 @@ class FeedbackServiceTest {
   FeedbackService feedbackService;
 
   @Mock
+  FeedbackMapper feedbackMapper;
+
+  @Mock
   FeedbackRepository feedbackRepository;
 
   FeedbackDto feedbackDto;
@@ -38,6 +41,7 @@ class FeedbackServiceTest {
   @Test
   void FeedbackService_Saves_FeedbackMessage() {
     //Act
+    when(feedbackMapper.mapToFeedbackMessage(feedbackDto)).thenReturn(new FeedbackMessage());
 
     FeedbackMessage feedback = FeedbackMessage.builder()
             .email(feedbackDto.getEmail())
