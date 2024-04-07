@@ -21,6 +21,6 @@ public class UnauthorizedOperationException extends RuntimeException {
    * Constructs an instance of the clas with a predefined error message.
    */
   public UnauthorizedOperationException() {
-    super("Unauthorized access.");
+    super("Unauthorized access to perform this operation.");
   }
 }
