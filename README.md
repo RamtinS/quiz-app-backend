@@ -3,7 +3,7 @@ This project serves as the backend for a full-stack application. This is a part 
 
 ### Team: Ramtin Forouzandehjoo Samavat, Tobias Skipevåg Oftedal, Jeffrey Yaw Annor Tabiri
 
-##Table of Contents 
+## Table of Contents 
 - [Overview](#overview)
 - [Wiki](#wiki)
 - [Features](#features)
@@ -20,11 +20,10 @@ Database: MySQL for runtime and H2 for tests
 
 ## Wiki
 These are system documents which descirves the various aspects of a software system. These documents capture the details of the system's design, implementation, operation and maintenance, serving as a reference for developers.
-- [System Architecture Program](#overview)
-- [Class Diagram](#wiki)
-- [Flowchart](#flowchar)
-- [Sequence Diagram](#credits)
-- [Wireframes](#frames)
+- [System Architecture Program](docs/system-architect-diagram.png)
+- [Class Diagram](docs/getQuizDiagram.png)
+- [Sequence diagram for getting quiz](docs/getQuizDiagram.png)
+- [Sequence diagram for login user](docs/loginDiagram.png)
 
 ## Features
 * Users of the program can log in securely, register themselves and manage their accounts.
