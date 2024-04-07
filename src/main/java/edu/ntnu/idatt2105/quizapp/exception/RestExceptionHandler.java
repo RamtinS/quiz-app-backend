@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.exception;
 
+import edu.ntnu.idatt2105.quizapp.exception.auth.UnauthorizedOperationException;
 import edu.ntnu.idatt2105.quizapp.exception.quiz.QuizNotFoundException;
 import edu.ntnu.idatt2105.quizapp.exception.user.EmailAlreadyExistsException;
 import edu.ntnu.idatt2105.quizapp.exception.user.UsernameAlreadyExistsException;
@@ -47,7 +48,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler(NullPointerException.class)
   public ResponseEntity<ErrorResponse> handleNullPointerException(@NonNull Exception ex) {
-    String errorMessage = "Invalid input. Please provide valid data.";
+    String errorMessage = "Invalid input. Data is null, please provide valid data.";
     return buildResponseEntityWithErrorResponse(ex, errorMessage, HttpStatus.BAD_REQUEST);
   }
 
@@ -72,6 +73,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<ErrorResponse> handleBadCredentialsException(@NonNull Exception ex) {
     String errorMessage = "Username or password was incorrect.";
+    return buildResponseEntityWithErrorResponse(ex, errorMessage, HttpStatus.UNAUTHORIZED);
+  }
+
+  /**
+   * The method handles exceptions from when a user is not authorized to perform the operation.
+   *
+   * @param ex The exception to handle.
+   * @return ResponseEntity containing the ErrorResponse with HTTP status code 401 (UNAUTHORIZED).
+   */
+  @ExceptionHandler(UnauthorizedOperationException.class)
+  public ResponseEntity<ErrorResponse> handleUnauthorizedOperationException(@NonNull Exception ex) {
+    String errorMessage = ex.getMessage();
     return buildResponseEntityWithErrorResponse(ex, errorMessage, HttpStatus.UNAUTHORIZED);
   }
 
