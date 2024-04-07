@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Component
 public class AnswerMapper {
