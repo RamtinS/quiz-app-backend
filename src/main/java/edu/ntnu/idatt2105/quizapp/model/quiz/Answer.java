@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Model class for Answer.
+ * The answer class represents an answer entity in the application.
+ * Each Answer object encapsulates information about an answer.
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Entity
 @AllArgsConstructor
@@ -48,10 +48,10 @@ public class Answer {
       return false;
     }
     Answer answer = (Answer) object;
-    return Objects.equals(id, answer.id) &&
-        Objects.equals(answerText, answer.answerText) &&
-        Objects.equals(isCorrect, answer.isCorrect) &&
-        Objects.equals(question, answer.question);
+    return Objects.equals(id, answer.id)
+            && Objects.equals(answerText, answer.answerText)
+            && Objects.equals(isCorrect, answer.isCorrect)
+            && Objects.equals(question, answer.question);
   }
 
   @Override

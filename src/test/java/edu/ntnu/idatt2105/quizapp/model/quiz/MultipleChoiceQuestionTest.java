@@ -1,3 +1,4 @@
+
 package edu.ntnu.idatt2105.quizapp.model.quiz;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,14 +15,38 @@ import org.junit.jupiter.api.Test;
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-25
  */
 public class MultipleChoiceQuestionTest {
+
+  @Test
+  void MultiChoiceQuestion_Constructor_ReturnMultiChoiceQuestion() {
+    //Arrange
+    String expectedQuestionText = "What is the capital of Norway?";
+    Answer expectedAnswer = QuizModelTestUtil.createAnswerA();
+    List<Answer> expectedAnswers = List.of(expectedAnswer);
+    Quiz expectedQuiz = QuizModelTestUtil.createQuizA();
+
+    //Act
+    MultipleChoiceQuestion multipleChoiceQuestion = MultipleChoiceQuestion.builder()
+            .questionText(expectedQuestionText)
+            .answers(expectedAnswers)
+            .quiz(expectedQuiz)
+            .build();
+    String actualQuestionText = multipleChoiceQuestion.getQuestionText();
+    List<Answer> actualAnswers = multipleChoiceQuestion.getAnswers();
+    Quiz actualQuiz = multipleChoiceQuestion.getQuiz();
+
+    //Assert
+    assertTrue(actualAnswers.contains(expectedAnswer));
+    assertEquals(expectedQuestionText, actualQuestionText);
+    assertEquals(expectedQuiz, actualQuiz);
+  }
+
   @Test
   public void Equals_EqualQuestions_True() {
     //Arrange
     MultipleChoiceQuestion multipleChoiceQuestionA = QuizModelTestUtil.createQuizQuestionA();
-    MultipleChoiceQuestion multipleChoiceQuestionB = QuizModelTestUtil.createQuizQuestionA();
+    MultipleChoiceQuestion multipleChoiceQuestionB = multipleChoiceQuestionA;
 
     //Act
     boolean result = multipleChoiceQuestionA.equals(multipleChoiceQuestionB);
@@ -44,45 +69,45 @@ public class MultipleChoiceQuestionTest {
   }
 
   @Test
-    public void Equals_Null_False() {
-        //Arrange
-        MultipleChoiceQuestion multipleChoiceQuestionA = QuizModelTestUtil.createQuizQuestionA();
-        MultipleChoiceQuestion multipleChoiceQuestionB = null;
+  public void Equals_Null_False() {
+    //Arrange
+    MultipleChoiceQuestion multipleChoiceQuestionA = QuizModelTestUtil.createQuizQuestionA();
+    MultipleChoiceQuestion multipleChoiceQuestionB = null;
 
-        //Act
-        boolean result = multipleChoiceQuestionA.equals(multipleChoiceQuestionB);
+    //Act
+    boolean result = multipleChoiceQuestionA.equals(multipleChoiceQuestionB);
 
-        //Assert
-        assertFalse(result);
-    }
+    //Assert
+    assertFalse(result);
+  }
 
-    @Test
-    public void Equals_SameObject_True() {
-        //Arrange
-        MultipleChoiceQuestion multipleChoiceQuestionA = QuizModelTestUtil.createQuizQuestionA();
-        MultipleChoiceQuestion multipleChoiceQuestionB = multipleChoiceQuestionA;
+  @Test
+  public void Equals_SameObject_True() {
+    //Arrange
+    MultipleChoiceQuestion multipleChoiceQuestionA = QuizModelTestUtil.createQuizQuestionA();
+    MultipleChoiceQuestion multipleChoiceQuestionB = multipleChoiceQuestionA;
 
-        //Act
-        boolean result = multipleChoiceQuestionA.equals(multipleChoiceQuestionB);
+    //Act
+    boolean result = multipleChoiceQuestionA.equals(multipleChoiceQuestionB);
 
-        //Assert
-        assertTrue(result);
-    }
+    //Assert
+    assertTrue(result);
+  }
 
-    @Test
-    public void HashCode_SameObject_True() {
-        //Arrange
-        MultipleChoiceQuestion multipleChoiceQuestionA = QuizModelTestUtil.createQuizQuestionA();
-        MultipleChoiceQuestion multipleChoiceQuestionB = multipleChoiceQuestionA;
+  @Test
+  public void HashCode_SameObject_True() {
+    //Arrange
+    MultipleChoiceQuestion multipleChoiceQuestionA = QuizModelTestUtil.createQuizQuestionA();
+    MultipleChoiceQuestion multipleChoiceQuestionB = multipleChoiceQuestionA;
 
-        //Act
-        boolean result = multipleChoiceQuestionA.hashCode() == multipleChoiceQuestionB.hashCode();
+    //Act
+    boolean result = multipleChoiceQuestionA.hashCode() == multipleChoiceQuestionB.hashCode();
 
-        //Assert
-        assertTrue(result);
-    }
+    //Assert
+    assertTrue(result);
+  }
 
-@Test
+  @Test
   public void SetQuestionText_TextIsHello_True() {
     //Arrange
     MultipleChoiceQuestion multipleChoiceQuestion = new MultipleChoiceQuestion();
@@ -112,6 +137,7 @@ public class MultipleChoiceQuestionTest {
     assertEquals(multipleChoiceQuestion.getAnswers(), answers);
   }
 
+  @Test
   public void SetQuiz_QuizIsNotNull_True() {
     //Arrange
     MultipleChoiceQuestion multipleChoiceQuestion = new MultipleChoiceQuestion();

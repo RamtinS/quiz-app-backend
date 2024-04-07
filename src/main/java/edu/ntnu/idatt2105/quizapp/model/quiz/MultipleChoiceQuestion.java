@@ -20,11 +20,12 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 /**
- * Model class for QuizQuestion.
+ * The MultipleChoiceQuestion class represents a multiple choice question entity in the application.
+ * Each MultipleChoiceQuestion object encapsulates information about a multiple choice question.
+ * This class extends the Question class.
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Entity
 @AllArgsConstructor
@@ -50,8 +51,8 @@ public class MultipleChoiceQuestion extends Question {
       return false;
     }
     MultipleChoiceQuestion that = (MultipleChoiceQuestion) object;
-    return super.equals(object) &&
-        Objects.equals(answers, that.answers);
+    return super.equals(object)
+            && Objects.equals(answers, that.answers);
   }
 
   @Override

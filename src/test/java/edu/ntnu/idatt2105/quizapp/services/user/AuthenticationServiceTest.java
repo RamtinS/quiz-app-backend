@@ -1,6 +1,8 @@
-package edu.ntnu.idatt2105.quizapp.services;
+package edu.ntnu.idatt2105.quizapp.services.user;
 
 import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
+import edu.ntnu.idatt2105.quizapp.services.AuthenticationService;
+import edu.ntnu.idatt2105.quizapp.services.JwtService;
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
 import edu.ntnu.idatt2105.quizapp.dto.user.AuthenticationDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.LoginRequestDto;

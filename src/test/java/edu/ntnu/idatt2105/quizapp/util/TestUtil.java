@@ -1,7 +1,12 @@
 package edu.ntnu.idatt2105.quizapp.util;
 
+import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizAttemptDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationResponseDto;
+import edu.ntnu.idatt2105.quizapp.dto.user.EditUserDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.LoginRequestDto;
 import edu.ntnu.idatt2105.quizapp.dto.user.RegistrationDto;
+import edu.ntnu.idatt2105.quizapp.model.FeedbackMessage;
 import edu.ntnu.idatt2105.quizapp.model.Role;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Category;
@@ -9,7 +14,8 @@ import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Tag;
 import edu.ntnu.idatt2105.quizapp.util.quiz.QuizModelTestUtil;
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -30,6 +36,7 @@ public class TestUtil {
             .role(Role.USER)
             .surName("Ply")
             .build();
+
   }
 
   public static User createUserB() {
@@ -45,15 +52,23 @@ public class TestUtil {
 
   public static User createUserC() {
     return User.builder()
-            .username("Zac")
-            .password("Password")
+            .username("Bob")
+            .password("Bob456")
+            .email("bob@example.com")
+            .name("Bob")
+            .role(Role.USER)
+            .surName("Smith")
             .build();
   }
 
   public static User createUserD() {
     return User.builder()
-            .username("Geoffrey")
-            .password("Password")
+            .username("Charlie")
+            .password("Charlie789")
+            .email("charlie@example.com")
+            .name("Charlie")
+            .role(Role.USER)
+            .surName("Brown")
             .build();
   }
 
@@ -70,6 +85,14 @@ public class TestUtil {
             .build();
   }
 
+  public static Category createCategoryB() {
+    return Category.builder()
+            .description("Maths")
+            .quizzes(List.of(QuizModelTestUtil.createQuizA()))
+            .build();
+  }
+
+
   public static QuizAttempt createQuizAttemptA() {
 
     Quiz quiz = QuizModelTestUtil.createQuizA();
@@ -78,7 +101,7 @@ public class TestUtil {
     return QuizAttempt.builder()
             .quiz(quiz)
             .user(user)
-            .attemptDate(new Date(420520L))
+            .timestamp(LocalDate.ofYearDay(2020, 8))
             .score(37)
             .build();
   }
@@ -87,13 +110,56 @@ public class TestUtil {
     return new LoginRequestDto("Mark", "PasswordPassword");
   }
 
+  public static QuizCreationResponseDto createQuizCreationResponseDtoA() {
+    return QuizCreationResponseDto.builder()
+            .quizId(1L)
+            .errorMessage("Error")
+            .build();
+
+  }
+
+  public static QuizCreationRequestDto createQuizCreationRequestDtoA() {
+    return QuizCreationRequestDto.builder()
+            .title("Maths")
+            .description("Maths")
+            .open(true)
+            .categoryDescription("Maths")
+            .build();
+  }
+
+
   public static RegistrationDto createRegistrationDtoA()  {
     return new RegistrationDto("Mark",
-            "Draven",
+            "password",
             "email@example.com",
             "Mark",
             "Draven");
   }
 
 
+  public static FeedbackMessage createFeedbackA() {
+    return FeedbackMessage.builder()
+            .timestamp(LocalDate.ofYearDay(2020, 8))
+            .content("One")
+            .surname("Two")
+            .content("three")
+            .email("Four")
+            .build();
+  }
+
+
+
+  public static EditUserDto createEditUserDtoA() {
+    return new EditUserDto("PasswordPassword", "test@mail.com", "testName", "Ply");
+  }
+
+  public static QuizAttemptDto createQuizAttemptDtoA() {
+    QuizAttemptDto quizAttemptDto = new QuizAttemptDto();
+
+    quizAttemptDto.setQuizId(1L);
+
+    quizAttemptDto.setScore(37);
+
+    return quizAttemptDto;
+  }
 }

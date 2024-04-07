@@ -1,6 +1,5 @@
 package edu.ntnu.idatt2105.quizapp.dto.quiz;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

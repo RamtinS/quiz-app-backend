@@ -1,13 +1,11 @@
 package edu.ntnu.idatt2105.quizapp.repositories.quiz;
 
 import edu.ntnu.idatt2105.quizapp.model.quiz.Category;
+import java.util.List;
 import java.util.Optional;
-import lombok.NonNull;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+
 
 /**
  * Repository for CRUD-queries with a category class.

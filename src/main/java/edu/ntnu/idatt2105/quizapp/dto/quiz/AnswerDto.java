@@ -5,14 +5,15 @@ import lombok.Data;
 
 /**
  * DTO class used for creating an answer to a question.
+ * Contains the answer text and if the answer is correct or not.
+ *
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Data
 @Builder
-public class AnswerDTO {
+public class AnswerDto {
   private String answerText;
   private boolean isCorrect;
 }

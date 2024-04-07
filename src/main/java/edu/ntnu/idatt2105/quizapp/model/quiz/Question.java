@@ -16,6 +16,14 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.lang.NonNull;
 
 
+/**
+ * The Question class represents a question entity in the application.
+ * Each Question object encapsulates information about a question.
+ * This class is abstract and should be extended by other question types.
+ *
+ * @author Tobias Oftedal
+ * @see MultipleChoiceQuestion
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

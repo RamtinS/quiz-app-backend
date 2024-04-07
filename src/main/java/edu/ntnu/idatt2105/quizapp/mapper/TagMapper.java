@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
   *
   * @author Jeffrey Yaw Annor Tabiri
   * @version 1.0
-  * @since 2024-03-31
  */
 @Component
 public class TagMapper {
+
   /**
    * Maps a Tag object to an TagDto object.
    *
@@ -36,5 +36,4 @@ public class TagMapper {
             .description(tagDto.getDescription())
             .build();
   }
-
 }

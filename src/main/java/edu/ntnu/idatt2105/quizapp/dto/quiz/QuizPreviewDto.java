@@ -8,11 +8,10 @@ import lombok.Data;
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Builder
 @Data
-public class QuizPreviewDTO {
+public class QuizPreviewDto {
   private long id;
   private String title;
   private String description;

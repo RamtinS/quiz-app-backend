@@ -28,6 +28,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 /**
  * The user class represents a user entity in the application.
  * This class implements the Spring Security UserDetails interface.
+ * Each User object encapsulates information about a user.
+ *
  *
  * @author Jeffrey Tabiri
  * @author Ramtin Samavat
@@ -127,12 +129,14 @@ public class User implements UserDetails {
       return false;
     }
     User user = (User) object;
-    return Objects.equals(userId, user.userId) &&
-        Objects.equals(username, user.username) &&
-        Objects.equals(password, user.password) &&
-        Objects.equals(email, user.email) && Objects.equals(name, user.name) &&
-        Objects.equals(surName, user.surName) && role == user.role &&
-        Objects.equals(quizzes, user.quizzes);
+    return Objects.equals(userId, user.userId)
+        && Objects.equals(username, user.username)
+        && Objects.equals(password, user.password)
+        && Objects.equals(email, user.email)
+        && Objects.equals(name, user.name)
+        && Objects.equals(surName, user.surName)
+        && role == user.role
+        && Objects.equals(quizzes, user.quizzes);
   }
 
   @Override

@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2105.quizapp.mapper;
 
-import edu.ntnu.idatt2105.quizapp.dto.quiz.MultipleChoiceQuestionDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.QuestionDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.TrueOrFalseQuestionDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.MultipleChoiceQuestionDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.QuestionDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.TrueOrFalseQuestionDto;
 import edu.ntnu.idatt2105.quizapp.model.quiz.MultipleChoiceQuestion;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Question;
 import edu.ntnu.idatt2105.quizapp.model.quiz.TrueOrFalseQuestion;
@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Component
 @RequiredArgsConstructor
 public class QuestionMapper {
+
   @NonNull
-  AnswerMapper answerMapper;
+  private final AnswerMapper answerMapper;
 
   /**
    * Maps a QuizQuestion object to a QuizQuestionDTO object.
@@ -29,32 +29,43 @@ public class QuestionMapper {
    * @param question The QuizQuestion object to map.
    * @return The mapped QuizQuestionDTO object.
    */
-  public QuestionDTO mapToQuizQuestionDTO(Question question) {
+  public QuestionDto mapToQuizQuestionDto(Question question) {
     if (question instanceof MultipleChoiceQuestion) {
-      return mapToQuizQuestionDTOFromMultipleChoice((MultipleChoiceQuestion) question);
+      return mapToQuizQuestionDtoFromMultipleChoice((MultipleChoiceQuestion) question);
 
     } else if (question instanceof TrueOrFalseQuestion) {
-      return mapToQuizQuestionDTOFromTrueOrFalse((TrueOrFalseQuestion) question);
+      return mapToQuizQuestionDtoFromTrueOrFalse((TrueOrFalseQuestion) question);
     } else {
       throw new IllegalArgumentException("Question type not supported");
 
     }
   }
 
-  public QuestionDTO mapToQuizQuestionDTOFromTrueOrFalse(TrueOrFalseQuestion question) {
-    return TrueOrFalseQuestionDTO.builder()
+  /**
+   * Maps a TrueOrFalseQuestion object to a TrueOrFalseQuestionDTO object.
+   *
+   * @param question The TrueOrFalseQuestion object to map.
+   * @return The mapped TrueOrFalseQuestionDTO object.
+   */
+  public QuestionDto mapToQuizQuestionDtoFromTrueOrFalse(TrueOrFalseQuestion question) {
+    return TrueOrFalseQuestionDto.builder()
         .questionIsCorrect(question.getQuestionIsCorrect())
         .questionText(question.getQuestionText())
         .build();
   }
 
+  /**
+   * Maps a MultipleChoiceQuestion object to a MultipleChoiceQuestionDTO object.
+   *
+   * @param question The MultipleChoiceQuestion object to map.
+   * @return The mapped MultipleChoiceQuestionDTO object.
+   */
+  public QuestionDto mapToQuizQuestionDtoFromMultipleChoice(MultipleChoiceQuestion question) {
 
-  public QuestionDTO mapToQuizQuestionDTOFromMultipleChoice(MultipleChoiceQuestion question) {
-
-    return MultipleChoiceQuestionDTO.builder()
+    return MultipleChoiceQuestionDto.builder()
         .answers(question.getAnswers()
             .stream()
-            .map(answerMapper::mapToAnswerDTO)
+            .map(answerMapper::mapToAnswerDto)
             .toList())
         .questionText(question.getQuestionText())
         .build();
@@ -63,37 +74,48 @@ public class QuestionMapper {
   /**
    * Maps a QuizQuestionDTO object to a QuizQuestion object.
    *
-   * @param questionDTO The QuizQuestionDTO object to map.
+   * @param questionDto The QuizQuestionDTO object to map.
    * @return The mapped QuizQuestion object.
    */
-  public Question mapToQuestion(QuestionDTO questionDTO) {
+  public Question mapToQuestion(QuestionDto questionDto) {
 
-    if (questionDTO instanceof MultipleChoiceQuestionDTO) {
-      return mapMultipleChoiceQuestionDTOToQuestion((MultipleChoiceQuestionDTO) questionDTO);
-    } else if (questionDTO instanceof TrueOrFalseQuestionDTO) {
-      return mapTrueOrFalsoToQuestion((TrueOrFalseQuestionDTO) questionDTO);
+    if (questionDto instanceof MultipleChoiceQuestionDto) {
+      return mapMultipleChoiceQuestionDtoToQuestion((MultipleChoiceQuestionDto) questionDto);
+    } else if (questionDto instanceof TrueOrFalseQuestionDto) {
+      return mapTrueOrFalsoToQuestion((TrueOrFalseQuestionDto) questionDto);
     } else {
       throw new IllegalArgumentException("Question type not supported");
     }
   }
 
-  public Question mapMultipleChoiceQuestionDTOToQuestion(MultipleChoiceQuestionDTO questionDTO) {
+  /**
+   * Maps a MultipleChoiceQuestionDTO object to a MultipleChoiceQuestion object.
+   *
+   * @param questionDto The MultipleChoiceQuestionDTO object to map.
+   * @return The mapped MultipleChoiceQuestion object.
+   */
+  public Question mapMultipleChoiceQuestionDtoToQuestion(MultipleChoiceQuestionDto questionDto) {
     MultipleChoiceQuestion question = MultipleChoiceQuestion.builder()
-        .answers(questionDTO.getAnswers()
+        .answers(questionDto.getAnswers()
             .stream()
             .map(answerMapper::mapToAnswer)
             .toList())
-        .questionText(questionDTO.getQuestionText())
+        .questionText(questionDto.getQuestionText())
         .build();
     question.getAnswers().forEach(answer -> answer.setQuestion(question));
     return question;
   }
 
-  public Question mapTrueOrFalsoToQuestion(TrueOrFalseQuestionDTO questionDTO) {
+  /**
+   * Maps a TrueOrFalseQuestionDTO object to a TrueOrFalseQuestion object.
+   *
+   * @param questionDto The TrueOrFalseQuestionDTO object to map.
+   * @return The mapped TrueOrFalseQuestion object.
+   */
+  public Question mapTrueOrFalsoToQuestion(TrueOrFalseQuestionDto questionDto) {
     return TrueOrFalseQuestion.builder()
-        .questionIsCorrect(questionDTO.getQuestionIsCorrect())
-        .questionText(questionDTO.getQuestionText())
+        .questionIsCorrect(questionDto.getQuestionIsCorrect())
+        .questionText(questionDto.getQuestionText())
         .build();
   }
-
 }

@@ -5,13 +5,14 @@ import lombok.Data;
 
 /**
  * DTO class used for public user information.
+ * Contains the username of the user.
+ * This class is used to send information about a user to the client.
  *
  * @author Tobias Oftedal
  * @version 1.0
- * @since 2024-03-27
  */
 @Data
 @Builder
-public class PublicUserInformationDTO {
+public class PublicUserInformationDto {
   private String username;
 }

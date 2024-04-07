@@ -1,9 +1,10 @@
 package edu.ntnu.idatt2105.quizapp.repositories.quiz;
 
 import edu.ntnu.idatt2105.quizapp.model.quiz.QuizAttempt;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+
 
 /**
  * Repository interface for managing QuizAttempt entities.
@@ -23,6 +24,5 @@ public interface QuizAttemptRepository extends JpaRepository<QuizAttempt, Long> 
    * @return A list containing the user's quiz attempts.
    */
   List<QuizAttempt> findQuizAttemptByUser_Username(String username);
-
   List<QuizAttempt> findQuizAttemptByQuiz_Id (Long id);
 }

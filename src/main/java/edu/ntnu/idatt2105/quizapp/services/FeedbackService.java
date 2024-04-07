@@ -1,12 +1,12 @@
 package edu.ntnu.idatt2105.quizapp.services;
 
 import edu.ntnu.idatt2105.quizapp.dto.FeedbackDto;
+import edu.ntnu.idatt2105.quizapp.mapper.FeedbackMapper;
 import edu.ntnu.idatt2105.quizapp.model.FeedbackMessage;
 import edu.ntnu.idatt2105.quizapp.repositories.FeedbackRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
 
 /**
  * Service class that encapsulates the logic for handling feedback-related operations.
@@ -21,21 +21,15 @@ public class FeedbackService {
 
   private final FeedbackRepository feedbackRepository;
 
+  private final FeedbackMapper feedbackMapper;
+
   /**
    * The method saves a feedback message to the database.
    *
    * @param feedbackDto The feedback DTO containing feedback information.
    */
   public void saveFeedBackMessage(@NonNull FeedbackDto feedbackDto) {
-
-    FeedbackMessage feedbackMessage = FeedbackMessage.builder()
-            .email(feedbackDto.getEmail())
-            .name(feedbackDto.getName())
-            .surname(feedbackDto.getSurname())
-            .content(feedbackDto.getContent())
-            .timestamp(LocalDate.now())
-            .build();
-
+    FeedbackMessage feedbackMessage = feedbackMapper.mapToFeedbackMessage(feedbackDto);
     feedbackRepository.save(feedbackMessage);
   }
 }

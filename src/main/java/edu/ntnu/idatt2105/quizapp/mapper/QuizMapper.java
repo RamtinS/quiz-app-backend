@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2105.quizapp.mapper;
 
 import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizDto;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDTO;
-import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDTO;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.QuizPreviewDto;
+import edu.ntnu.idatt2105.quizapp.dto.quiz.creation.QuizCreationRequestDto;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.model.quiz.Quiz;
 import lombok.NonNull;
@@ -35,7 +35,7 @@ public class QuizMapper {
    * @param quiz The Quiz object to map.
    * @return The mapped QuizDTO object.
    */
-  public QuizDto mapToQuizDTO(Quiz quiz) {
+  public QuizDto mapToQuizDto(Quiz quiz) {
     return QuizDto.builder()
         .quizId(quiz.getId())
         .name(quiz.getName())
@@ -45,7 +45,7 @@ public class QuizMapper {
             .map(tagMapper::mapToTagDto).toList())
 
         .questions(quiz.getQuestions().stream()
-            .map(questionMapper::mapToQuizQuestionDTO)
+            .map(questionMapper::mapToQuizQuestionDto)
             .toList())
 
         .isOpen(quiz.getIsOpen())
@@ -58,8 +58,8 @@ public class QuizMapper {
    * @param quiz The quiz object to map.
    * @return The mapped Quiz object.
    */
-  public QuizPreviewDTO mapToQuizPreviewDTO(Quiz quiz) {
-    return QuizPreviewDTO.builder()
+  public QuizPreviewDto mapToQuizPreviewDto(Quiz quiz) {
+    return QuizPreviewDto.builder()
         .id(quiz.getId())
         .title(quiz.getName())
         .description(quiz.getDescription())
@@ -70,34 +70,29 @@ public class QuizMapper {
   /**
    * Maps a QuizCreationRequestDTO object to a Quiz object.
    *
-   * @param quizCreationRequestDTO The QuizCreationRequestDTO object to map.
+   * @param quizCreationRequestDto The QuizCreationRequestDTO object to map.
    * @param user                   The user that created the quiz.
    * @return The mapped Quiz object.
    */
-  public Quiz mapToQuiz(QuizCreationRequestDTO quizCreationRequestDTO, User user) {
+  public Quiz mapToQuiz(QuizCreationRequestDto quizCreationRequestDto, User user) {
 
     Quiz createdQuiz = Quiz.builder()
-        .name(quizCreationRequestDTO.getTitle())
-        .description(quizCreationRequestDTO.getDescription())
-        .tags(quizCreationRequestDTO.getTags().stream()
+        .name(quizCreationRequestDto.getTitle())
+        .description(quizCreationRequestDto.getDescription())
+        .tags(quizCreationRequestDto.getTags().stream()
             .map(tagMapper::mapToTag).toList())
         .questions(
-            quizCreationRequestDTO.getQuestions()
+            quizCreationRequestDto.getQuestions()
                 .stream()
                 .map(a -> questionMapper.mapToQuestion(a))
                 .toList())
 
         .author(user)
-        .isOpen(quizCreationRequestDTO.isOpen())
+        .isOpen(quizCreationRequestDto.isOpen())
         .build();
 
     createdQuiz.getQuestions().forEach(question -> question.setQuiz(createdQuiz));
 
     return createdQuiz;
   }
-
 }
-
-
-
-

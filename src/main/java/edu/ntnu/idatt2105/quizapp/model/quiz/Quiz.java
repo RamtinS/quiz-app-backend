@@ -24,12 +24,14 @@ import lombok.Setter;
 
 
 /**
- * Model class for Quiz.
+ * The Quiz class represents a quiz entity in the application.
+ * Each Quiz object encapsulates information about a quiz.
+ * This class is an entity class in the JPA (Java Persistence API) and is used to
+ * map the Quiz objects to the quizzes table in the database.
  *
  * @author Tobias Oftedal
  * @author Jeffrey Yaw Annor Tabiri
  * @version 1.0
- * @since 2024-03-27
  */
 @Entity
 @AllArgsConstructor

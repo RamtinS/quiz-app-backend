@@ -9,8 +9,14 @@ import edu.ntnu.idatt2105.quizapp.util.quiz.QuizModelTestUtil;
 import org.junit.jupiter.api.Test;
 
 
+/**
+ * Unit test for the answer model.
+ * Tests the equals, hashCode, getters and setters.
+ *
+ * @version 1.0
+ * @author Jeffrey Yaw Annor Tabiri
+ */
 public class AnswerTest {
-
 
   @Test
   public void Equals_EqualAnswers_True() {
@@ -36,6 +42,20 @@ public class AnswerTest {
 
     //Assert
     assertFalse(result);
+  }
+
+  @Test
+  public void Answer_SetQuestion_ReturnsQuestion() {
+    //Arrange
+    Answer answerA = QuizModelTestUtil.createAnswerA();
+    Question expectedQuestion = QuizModelTestUtil.createQuizQuestionA();
+
+    //Act
+    answerA.setQuestion(expectedQuestion);
+    Question actualQuestion = answerA.getQuestion();
+
+    //Assert
+    assertEquals(expectedQuestion, actualQuestion);
   }
 
   @Test
@@ -106,12 +126,12 @@ public class AnswerTest {
     assertNotEquals(hashA, hashB);
   }
 
-    @Test
+  @Test
   public void GetAnswerText_AnswerTextIsHello_Hello() {
     //Arrange
     Answer answerA = Answer.builder()
-        .answerText("Hello")
-        .build();
+            .answerText("Hello")
+            .build();
     String expected = "Hello";
 
     //Act
