@@ -22,5 +22,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @JsonTypeName("MultipleChoiceQuestionDTO")
 public class MultipleChoiceQuestionDto extends QuestionDto {
-  private List<AnswerDto> answers;
+  private List<AnswerDTO> answers;
 }

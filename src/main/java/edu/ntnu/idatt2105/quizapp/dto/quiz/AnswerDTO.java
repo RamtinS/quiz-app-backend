@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class AnswerDto {
+public class AnswerDTO {
   private String answerText;
   private boolean isCorrect;
 }
