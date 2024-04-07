@@ -15,5 +15,4 @@ import lombok.Data;
 @Builder
 public class QuizCreationResponseDto {
   private long quizId;
-  private String errorMessage;
 }
