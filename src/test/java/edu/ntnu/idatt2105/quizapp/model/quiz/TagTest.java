@@ -1,3 +1,4 @@
+
 package edu.ntnu.idatt2105.quizapp.model.quiz;
 
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
@@ -10,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for the tag model.
  *
  * @author Jeffrey Yaw Annor Tabiri
- * @since 4/4/2024
  * @version 1.0
  */
 class TagTest {
@@ -20,6 +20,21 @@ class TagTest {
   @BeforeEach
   void setUp() {
     tag = TestUtil.createTagA();
+  }
+
+  @Test
+  void
+  Tag_TagConstructorNoArg_ReturnTag() {
+    //Arrange
+    String expected = "Integrals";
+
+    //Act
+    Tag testTag = new Tag();
+    testTag.setDescription(expected);
+    String actual = testTag.getDescription();
+
+    //Assert
+    assertEquals(expected, actual);
   }
 
   @Test

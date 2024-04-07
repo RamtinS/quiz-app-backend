@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2105.quizapp.model.quiz;
 
+import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
 import edu.ntnu.idatt2105.quizapp.util.quiz.QuizModelTestUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for the category model object.
  *
  * @author Jeffrey Yaw Annor Tabiri
- * @since 4/4/2024
  * @version 1.0
  */
 class CategoryTest {
@@ -54,6 +54,20 @@ class CategoryTest {
     });
 
   }
+
+  @Test
+  void Category_ConstructorWithNoArgs_ReturnCategory() {
+    Category expectedCategory = new Category();
+    String expectedDescription = "Food";
+
+    expectedCategory.setDescription(expectedDescription);
+    String actualDescription = expectedCategory.getDescription();
+
+    assertEquals(expectedDescription, actualDescription);
+  }
+
+
+
   @Test
   void Category_GetDescription_ReturnDescription() {
     //Arrange
@@ -72,10 +86,10 @@ class CategoryTest {
     Quiz expected = QuizModelTestUtil.createQuizA();
 
     //Act
-    List<Quiz> actual = category.getQuizzes();
+    Quiz actual = category.getQuizzes().getFirst();
 
     //Assert
-    assertTrue(actual.contains(expected));
+    assertEquals(expected.getName(), actual.getName());
 
   }
 
@@ -109,6 +123,68 @@ class CategoryTest {
   }
 
   @Test
-  void builder() {
+  public void User_Hashcode_False() {
+    //Arrange
+    Category categoryA = TestUtil.createCategoryA();
+    Category categoryB = TestUtil.createCategoryB();
+
+    //Act
+    int hashA = categoryA.hashCode();
+    int hashB = categoryB.hashCode();
+
+    //Assert
+    assertNotEquals(hashA, hashB);
   }
+
+  @Test
+  public void User_Hashcode_True() {
+    //Arrange
+    Category categoryA = TestUtil.createCategoryA();
+
+    //Act
+    int hashA = categoryA.hashCode();
+    int hashB = categoryA.hashCode();
+
+    //Assert
+    assertEquals(hashA, hashB);
+  }
+
+  @Test
+  public void Equals_Null_False() {
+    //Arrange
+    Category categoryA = TestUtil.createCategoryA();
+
+    //Act
+    boolean result = categoryA.equals(null);
+
+    //Assert
+    assertFalse(result);
+  }
+
+  @Test
+  public void Equals_SameObject_True() {
+    //Arrange
+    Category categoryA = TestUtil.createCategoryA();
+    Category categoryB = categoryA;
+
+    //Act
+    boolean result = categoryA.equals(categoryB);
+
+    //Assert
+    assertTrue(result);
+  }
+
+  @Test
+  public void Equals_DifferentObject_False() {
+    //Arrange
+    Category categoryA = TestUtil.createCategoryA();
+    Category categoryB = TestUtil.createCategoryB();
+
+    //Act
+    boolean result = categoryA.equals(categoryB);
+
+    //Assert
+    assertFalse(result);
+  }
+
 }

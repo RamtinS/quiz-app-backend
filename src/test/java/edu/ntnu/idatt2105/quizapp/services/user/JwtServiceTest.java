@@ -1,5 +1,6 @@
-package edu.ntnu.idatt2105.quizapp.services;
+package edu.ntnu.idatt2105.quizapp.services.user;
 
+import edu.ntnu.idatt2105.quizapp.services.JwtService;
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
 import edu.ntnu.idatt2105.quizapp.model.User;
 import io.jsonwebtoken.Claims;

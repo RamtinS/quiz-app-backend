@@ -1,18 +1,22 @@
-package edu.ntnu.idatt2105.quizapp.model;
+package edu.ntnu.idatt2105.quizapp.model.user;
 
+import edu.ntnu.idatt2105.quizapp.model.Role;
+import edu.ntnu.idatt2105.quizapp.model.User;
 import edu.ntnu.idatt2105.quizapp.util.TestUtil;
+import edu.ntnu.idatt2105.quizapp.util.quiz.QuizModelTestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.GrantedAuthority;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit test for the user model.
  *
  * @author Jytabiri
  * @version 1.0
- * @since 2024-03-25
  */
 class UserTest {
   User testUser;
@@ -25,6 +29,7 @@ class UserTest {
     testUser = TestUtil.createUserA();
   }
 
+  @Test
   void User_UserConstructor_ReturnUser() {
     //Arrange
     String expectedUsername = "Alice";
@@ -44,6 +49,21 @@ class UserTest {
     assertEquals(expectedName, actual.getName());
     assertEquals(expectedSurName, actual.getSurName());
     assertEquals(expectedRole, actual.getRole());
+  }
+
+  @Test
+  void User_UserConstructorWithNoArgs_ReturnUser() {
+
+    //Arrange
+    User user = new User();
+    String expectedName = "Jake";
+
+    //Act
+    user.setName(expectedName);
+    String actualName = user.getName();
+
+    //Assert
+    assertEquals(expectedName, actualName);
   }
 
   @Test
@@ -129,6 +149,79 @@ class UserTest {
   }
 
   @Test
+  void User_GetQuizzes_ReturnQuizzes() {
+
+    //Arrange
+    testUser.setQuizzes(List.of(QuizModelTestUtil.createQuizA()));
+
+
+    //Act
+    boolean result = testUser.getQuizzes().isEmpty();
+
+    //Assert
+    assertFalse(result);
+  }
+
+  @Test
+  void User_GetSimpleAuthority_ReturnRole() {
+
+    //Act
+    List<? extends GrantedAuthority> actual = testUser.getAuthorities().stream().toList();
+
+    //Assert
+    assertFalse(actual.isEmpty());
+  }
+
+  @Test
+  void User_isEnabled_True() {
+    //Arrange
+    boolean expected = true;
+
+    //Act
+    boolean actual = testUser.isEnabled();
+
+    //Assert
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void User_isCredentialsNonExpired_True() {
+    //Arrange
+    boolean expected = true;
+
+    //Act
+    boolean actual = testUser.isCredentialsNonExpired();
+
+    //Assert
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void User_isAccountNonLocked_True() {
+    //Arrange
+    boolean expected = true;
+
+    //Act
+    boolean actual = testUser.isAccountNonLocked();
+
+    //Assert
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void User_isAccountNonExpired_True() {
+    //Arrange
+    boolean expected = true;
+
+    //Act
+    boolean actual = testUser.isAccountNonExpired();
+
+    //Assert
+    assertEquals(expected, actual);
+  }
+
+
+  @Test
   void User_SetPassword_ReturnSavedPassword() {
     //Arrange
     String expected = "newPassword";
@@ -208,4 +301,68 @@ class UserTest {
     assertEquals(expected, actual);
   }
 
+  @Test
+  public void User_Hashcode_False() {
+    //Arrange
+    User userA = TestUtil.createUserA();
+    User userB = TestUtil.createUserB();
+
+    //Act
+    int hashA = userA.hashCode();
+    int hashB = userB.hashCode();
+
+    //Assert
+    assertNotEquals(hashA, hashB);
+  }
+
+  @Test
+  public void User_Hashcode_True() {
+    //Arrange
+    User userA = TestUtil.createUserA();
+
+    //Act
+    int hashA = userA.hashCode();
+    int hashB = userA.hashCode();
+
+    //Assert
+    assertEquals(hashA, hashB);
+  }
+
+  @Test
+  public void Equals_Null_False() {
+    //Arrange
+    User userA = TestUtil.createUserA();
+
+    //Act
+    boolean result = userA.equals(null);
+
+    //Assert
+    assertFalse(result);
+  }
+
+  @Test
+  public void Equals_SameObject_True() {
+    //Arrange
+    User userA = TestUtil.createUserA();
+    User userB = TestUtil.createUserA();
+
+    //Act
+    boolean result = userA.equals(userB);
+
+    //Assert
+    assertTrue(result);
+  }
+
+  @Test
+  public void Equals_DifferentObject_False() {
+    //Arrange
+    User userA = TestUtil.createUserA();
+    User userB = TestUtil.createUserB();
+
+    //Act
+    boolean result = userA.equals(userB);
+
+    //Assert
+    assertFalse(result);
+  }
 }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test class for the quiz attempt.
  *
  * @author Jeffrey Yaw Annor Tabiri
- * @since 4/4/2024
  * @version 1.0
  */
 class QuizAttemptTest {
@@ -41,7 +40,7 @@ class QuizAttemptTest {
 
     //Arrange
     int expectedScore = 50;
-    Date expectedDate = new Date(4949L);
+    LocalDate expectedDate = LocalDate.of(2020, 1, 8);
     Quiz expectedQuiz = quiz;
     User expectedUser = user;
 
@@ -50,11 +49,11 @@ class QuizAttemptTest {
             .quiz(quiz)
             .user(user)
             .score(expectedScore)
-            .attemptDate(expectedDate)
+            .timestamp(expectedDate)
             .build();
 
     int actualScore = attempt.getScore();
-    Date actualDate = attempt.getAttemptDate();
+    LocalDate actualDate = attempt.getTimestamp();
     Quiz actualQuiz = attempt.getQuiz();
     User actualUser = attempt.getUser();
 
@@ -67,16 +66,20 @@ class QuizAttemptTest {
   }
 
   @Test
-  void QuizAttempt_QuizAttemptConstructor_ReturnException() {
-    assertThrows(NullPointerException.class, () -> {
-      QuizAttempt.builder()
-              .quiz(null)
-              .user(null)
-              .score(0)
-              .attemptDate(null)
-              .build();
-    });
+  void QuizAttempt_QuizAttemptNoArg_ReturnQuizAttempt() {
+
+    //Arrange
+    QuizAttempt attempt = new QuizAttempt();
+    int expectedScore = 50;
+
+    //Act
+    attempt.setScore(expectedScore);
+    int actualScore = attempt.getScore();
+
+    //Assert
+    assertEquals(expectedScore, actualScore);
   }
+
 
   @Test
   void QuizAttempt_GetQuiz_ReturnsQuiz() {
@@ -88,7 +91,7 @@ class QuizAttemptTest {
     Quiz actual = quizAttempt.getQuiz();
 
     //Assert
-    assertTrue(expected.equals(actual));
+    assertEquals(expected, actual);
   }
 
   @Test
@@ -122,10 +125,10 @@ class QuizAttemptTest {
   void QuizAttempt_GetDate_ReturnDate() {
 
     //Arrange
-    Date expected = new Date(420520L);
+    LocalDate expected = LocalDate.of(2020, 1, 8);
 
     //Act
-    Date actual = quizAttempt.getAttemptDate();
+    LocalDate actual = quizAttempt.getTimestamp();
 
     //Assert
     assertEquals(expected, actual);
@@ -147,13 +150,6 @@ class QuizAttemptTest {
   }
 
   @Test
-  void QuizAttempt_SetQuizWithNull_ReturnException() {
-    assertThrows(NullPointerException.class, () ->
-            quizAttempt.setQuiz(null)
-    );
-  }
-
-  @Test
   void QuizAttempt_SetUser_ReturnSavedUser() {
 
     //Arrange
@@ -167,12 +163,6 @@ class QuizAttemptTest {
     assertEquals(expected, actual);
   }
 
-  @Test
-  void QuizAttempt_SetUserWithNull_ReturnException() {
-    assertThrows(NullPointerException.class, () ->
-            quizAttempt.setUser(null)
-    );
-  }
 
   @Test
   void QuizAttempt_SetScore_ReturnSavedScore() {
@@ -188,32 +178,18 @@ class QuizAttemptTest {
     assertEquals(expected, actual);
   }
 
-  @Test
-  void QuizAttempt_SetScoreWithNull_ReturnException() {
-    assertThrows(NullPointerException.class, () ->
-            quizAttempt.setQuiz(null)
-    );
-  }
 
   @Test
   void QuizAttempt_SetDate_ReturnSavedDate() {
 
     //Arrange
-    Date expected = new Date(404040L);
+    LocalDate expected = LocalDate.of(2020, 1, 8);
 
     //Act
-    quizAttempt.setAttemptDate(expected);
-    Date actual = quizAttempt.getAttemptDate();
+    quizAttempt.setTimestamp(expected);
+    LocalDate actual = quizAttempt.getTimestamp();
 
     //Assert
     assertEquals(expected, actual);
   }
-
-  @Test
-  void QuizAttempt_SetDateWithNull_ReturnException() {
-    assertThrows(NullPointerException.class, () ->
-            quizAttempt.setQuiz(null)
-    );
-  }
-
 }

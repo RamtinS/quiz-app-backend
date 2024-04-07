@@ -30,7 +30,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class QuizAttempt {
 
   @Id
