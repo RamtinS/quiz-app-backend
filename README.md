@@ -75,12 +75,20 @@ These are system documents which descirves the various aspects of a software sys
    ```
    /.mvnw spring-boot:run
    ```
+## Other commands
+You can run the program with, or without test data by modifying the command in line 6
 
+* To run with a test file, use this command:
+   ```
+   ./mvnw spring-boot:run -Dspring-boot.run.arguments=--deleteAllData
+   ```
+* To run without a test file, use this command:
+   ```
+   ./mvnw spring-boot:run -Dspring-boot.run.arguments=--noTestData
+   ```
 ## Test
 To run the tests, you would use the command
-   ```
-   mvn test
-   ```
+
 This command will execute all the tests in the project.
 
 ## Acknowledgements
