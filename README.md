@@ -14,7 +14,6 @@ IDATT2105 Full-stack application development at NTNU.
 - [Wiki](#wiki)
 - [Features](#features)
 - [Setup and Run](#setup-and-run)
-- [License](#license)
 - [Acknowledgements](#acknowledgements)
 
 ## Overview
