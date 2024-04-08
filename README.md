@@ -73,7 +73,7 @@ These are system documents which descirves the various aspects of a software sys
    
 6. Find a new terminal and enter the following command to finally start the backend.
    ```
-   /.mvnw spring-boot:run
+   ./mvnw spring-boot:run
    ```
 ## Other commands
 You can run the program with, or without test data by modifying the command in line 6
