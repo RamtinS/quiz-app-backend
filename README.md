@@ -50,22 +50,31 @@ These are system documents which descirves the various aspects of a software sys
 
 ### Set up and run the backend.
 
-1. Clone the repository
+1. Begin by cloning the project into your device. In your terminal, enter following command:
    ```
-   git clone git@github.com:RamtinS/quiz-app-backend.git
+   git clone https://github.com/RamtinS/quiz-app-backend.git
    ```
 
-2. Start the database.
+2. Navigate to the project directory by typing the following command in the terminal:
    ```
-   docker compose up
+   cd quiz-app-backend
    ```
    This command will start the database required for the backend to function.
 
-3. Start the backend-application
+3. Navigate to the docker file by running this command in the terminal:
    ```
-   mvn run
+   cd docker
    ```
-   From here on out you can send request to to backend.
+
+5. Run the database by starting the docker compose file in the terminal with this command.
+   ```
+   docker-compose up
+   ```
+   
+6. Find a new terminal and enter the following command to finally start the backend.
+   ```
+   /mvnw spring-boot:run
+   ```
 
 ## Test
 To run the tests, you would use the command
