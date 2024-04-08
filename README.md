@@ -1,24 +1,31 @@
 # Quiz-app-Backend: Hubro
-This project serves as the backend for a full-stack application. This is a part of a project of IDATT2105 Full-stack application development at NTNU.
 
-### Team: Ramtin Forouzandehjoo Samavat, Tobias Skipevåg Oftedal, Jeffrey Yaw Annor Tabiri
+Hubro is a full-stack application developed with Spring Boot and Vue.js.
+The application is developed as part of an assessment in the subject 
+IDATT2105 Full-stack application development at NTNU.
+
+## Team
+- Ramtin Forouzandehjoo Samavat
+- Tobias Skipevåg Oftedal
+- Jeffrey Yaw Annor Tabiri
 
 ## Table of Contents 
 - [Overview](#overview)
-- [System Documents](#system-documents)
+- [Wiki](#wiki)
 - [Features](#features)
 - [Setup and Run](#setup-and-run)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
 ## Overview
-The semester project is a full-stack web application aiming to provide a comprehensive and user-friendly platform for creating, managing, and taking quizzes for educational, training, or entertainment purposes. The project utilizes the following technologies:
+The semester project is a full-stack web application aiming to provide a comprehensive and user-friendly platform for creating, managing, and taking quizzes for educational, training, or entertainment purposes. 
 
-Frontend: Vue.js
-Backend: Java 21 with Spring Boot V3
-Database: MySQL for runtime and H2 for tests
+The project utilizes the following technologies:
+- Frontend: Vue.js with Node.js.
+- Backend: Spring Boot V3 with Java 21 and Maven.
+- Database: MySQL V8 for runtime and H2 for tests.
 
-## System Documents
+## Wiki
 These are system documents which descirves the various aspects of a software system. These documents capture the details of the system's design, implementation, operation and maintenance, serving as a reference for developers.
 - [System Architecture Program](docs/system-architect-diagram.png)
 - [Class Diagram](docs/Class-Diagram.png)
@@ -26,13 +33,13 @@ These are system documents which descirves the various aspects of a software sys
 - [Sequence diagram for login user](docs/loginDiagram.png)
 
 ## Features
-* Users of the program can log in securely, register themselves and manage their accounts.
-* Authenticated users can create quizzes by adding questions and specifying categories.
-* Users can tag questions with keywords and categorize them into topics or subjects.
-* Users can search for quzzes and filter them based on their fields.
-* Allow users to add, edit, delete, organize, and manage their quiz.
-* Allows users to gain score on every quiz and track their progress
-* Allow users to come if there where to be any problems by writing in our feedback channel.
+- **Secure Authentication**: Users can securely log in, register, and manage their accounts.
+- **Quiz Creation**: Authenticated users can create quizzes by adding questions and specifying categories.
+- **Question Tagging**: Users can tag questions with keywords and categorize them into topics or subjects.
+- **Advanced Search**: Users can search for quizzes and filter them based on various criteria.
+- **Quiz Management**: Users have full control over their quizzes, including adding, editing, deleting, and organizing them.
+- **Progress Tracking**: Users can track their progress and scores for each quiz they take.
+- **Feedback Channel**: Users can easily reach out to us with any issues or feedback through our feedback channel.
 
 ## Setup and Run
 
@@ -67,10 +74,6 @@ To run the tests, you would use the command
    mvn test
    ```
 This command will execute all the tests in the project.
-
-
-## License
-This project is licensed under the MIT License.
 
 ## Acknowledgements
 Special thanks to the subject teachers for creating this assignment and providing us with the opportunity to develop this project.
