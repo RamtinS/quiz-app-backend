@@ -26,7 +26,7 @@ The project utilizes the following technologies:
 
 ## Wiki
 These are system documents which descirves the various aspects of a software system. These documents capture the details of the system's design, implementation, operation and maintenance, serving as a reference for developers.
-- [System Architecture Program](https://github.com/RamtinS/quiz-app-backend/wiki/System-architect-diagramg)
+- [System Architecture Program](https://github.com/RamtinS/quiz-app-backend/wiki/System-architect-diagram)
 - [Class Diagram](docs/Class-Diagram.png)
 - [Sequence diagram for getting quiz](docs/getQuizDiagram.png)
 - [Sequence diagram for login user](docs/loginDiagram.png)
