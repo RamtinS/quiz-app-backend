@@ -8,7 +8,6 @@ class QuizBackendApplicationTests {
 
   @Test
   void contextLoads() {
-
   }
 
 }

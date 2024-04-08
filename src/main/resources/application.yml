@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: quiz-app-backend
+  datasource:
+    url: jdbc:mysql://localhost:3307/quiz_app
+    username: root
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+
+springdoc:
+  api-docs:
+    path: /api/v1/docs
+  swagger-ui:
+    path: /api/v1/docs/ui
+    operations-sorter: method
+
+logging:
+  file:
+    name: logs/log.txt
+  level:
+    root: info
+    edu.ntnu.idatt2105.quizapp: debug
